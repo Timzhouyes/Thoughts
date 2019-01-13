@@ -66,7 +66,8 @@ gitalk:
   clientSecret: 0a200e91432e467d3114a1101d622c5f0b468431    #生成的clientSecret
   repo: Timzhouyes.github.io    #仓库名称
   owner: Timzhouyes     #github用户名
-  admin: Timzhouyes
+  admin: [Timzhouyes]
+  id: window.location.pathname,
   distractionFreeMode: true #是否启用类似FB的阴影遮罩
 
 
