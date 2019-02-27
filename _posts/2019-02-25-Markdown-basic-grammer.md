@@ -1,3 +1,18 @@
+---
+layout:     post   				    # 使用的布局（不需要改）
+title:      Markdown basic grammer 				# 标题 
+subtitle:   Basic grammer of Markdown #副标题
+date:       2019/02/25			# 时间
+author:     Timzhou						# 作者
+header-img: img/post-bg-2015.jpg 	#这篇文章标题背景图片
+catalog: true 						# 是否归档
+tags:								#标签
+    - Markdown
+    - Programming
+    - 编程
+---
+
+
 # 1.Title
 Markdown mark the title with "# ", notice there is a space after '#'. And if you want to create multilevel of titles, such as 
 ## Second level title
