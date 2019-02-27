@@ -1,0 +1,31 @@
+Day 1
+1.	Python之中的默认小数类型是float
+2.	Python之中可以直接进行类型的转换，例如从string转换到int，可以直接赋给同一个变量，而无需再设置一个int变量之后做转换
+3.	Python以缩进来区分函数体和其中的嵌套关系
+4.	在Python之中，其dictionary可以直接扩展或者加key-value pair，很易用
+5.	在Python之中，Functions 可以不放在class之中定义
+6.	Private variable是前面加两个_    这样这个变量就不可以在function之外访问了
+7.	Module.class.funcction() Python的调用格式
+8.	在colab之中，用！开头的代码可以用作命令，来做例如安装package等。E.g. !pip list
+
+Homework Day1 
+1.	Python can assign many variables in one line ,such as :
+a, b = 1, 2
+print(a, b)
+print(b)
+print(a)
+2.	The definition of function in Python:
+def addition(x, y):
+    answer = x + y
+return answer
+3.	Python之中，break仅仅适用于for的结构体，不适合if
+
+
+Day 2
+1.	SQLite只是为了开发的一个数据库，如果在实际使用之中，其会出现很多问题。
+2.	Django很有趣，是从code开始，在code之中打出要的数据格式，然后django会自动生成table和database
+3.	python .\manage.py shell  打开python命令行
+4.	Django之中，404的page展示代码是因为debug模式开启，可以将其设置成false来disable这个功能
+5.	Allowedhost=[‘*’] 是将其debugmode改成false的设置
+6.	Django之中，可以继承generic view然后做自己的modify来修改，通常只是修改数据来源 具体的各种view可以在官方文档查阅
+7.	每次做test时侯，database都会先创建后destroy，来避免重复操作可能会有的问题
