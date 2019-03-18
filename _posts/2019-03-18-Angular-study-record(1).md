@@ -81,6 +81,17 @@ The goals in the doc is that:
 - IF you change something in the imput box, it will change immediately
 7. Every component need to be decleared in app.module.ts, and if we new a component in CLI, it is auto-componented.
 ## 3.1 Specific operations on Angular
+1. *ngFor is a repeater directive in Angular,and it can be in host elements, such as <li>
+2. Styles and stylesheets identified in @Component metadata are scoped to that specific component, so it will not affect all files in the component
+3. Commands start with "ng" are CLI commands
+### 3.1.1 EventBinding
+```<li *ngFor="let hero of heroes" (click)="onSelect(hero)">```
+
+EventBinding is a tool for people to do some operations on system.Such as click, and specify what method it will trigger,like onSelect()
+
+### 3.1.2 Assign value
+Create a variable or assign value is through ":"
+
 
 #### 3.HTML knowledge
 1. <input> placeholder is a hint for user if there is nothing in the input box
