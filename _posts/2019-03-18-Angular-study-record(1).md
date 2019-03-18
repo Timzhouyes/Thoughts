@@ -36,3 +36,13 @@ to get a new workspace, an initial skeleton app project, an end-to-end test proj
 - display data on the screen
 - listen for user input
 - take action based on that input
+5. so after new a project, CLI already created the first component for us.
+# 3. Learn Tours of Heroes toturial
+It is said on the website that the toturial can provide functions below:
+- Acquiring and displaying a list of items
+
+- Editing a selected item's detail
+
+- Navigating among different views of the data
+
+So I start learning it right now.
