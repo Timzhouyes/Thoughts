@@ -23,8 +23,16 @@ AngularJS is the 1st edition of Angular.
 1. Angular is based on TypeScript and Angular is based on TypeScript, which is a opensourced language developed by Microsoft.
 2. AngularJs uses terms of **Scope** and **Controller** .AngularJS also has a **rootScope** for whole application
 - My own understand of **Scope** is a link between controller and view.When we add a *$scope* in controller, HTML file can get these attributes directlhy and just use it .
-- The difference between one-way data binding and two-way databinding is that one-way data binding only can get data from model and post them on the Views, but if we use two-way databinding, if we change data on Views, it can also change data in models.So one is from model to view, one is two-directions view and models.
+- The difference between one-way data binding and two-way databinding is that one-way data binding only can get data from model and post them on the Views, but if we use two-way databinding, if we change data on Views, it can also change data in models. So one is from model to view, one is two-directions view and models.
 
 # 2. Study Angular toturial on its own website
-
-
+1. Install node.js and npm ,after that we can set a workspace,which is the place for one or more projects. 
+2. Use the 
+> npm new my-app 
+to get a new workspace, an initial skeleton app project, an end-to-end test project and one related configuration files.
+3. After new a project, Angular already includes a server, which we can use to build and serve or test the app locally.
+- Just use the command 'ng serve --open' and it will open the test website. Default is http://localhost:4200
+4. **Components** are fundamental binding blocks of Angular applications.What the "fundemental" means is that it is the basic unit of whole program.Such as 
+- display data on the screen
+- listen for user input
+- take action based on that input
