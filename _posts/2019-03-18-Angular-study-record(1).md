@@ -66,9 +66,13 @@ The goals in the doc is that:
 1. The double curly braces are Angular's binding syntax ,which allows us to insert a variable to the Views
 - In Angular, we can write every variable in the AppComponent and contain it in 2 curly brackets ，like {{  }}
 2. Things in *component.ts*
-- selector: select the place where the CSS file used
+- selector: select the place where the CSS file used.And it is used when we need to import data in another file
 - templateUrl: The location of the template website file
 - styleUrl: Location of component's private CSS styles
 - ngOnInit: The part for whole program to initialization
-###### Always export the Component so we can import it everywhere
+- ##### Always export the Component so we can import it everywhere
 3. We could add one component.html in another component.html
+4. How to initialise a variable in Angular?
+- New a .ts file and write the constructor, then use it in the Component
+- ##### One important is that <p> cannot contails tags such as <h1> <div> and the same class
+5. Functions that use in frontend can use methods with "|" seprate attributes and methods.The "|" in Angular called *Pipe* 
