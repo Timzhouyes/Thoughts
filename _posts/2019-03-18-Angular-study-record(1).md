@@ -58,7 +58,7 @@ The goals in the doc is that:
 - Format data with pipes.
 - Create a shared service to assemble the heroes.
 - Use routing to navigate among different views and their components.
-#### 1. bApplication components
+#### 1. Application components
 1. app.component.ts contains all the classes used in **TypeScript**
 2. app.component.html contains the component template which written in HTML
 3. app.component.css contains private CSS styles.
@@ -71,3 +71,4 @@ The goals in the doc is that:
 - styleUrl: Location of component's private CSS styles
 - ngOnInit: The part for whole program to initialization
 ###### Always export the Component so we can import it everywhere
+3. We could add one component.html in another component.html
