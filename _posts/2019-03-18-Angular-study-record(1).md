@@ -76,3 +76,12 @@ The goals in the doc is that:
 - New a .ts file and write the constructor, then use it in the Component
 - ##### One important is that <p> cannot contails tags such as <h1> <div> and the same class
 5. Functions that use in frontend can use methods with "|" seprate attributes and methods.The "|" in Angular called *Pipe* 
+6. Angular uses a two-way data-binding. That means data flow from the component class out to the screen and from the screen back to the class.
+- Use <input> form element to do this
+- IF you change something in the imput box, it will change immediately
+7. Every component need to be decleared in app.module.ts, and if we new a component in CLI, it is auto-componented.
+## 3.1 Specific operations on Angular
+
+#### 3.HTML knowledge
+1. <input> placeholder is a hint for user if there is nothing in the input box
+2. <li> and the tags can have operations inside it ,such as ** *ngFor="let A of B"**
