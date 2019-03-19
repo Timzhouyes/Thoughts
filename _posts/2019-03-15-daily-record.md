@@ -1,6 +1,6 @@
 ---
 layout:     post   				    # 使用的布局（不需要改）
-title:      Angular.js 与每日记录				# 标题 
+title:      VSM 与每日记录				# 标题 
 subtitle:   Studying Git #副标题
 date:       2019-03-15 				# 时间
 author:     Haiming 						# 作者
