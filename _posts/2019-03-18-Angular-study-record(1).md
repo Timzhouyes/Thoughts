@@ -92,7 +92,14 @@ EventBinding is a tool for people to do some operations on system.Such as click,
 ### 3.1.2 Assign value
 Create a variable or assign value is through ":"
 
+### 3.1.3 Master/Detail component
+###### It is very hard to maintain if all things in one component, and to avoid this thing, we can split the component into some small components, each one focus on just one small thing.
+
 
 #### 3.HTML knowledge
 1. <input> placeholder is a hint for user if there is nothing in the input box
 2. <li> and the tags can have operations inside it ,such as ** *ngFor="let A of B"**
+3. <div> can have functions that seprate a part from another part. Each part can have its own independent functions.
+4. <span> can used to combine eliments in the specified format.
+- Badge in the list is shown like labels,but a little rounded.
+5. 
