@@ -34,6 +34,17 @@ npm install这个命令读取了angular-phonecat的package.json文件（因此�
 
 ## 1.3 在哪测试？
 
+测试部分在karma之中，使用```npm test```来测试。
+
+```karma.conf.js```是karma进行测试的初始配置文件。
+
+下面对于```karma.conf.js```之中的字段进行解释：
+
+1. ```module.exports = function(config)```：这部分指向一个接受一个参数的function
+2. ```basePath```： 对于所有的```files```和```exclude```之中的文件路径的初始定义。
+3. ```autoWatch```：Default是true,决定当文件有改动时候是否自动执行测试
+
+若其在后台一直运行，可以针对代码操作进行实时反馈。
 
 
 # 3月27日日常记录
