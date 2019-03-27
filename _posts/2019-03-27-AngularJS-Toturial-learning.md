@@ -12,6 +12,8 @@ tags:								#标签
     - AngularJS
 ---
 
+[教程地址在这](https://code.angularjs.org/1.3.16/docs/tutorial),此处放的是1.3.16版本
+
 # 1. 初始化环境的准备
 
 ## 1.1 npm install有什么作用？
@@ -46,6 +48,15 @@ npm install这个命令读取了angular-phonecat的package.json文件（因此�
 
 若其在后台一直运行，可以针对代码操作进行实时反馈。
 
+# 2. Bootstrapping
+
+## 2.1 ```ng-app```
+
+```<html ng-app>```
+
+用来规定AngularJS的作用范围。可以选择整个页面或者某个部分。
+
+## 
 
 # 3月27日日常记录
 
