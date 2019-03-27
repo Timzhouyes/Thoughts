@@ -56,7 +56,26 @@ npm install这个命令读取了angular-phonecat的package.json文件（因此�
 
 用来规定AngularJS的作用范围。可以选择整个页面或者某个部分。
 
-## 
+## 2.2 AngularJS script tag
+
+用于下载angular.js， 之后将其作为bootstrap应用到```ngApp```的范围之内。
+
+## 2.3 Double-curly binding with an expression
+
+双大括号里面的值在绑定之后替换回原来双大括号的位置。
+
+## 2.4 Bootstrapping AngularJS apps
+
+通常使用```ngApp```来自动做Bootstrap。
+
+当Bootstrap完成之后，其会等待操作例如点击鼠标，若操作对model做出改变，则直接更新所有被影响的Binding
+
+# 3. Static Template
+1. 所有的操作，类似于```ng-repeat```和```ng-controller```,都是写在标签里面的。标签的范围也就是操作起作用的范围。
+2. <ul>之中包含<li>, 其中<li>是<ul>的一个项。每一个<li>前面都会有<ul>的那个点。
+
+
+
 
 # 3月27日日常记录
 
