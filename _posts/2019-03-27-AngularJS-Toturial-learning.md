@@ -11,6 +11,31 @@ tags:								#标签
     - 学习
     - AngularJS
 ---
+
+# 1. 初始化环境的准备
+
+## 1.1 npm install有什么作用？
+
+npm install这个命令读取了angular-phonecat的package.json文件（因此有很多时候提示package.json文件缺失报错），并且把以下的工具下载到```node_modules```目录之中。
+1. Bower-客户端代码包管理器
+2. Http-Server-本地静态Web服务器
+3. Karma-单元测试运行器
+4. Protractor-端到端测试运行器
+
+之后可以使用```npm start```来启动一个本地Web服务器，```npm test```来启动Karma单元测试运行器
+
+## 1.2 环境都去哪配置？
+
+可以编辑package.json内部的"start"脚本，
+
+1. 使用’-a‘ 设置地址（address）
+2. 使用’-p‘设置端口（port）
+
+
+## 1.3 在哪测试？
+
+
+
 # 3月27日日常记录
 
 ### 1. What is the difference between Authentication and Authorization?
@@ -22,4 +47,5 @@ Authentication的翻译为认证，而Authorization的翻译是授权。
 # 一些小Tips
 1. 建议把脚本放在 <body> 元素的底部。这会提高网页加载速度，因为 HTML 加载不受制于脚本加载。
 - 此处的脚本为```<script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>```
-- 
+
+
