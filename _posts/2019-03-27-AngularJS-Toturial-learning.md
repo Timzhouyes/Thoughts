@@ -10,6 +10,7 @@ tags:								#标签
     - 编程
     - 学习
     - AngularJS
+
 ---
 
 [教程地址在这](https://code.angularjs.org/1.3.16/docs/tutorial),此处放的是1.3.16版本
@@ -19,6 +20,7 @@ tags:								#标签
 ## 1.1 npm install有什么作用？
 
 npm install这个命令读取了angular-phonecat的package.json文件（因此有很多时候提示package.json文件缺失报错），并且把以下的工具下载到```node_modules```目录之中。
+
 1. Bower-客户端代码包管理器
 2. Http-Server-本地静态Web服务器
 3. Karma-单元测试运行器
@@ -32,7 +34,6 @@ npm install这个命令读取了angular-phonecat的package.json文件（因此�
 
 1. 使用’-a‘ 设置地址（address）
 2. 使用’-p‘设置端口（port）
-
 
 ## 1.3 在哪测试？
 
@@ -71,8 +72,81 @@ npm install这个命令读取了angular-phonecat的package.json文件（因此�
 当Bootstrap完成之后，其会等待操作例如点击鼠标，若操作对model做出改变，则直接更新所有被影响的Binding
 
 # 3. Static Template
+
 1. 所有的操作，类似于```ng-repeat```和```ng-controller```,都是写在标签里面的。标签的范围也就是操作起作用的范围。
 2. *<ul>*之中包含*<li>*, 其中*<li>*是*<ul>*的一个项。每一个*<li>*前面都会有*<ul>*的那个点。
+
+
+
+# 4. AngularJS templates
+
+
+
+本步骤之中的所有操作都是对于app.js文件。
+
+1. 首先在一开始要定义一个变量作为整个module的名字，用于html文件之中引用。
+2. 定义一个controller，个人认为是controller的constructor，对于这个controller之后的参数（$scope)而言，下面的所有变量都要用scope来定义，例如scope.phone可以在html文件之中的{{phone.xxxxx}}之中使用。这里的scope仅仅在这个controller的作用域下面起作用。
+   - ```phonecatApp.controller('PhoneListController', function PhoneListController($scope) ```
+   - 上面是一个标准的定义controller的代码，```phonecatApp```是module的名字，```PhoneListController```是controller的名字，后面的($scope)是整个函数的作用域。
+   - 注意```'PhoneListController'```之前的括号是直接一括到底的，包含了整个constructor的所有内容。
+   - **在这里就定义了一个PhoneListController然后将其注册成了一个AngularJs module。**
+3. $scope 是在程序初始化时候就创建的rootscope的child，所有的scope都是继承于rootscope的。
+
+## 4.1 Scope
+
+
+
+scope是model和controller之间的纽带。官方教程之中解释如下：
+
+
+
+> A scope can be seen as the glue which allows the template, model, and controller to work together.
+
+
+
+个人认为scope是将model和controller之间的改变同步绑定的一种方式，是实现interactive application的工具。
+
+
+
+## 4.2 Controller
+
+
+
+We can write scripts to do test automatically with AngularJS. The testing of AngularJS is :
+
+
+
+1. Load ```phonecatApp``` module.
+2. Inject ```$ controller``` service to test function.
+3. With the ```$Controller```to create an instance of ```PhonelistController```
+4. Verify if the result is the same as ours .
+
+
+
+Always we create the testing file with some suffix in the name, in the toturial it is ```.spec```.
+
+
+
+## 4.3 Testing with ```npm test```
+
+
+
+The testing function of  AngularJS is ```Jasmine``` ,and ```npm test```is to use Karma do the test. 
+
+
+
+Basic grammer of testing is ```expect(scope.xxx).toBe(xxx);```
+
+
+
+In the command window it will show the result matches expection or not. 
+
+
+
+# 5.Components
+
+
+
 
 
 
@@ -86,7 +160,7 @@ Authentication的翻译为认证，而Authorization的翻译是授权。
 简而言之，Authentication意思是”确定你是谁“，而Authorization的意思是”确定你有什么权限“
 
 # 一些小Tips
+
 1. 建议把脚本放在 <body> 元素的底部。这会提高网页加载速度，因为 HTML 加载不受制于脚本加载。
+
 - 此处的脚本为```<script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>```
-
-
