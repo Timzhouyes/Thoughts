@@ -227,7 +227,7 @@ Then the page will do the filter auto and show the results sync.
 
 Below is the Sort option 
 
-```html
+```
 <select ng-model="$ctrl.orderProp">
           <option value="name">Alphabetical</option>
           <option value="age">Newest</option>
