@@ -225,6 +225,17 @@ Then the page will do the filter auto and show the results sync.
 
 
 
+Below is the Sort option 
+
+```html
+<select ng-model="$ctrl.orderProp">
+          <option value="name">Alphabetical</option>
+          <option value="age">Newest</option>
+        </select>
+```
+
+
+
 We can add orderProp to component so when it in initailized it has the order.
 
 
@@ -242,6 +253,10 @@ And in the sort it is very easy to revert the result with "-" before the option.
 
 
 $ is the prefix of services that provided by AngularJS
+
+
+
+# 10. Templating Links & Images
 
 
 
