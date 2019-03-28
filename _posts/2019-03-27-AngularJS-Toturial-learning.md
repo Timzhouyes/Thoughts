@@ -191,6 +191,49 @@ So we can just create one component and then use it everywhere.
 
 # 6.Directory and File Organization
 
+The main job is to 
+
+- Put each entity in its **own file**.
+- Organize our code by **feature area**, instead of by function.
+- Split our code into **modules** that other modules can depend on.
+
+
+
+Each feature should declare its own module and all related entitied should register themselves on the module.
+
+
+
+So just new folders and then put things have the same element or related together.
+
+
+
+# 7. Filtering Repeaters
+
+
+
+it is very simple to use the filter. First we can pass the value through ```ng-model="$ctrl.query"```,then we use it in the ```ng-repeater```with a filter, like ```ng-repeat="phone in $ctrl.phones | filter:$ctrl.query"```
+
+
+
+Then the page will do the filter auto and show the results sync.
+
+
+
+
+
+# 8.Two-way Data Binding
+
+
+
+Below is the Sort option 
+
+```html
+<select ng-model="$ctrl.orderProp">
+          <option value="name">Alphabetical</option>
+          <option value="age">Newest</option>
+        </select>
+```
+
 
 
 
