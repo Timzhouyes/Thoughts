@@ -72,7 +72,7 @@ npm install这个命令读取了angular-phonecat的package.json文件（因此�
 
 # 3. Static Template
 1. 所有的操作，类似于```ng-repeat```和```ng-controller```,都是写在标签里面的。标签的范围也就是操作起作用的范围。
-2. <ul>之中包含<li>, 其中<li>是<ul>的一个项。每一个<li>前面都会有<ul>的那个点。
+2. *<ul>*之中包含*<li>*, 其中*<li>*是*<ul>*的一个项。每一个*<li>*前面都会有*<ul>*的那个点。
 
 
 
