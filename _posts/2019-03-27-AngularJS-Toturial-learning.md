@@ -225,14 +225,23 @@ Then the page will do the filter auto and show the results sync.
 
 
 
-Below is the Sort option 
+We can add orderProp to component so when it in initailized it has the order.
 
-```
-<select ng-model="$ctrl.orderProp">
-          <option value="name">Alphabetical</option>
-          <option value="age">Newest</option>
-        </select>
-```
+
+
+Why toturial called the "Sort" function as a ```two way data-binding```? Because it has the ```this.orderProp```in the component, so that when it is initailized, it has the function that put sorted model data to the view, and when we choose to "sort by alphabetical ", it then show the things order in alphabet and send to model .So I think it is the "2 way binding"
+
+
+
+And in the sort it is very easy to revert the result with "-" before the option.
+
+
+
+# 9 XHR(XMLHttpRequest) & Dependency Injection
+
+
+
+$ is the prefix of services that provided by AngularJS
 
 
 
