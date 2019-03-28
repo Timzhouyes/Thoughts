@@ -147,6 +147,52 @@ In the command window it will show the result matches expection or not.
 
 
 
+In AngularJS, the client-side not only "show" the HTML page from server, but also takes some functions so it can interact in model data or state.,which is a kind of user interaction.
+
+
+
+## 5.1 What do components solve?
+
+
+
+There are 2 things we can do better:
+
+1. It is difficult to reuse the same functionality in a different part of application.
+   - Now the solution is to duplicate the whole template to reuse.
+2. The scope isn't isolated with other parts in the page so if there is something wrong unexpected in the page , it is difficult to debug 
+
+## 5.2 What is Components?
+
+
+
+A component is a combination of template and controller .  And each component is seprated.
+
+
+
+The template contains structures for style of how the website shows .Such as some lists and {{}} to contain data .
+
+
+
+The controller always contains data should be filled in {{}}
+
+
+
+
+
+
+
+For some reasons ,it isn't recommanded to use ```$scope``` directly ,instead , offical recommandation is use alias.
+
+
+
+So we can just create one component and then use it everywhere. 
+
+
+
+# 6.Directory and File Organization
+
+
+
 
 
 
