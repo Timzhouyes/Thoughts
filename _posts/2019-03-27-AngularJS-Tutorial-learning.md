@@ -1,12 +1,12 @@
 ---
-layout:     post   				    # 使用的布局（不需要改）
-title:     学习AngularJS（一）：PhoneCat 与3月27日日常记录			# 标题 
+layout:     post                       # 使用的布局（不需要改）
+title:     学习AngularJS（一）：PhoneCat 与3月27日日常记录            # 标题 
 subtitle:   官方Toturial的一点总结和体会，版本1.3.16 #副标题
-date:       2019-03-27				# 时间
-author:     Haiming 						# 作者
-header-img: img/post-bg-2015.jpg 	#这篇文章标题背景图片
-catalog: true 						# 是否归档
-tags:								#标签
+date:       2019-03-27                # 时间
+author:     Haiming                         # 作者
+header-img: img/post-bg-2015.jpg     #这篇文章标题背景图片
+catalog: true                         # 是否归档
+tags:                                #标签
     - 编程
     - 学习
     - AngularJS
@@ -119,11 +119,11 @@ We can write scripts to do test automatically with AngularJS. The testing of Ang
 1. Load ```phonecatApp``` module.
 2. Inject ```$ controller``` service to test function.
 3. With the ```$Controller```to create an instance of ```PhonelistController```
-4. Verify if the result is the same as ours .
+4. Verify if the result is the same as ours.
 
 
 
-Always we create the testing file with some suffix in the name, in the toturial it is ```.spec```.
+Always we create the testing file with some suffix in the name, in the tutorial it is ```.spec```.
 
 
 
@@ -139,7 +139,7 @@ Basic grammer of testing is ```expect(scope.xxx).toBe(xxx);```
 
 
 
-In the command window it will show the result matches expection or not. 
+In the command window, it will show the result matches expectation or not. 
 
 
 
@@ -147,7 +147,7 @@ In the command window it will show the result matches expection or not.
 
 
 
-In AngularJS, the client-side not only "show" the HTML page from server, but also takes some functions so it can interact in model data or state.,which is a kind of user interaction.
+In AngularJS, the client-side not only "show" the HTML page from a server, but also takes some functions so it can interact in model data or state., which is a kind of user interaction.
 
 
 
@@ -157,15 +157,15 @@ In AngularJS, the client-side not only "show" the HTML page from server, but als
 
 There are 2 things we can do better:
 
-1. It is difficult to reuse the same functionality in a different part of application.
+1. It is difficult to reuse the same functionality in a different part of the application.
    - Now the solution is to duplicate the whole template to reuse.
-2. The scope isn't isolated with other parts in the page so if there is something wrong unexpected in the page , it is difficult to debug 
+2. The scope isn't isolated with other parts in the page so if there is something wrong unexpected in the page, it is difficult to debug 
 
 ## 5.2 What is Components?
 
 
 
-A component is a combination of template and controller .  And each component is seprated.
+A component is a combination of template and controller .  And each component is separated.
 
 
 
@@ -181,7 +181,7 @@ The controller always contains data should be filled in {{}}
 
 
 
-For some reasons ,it isn't recommanded to use ```$scope``` directly ,instead , offical recommandation is use alias.
+For some reasons ,it isn't recommended to use ```$scope``` directly, instead , official recommendation is use alias.
 
 
 
@@ -199,7 +199,7 @@ The main job is to
 
 
 
-Each feature should declare its own module and all related entitied should register themselves on the module.
+Each feature should declare its own module and all related entities should register themselves on the module.
 
 
 
@@ -236,11 +236,11 @@ Below is the Sort option
 
 
 
-We can add orderProp to component so when it in initailized it has the order.
+We can add orderProp to the component so when it in initialized it has the order.
 
 
 
-Why toturial called the "Sort" function as a ```two way data-binding```? Because it has the ```this.orderProp```in the component, so that when it is initailized, it has the function that put sorted model data to the view, and when we choose to "sort by alphabetical ", it then show the things order in alphabet and send to model .So I think it is the "2 way binding"
+Why tutorial called the "Sort" function as a ```two way data-binding```? Because it has the ```this.orderProp```in the component, so that when it is initialized, it has the function that put sorted model data to the view, and when we choose to "sort by alphabetical ", it then shows the things order in alphabet and send to model .So I think it is the "2 way binding"
 
 
 
@@ -260,6 +260,24 @@ $ is the prefix of services that provided by AngularJS
 
 
 
+Here is to use Bootstrap to create a table :```div class="col-md-10"```. And we create a label for pics to link to some different urls.
+
+
+
+# 11. Routing and Multiple Views
+
+This step is to create different views for different devices. And if we create the view s manually
+
+
+
+In AngularJS, routing is done by ```ngRoute``` module . And ```angular-route``` is a library ,not in the AngularJS framework. 
+
+
+
+
+
+
+
 
 
 
@@ -271,6 +289,14 @@ $ is the prefix of services that provided by AngularJS
 Authentication的翻译为认证，而Authorization的翻译是授权。
 
 简而言之，Authentication意思是”确定你是谁“，而Authorization的意思是”确定你有什么权限“
+
+
+
+### 2. What is E2E test?
+
+
+
+E2E test is a way to simulate a real environment ,such as browser and then do testing .When they meet problems , maybe it is because of frontend or backend.
 
 # 一些小Tips
 
