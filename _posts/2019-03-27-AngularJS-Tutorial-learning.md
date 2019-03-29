@@ -1,7 +1,7 @@
 ------
 
 layout:     post                       # 使用的布局（不需要改）
-title:     学习AngularJS（一）：PhoneCat 与3月27日日常记录            # 标题 
+title:     学习AngularJS：PhoneCat 与3月27日日常记录            # 标题 
 subtitle:   官方Tutorial的一点总结和体会，版本1.3.16 #副标题
 date:       2019-03-27                # 时间
 author:     Haiming                         # 作者
@@ -13,6 +13,9 @@ tags:                                #标签
     - AngularJS
 
 ------
+
+
+
 
 [教程地址在这](https://code.angularjs.org/1.3.16/docs/tutorial),此处放的是1.3.16版本
 
