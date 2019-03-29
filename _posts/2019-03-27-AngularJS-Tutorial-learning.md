@@ -1,7 +1,8 @@
----
+------
+
 layout:     post                       # 使用的布局（不需要改）
 title:     学习AngularJS（一）：PhoneCat 与3月27日日常记录            # 标题 
-subtitle:   官方Toturial的一点总结和体会，版本1.3.16 #副标题
+subtitle:   官方Tutorial的一点总结和体会，版本1.3.16 #副标题
 date:       2019-03-27                # 时间
 author:     Haiming                         # 作者
 header-img: img/post-bg-2015.jpg     #这篇文章标题背景图片
@@ -11,7 +12,7 @@ tags:                                #标签
     - 学习
     - AngularJS
 
----
+------
 
 [教程地址在这](https://code.angularjs.org/1.3.16/docs/tutorial),此处放的是1.3.16版本
 
@@ -225,17 +226,6 @@ Then the page will do the filter auto and show the results sync.
 
 
 
-Below is the Sort option 
-
-```html
-<select ng-model="$ctrl.orderProp">
-          <option value="name">Alphabetical</option>
-          <option value="age">Newest</option>
-        </select>
-```
-
-
-
 We can add orderProp to the component so when it in initialized it has the order.
 
 
@@ -266,7 +256,9 @@ Here is to use Bootstrap to create a table :```div class="col-md-10"```. And we 
 
 # 11. Routing and Multiple Views
 
-This step is to create different views for different devices. And if we create the view s manually
+This step is to create different views for different devices. And if we create the views manually, it will be hard to maintain . So that we choose to use templates autogenerate views on website.
+
+
 
 
 
@@ -274,11 +266,87 @@ In AngularJS, routing is done by ```ngRoute``` module . And ```angular-route``` 
 
 
 
+Application routes are decleared in $routeProvider, and it is a provider of ```route``` service. It is easy to merge controllers, view templates and URL locations.  And we can implement the features with the ```ngRoute``` ,and then use browser to go forward or backward or bookmarks. 
+
+
+
+And here is my view : if we use the ```GET``` method, it is very easy to let the customers store information in the bookmarks , but if we use ```POST``` ,it isn't very easy to do it ,because information is stored in the content not url. 
+
+
+
+## 11.1 How does dependency injection(DI) in AngularJS work?
+
+Here is from tutorial:
+
+
+
+When the application is created, it will do instantiation for the injector, and at the time, the injector doesn't know anything about how to do specific work such as `$http` or `$route`. It has to be configured to do these things. 
+
+
+
+Then it receive all the parameters and instantiate services for specific works then pass the parameters to injectable function .
+
+
+
+#### What is provider?
+
+
+
+>  Providers are objects that provide (create) instances of services and expose configuration APIs, that can be used to control the creation and runtime behavior of a service. In case of the `$route` service, the `$routeProvider` exposes APIs that allow you to define routes for your application.
+
+
+
+So the main functions are :
+
+- provide instances of services
+- expose configuration APIs
+
+
+
+And the limit of Provider is that it can be only injected into `config` functions. Thus when at runtime , we cannot inject ```routeProvider``` into the `PhoneListController` .
+
+
+
+And in this situation we use a template `ng-view` and insert it into the body of  our `index.html` .
+
+
+
+Don't forget to add script into html page so that it can be installed, which is the solution of [Module 'ngRoute' is not available](https://stackoverflow.com/questions/30719722/module-ngroute-is-not-available)  .the script contains `app.config.js` and 'lib/angular-route/angular-route.js'
 
 
 
 
 
+## 11.2 Steps for routing in AngularJS
+
+
+
+1. insert `'ngRoute' ` into `app.module.js` .
+2. create a `app.config.js` file .
+   - `.config` method is a method for us to get access to all `Providers` for configuration. It is a link.
+3. For $routeProvider, we can write a `when` to choose different options when type in different urls.
+
+
+
+### 11.3 Why default url always contains `#!`
+
+
+
+The reason is :
+
+ 
+
+'#' is the hash part of url to determine current route.
+
+'!' is the hash-prefix and needs to appear after '#' , so it can be consider as a 'AngularJS path'. '! ' is the default value.
+
+
+
+So sum above up, the default way for AngularJS to get its own path is #!
+
+
+
+## 11.4  
 
 
 
