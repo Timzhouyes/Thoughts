@@ -1,7 +1,7 @@
 ---
 
 layout:     post                       # 使用的布局（不需要改）
-title:     学习AngularJS（一）：PhoneCat 与3月27日日常记录            # 标题 
+title:     学习AngularJS：PhoneCat 与3月27日日常记录            # 标题 
 subtitle:   官方Tutorial的一点总结和体会，版本1.3.16 #副标题
 date:       2019-03-27                # 时间
 author:     Haiming                         # 作者
@@ -393,7 +393,18 @@ In any component we created we can both set functions and use functions in contr
 
 
 
+`ngResource` is a module specially made for RESTful structure . it provides `$resource` module, which is a encapsulation of `$ http` 
 
+
+
+There are 5 methods for `$resource`:
+
+1. get: {method:'GET'}, always use to get one special resource
+
+2. query:{method:'GET',isArray:true},always get a set of resources and return in array.
+3. save:{method:'POST'}, used to save one resource, maybe update, and maybe new a resource .
+4. remove:{method:'DELETE'}:used to delete one resource
+5. delete:{method:'DELETE'}: used to delete one resource
 
 
 
@@ -406,6 +417,8 @@ In any component we created we can both set functions and use functions in contr
 In AngularJS, the flow is from `index.html` , which contains AngularJS modules, and then it generate extentions with `app.config.js`, such as ngRoute ,then it turns to components ,which contains `template` and `controller` ,put data in controller to corresponding views. 
 
 
+
+Data can be passed through urls between different views. 
 
 
 
