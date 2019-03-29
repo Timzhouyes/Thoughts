@@ -1,19 +1,19 @@
 ---
+
 layout:     post                       # 使用的布局（不需要改）
-title:     学习AngularJS：PhoneCat 与3月27日日常记录            # 标题 
+title:     学习AngularJS（一）：PhoneCat 与3月27日日常记录            # 标题 
 subtitle:   官方Tutorial的一点总结和体会，版本1.3.16 #副标题
 date:       2019-03-27                # 时间
 author:     Haiming                         # 作者
 header-img: img/post-bg-2015.jpg     #这篇文章标题背景图片
 catalog: true                         # 是否归档
 tags:                                #标签
-    - 编程
-    - 学习
+
+- 编程
+  - 学习
     - AngularJS
+
 ---
-
-
-
 
 [教程地址在这](https://code.angularjs.org/1.3.16/docs/tutorial),此处放的是1.3.16版本
 
@@ -347,7 +347,65 @@ So sum above up, the default way for AngularJS to get its own path is #!
 
 
 
-## 11.4  
+## 11.4  A note on Sub-module Dependencies
+
+
+
+Although we can import the extension of `ngRoute` in the whole application and then delete the part of import extensions in the sub-module, `it will break our hard-earned modularity`. 
+
+
+
+So the `modularity` in my view is we can pick up any module we want , and then insert it into another project, then it will work .  It doesn't rely on the parent module's dependencies.
+
+
+
+
+
+# 12 . More Templating
+
+
+
+In this part, we change the templateUrl of `phone-detail component` to a link . And the controllers are added one '$http' .
+
+
+
+Then in the `phone-detail.html` we have databinding with {{}}, then it uses `ctrl.phone.availablity` to bind data from database.
+
+
+
+# 13. Customer Filters
+
+
+
+We can register our own module in `app/core` module.In this chapter, we created our own filter called `checkmark` in it .
+
+
+
+# 14. Event Handlers
+
+
+
+In any component we created we can both set functions and use functions in controller part.
+
+
+
+# 15 RESTful APIs
+
+
+
+
+
+
+
+
+
+# Summarize
+
+
+
+In AngularJS, the flow is from `index.html` , which contains AngularJS modules, and then it generate extentions with `app.config.js`, such as ngRoute ,then it turns to components ,which contains `template` and `controller` ,put data in controller to corresponding views. 
+
+
 
 
 
