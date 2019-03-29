@@ -1,5 +1,4 @@
 ------
-
 layout:     post                       # 使用的布局（不需要改）
 title:     学习AngularJS：PhoneCat 与3月27日日常记录            # 标题 
 subtitle:   官方Tutorial的一点总结和体会，版本1.3.16 #副标题
