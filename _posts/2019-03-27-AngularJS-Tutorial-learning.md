@@ -440,7 +440,7 @@
 
   
 
-### 3. Why we have to use ` var self=this` in JS, not just use `this` ?
+### 3. Why we have to use `var self=this` in JS, not just use `this` ?
 
   
 
@@ -543,4 +543,3 @@ This is because of in the 1st one, ` this ` means the global variable , `window`
 
 - 此处的脚本为`<script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>`
 
-CHanges 312
