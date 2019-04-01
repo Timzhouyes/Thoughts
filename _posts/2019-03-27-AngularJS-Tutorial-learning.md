@@ -475,6 +475,7 @@
   1st:
 
 ```
+
 　　var name = "The Window";
 
 　　var object = {
@@ -490,12 +491,14 @@
 　　};
 
 　　alert(object.getNameFunc()());
+  
 ```
 
 　　
 
 2nd:
 ```
+
 　　　var name = "The Window";
 
 　　var object = {
@@ -512,6 +515,7 @@
 　　};
 
 　　alert(object.getNameFunc()());
+  
 ``` 
 
 
