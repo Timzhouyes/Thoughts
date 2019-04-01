@@ -1,5 +1,4 @@
   ---
-  
   layout:     post                       # 使用的布局（不需要改）
   title:     学习AngularJS（一）：PhoneCat 与3月27日日常记录            # 标题 
   subtitle:   官方Tutorial的一点总结和体会，版本1.3.16 #副标题
@@ -8,11 +7,9 @@
   header-img: img/post-bg-2015.jpg     #这篇文章标题背景图片
   catalog: true                         # 是否归档
   tags:                                #标签
-  
       - 编程
       - 学习
       - AngularJS
-
 ---
 
   [教程地址在这](https://code.angularjs.org/1.3.16/docs/tutorial),此处放的是1.3.16版本
