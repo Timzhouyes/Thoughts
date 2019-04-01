@@ -473,6 +473,7 @@
   Here are two pieces of codes for the function :
 
   1st:
+  
 
 ```
 
@@ -497,6 +498,8 @@
 　　
 
 2nd:
+
+
 ```
 
 　　　var name = "The Window";
@@ -545,3 +548,4 @@ This is because of in the 1st one, ` this ` means the global variable , `window`
 
 - 此处的脚本为```<script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>```
 
+CHanges
