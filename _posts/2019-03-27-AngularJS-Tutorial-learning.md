@@ -473,8 +473,9 @@
   Here are two pieces of codes for the function :
 
   1st:
+--------  
   
-> var name = "The Window";
+  var name = "The Window";
 　　var object = {
 　　　　name : "My Object",
 
@@ -486,14 +487,14 @@
 　　};
 　　alert(object.getNameFunc()());
   
-
+--------
 
 　　
 
 2nd:
 
-
-> var name = "The Window";
+---------
+ var name = "The Window";
 　　var object = {
 　　　　name : "My Object",
 　　　　getNameFunc : function(){
@@ -505,7 +506,7 @@
 　　};
 　　alert(object.getNameFunc()());
 
-
+---------
 
 
 The 1st one pop up a notice showed "The Window" , and the second one pop up a notice showed "My Object "
