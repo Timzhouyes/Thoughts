@@ -495,7 +495,7 @@
 　　
 
 2nd:
-　　```
+```
 　　　var name = "The Window";
 
 　　var object = {
@@ -512,7 +512,7 @@
 　　};
 
 　　alert(object.getNameFunc()());
-　　``` 
+``` 
 
 
 
