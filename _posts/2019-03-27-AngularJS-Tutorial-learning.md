@@ -474,11 +474,7 @@
 
   1st:
   
-
-  ```
-
-　　var name = "The Window";
-
+> var name = "The Window";
 　　var object = {
 　　　　name : "My Object",
 
@@ -486,40 +482,29 @@
 　　　　　　return function(){
 　　　　　　　　return this.name;
 　　　　　　};
-
 　　　　}
-
 　　};
-
 　　alert(object.getNameFunc()());
   
-  ```
+
 
 　　
 
 2nd:
 
 
- ```
-
-　　　var name = "The Window";
-
+> var name = "The Window";
 　　var object = {
 　　　　name : "My Object",
-
 　　　　getNameFunc : function(){
 　　　　　　var that = this;
 　　　　　　return function(){
 　　　　　　　　return that.name;
 　　　　　　};
-
 　　　　}
-
 　　};
-
 　　alert(object.getNameFunc()());
-  
- ``` 
+
 
 
 
@@ -548,4 +533,4 @@ This is because of in the 1st one, ` this ` means the global variable , `window`
 
 - 此处的脚本为```<script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>```
 
-CHanges 3
+CHanges 31
