@@ -87,5 +87,6 @@ Because some symbols, such as +, \ or = ,has special meaning in URL , so just ch
 
 # 4. Some features of JWT
 
-1. we can not abolish token in the process of usage, because of server doesn't save session status. So it is better to change the valid period of JWT to shorter , and 
+1. we can not abolish token in the process of usage, because of server doesn't save session status. So it is better to change the valid period of JWT to shorter.
+2. JWT should be transported by HTTPS, not HTTP.
   
