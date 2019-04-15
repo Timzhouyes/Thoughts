@@ -173,3 +173,52 @@ function f1() {
 
 `const`声明一个只读的常量。一旦声明之后，常量的值就不可以改变。
 
+```
+const PI = 3.1415;
+PI // 3.1415
+
+PI = 3;
+// TypeError: Assignment to constant variable.
+```
+
+上面的这段代码意味着改变常量的值会直接报错。
+
+`const`声明的变量不可以改变值，这就意味着，`const`一旦声明变量，就立刻要初始化，不可以留到以后在进行赋值。
+
+```
+const foo;
+// SyntaxError: Missing initializer in const declaration
+```
+
+这段代码表示，对于`const`而言，只声明不赋值，会直接报错。
+
+`const`声明的变量只在声明的块级作用域之内有效，这一点和`let`相同。同样的，`const`存在暂时性死区，只可以在声明的位置后面使用。`const`也不可以重复声明。
+
+```
+if (true) {
+  const MAX = 5;
+}
+
+MAX // Uncaught ReferenceError: MAX is not defined
+```
+
+```
+if (true) {
+  console.log(MAX); // ReferenceError
+  const MAX = 5;
+}
+```
+
+重复声明报错代码：
+
+```
+var message = "Hello!";
+let age = 25;
+
+// 以下两行都会报错
+const message = "Goodbye!";
+const age = 30;
+```
+
+## 3.2 本质
+`const`实际上保证的是：*变量所指向的内存地址的保存数据* 不可改动。
