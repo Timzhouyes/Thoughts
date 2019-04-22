@@ -15,9 +15,31 @@ tags:								#标签
 # 1. 什么是Docker
 Docker的英文定义是：Docker is a computer program that performs operating-system-level virtualization.
 
-在阅读了资料之后，我认为Docker最开始的版本是一个使用了Linux Kernel的特性，例如cgroups和namespaces，来进行资源虚拟和封装的软件。
+在阅读了资料之后，我认为Docker最开始的版本是一个使用了Linux Kernel的特性，例如cgroups和namespaces，来进行资源虚拟和封装的软件。其提供一个额外的软件抽象层，以及操作系统虚拟化的自动管理机制。
 
 ## 1.1 Cgroups
 先上维基百科定义：cgroups (abbreviated from control groups) is a Linux kernel feature that limits, accounts for, and isolates the resource usage (CPU, memory, disk I/O, network, etc.) of a collection of processes.
 
-即：cgroups是一个Linux Kernel的特性，可以限制，管理和独立一系列进程对于资源的使用（CPU，memory，disk I/O，网络，等等）
+即：cgroups是一个Linux Kernel的特性，可以限制，管理和独立一系列进程对于资源的使用（CPU，memory，disk I/O，网络，等等）。
+
+其有特性为：
+1. 资源限制：groups可以被限制给配置好的内存容量，也包括了文件系统缓存
+2. 优先级：某些groups可以得到更多的CPU使用时间或者磁盘的I/O份额
+3. 统计：衡量groups的资源使用，可以用来统计，例如生成账单
+4. 控制：冻结，存档或者重启groups
+
+## 1.2 Linux namespaces
+
+还是先上维基百科：Namespaces are a feature of the Linux kernel that partitions kernel resources such that one set of processes sees one set of resources while another set of processes sees a different set of resources. The feature works by having the same name space for these resources in the various sets of processes, but those names referring to distinct resources. Examples of resource names that can exist in multiple spaces, so that the named resources are partitioned, are process IDs, hostnames, user IDs, file names, and some names associated with network access, and interprocess communication.
+
+简而言之，是使不同的进程看到不同的资源。
+
+## 1.3 LXC（Linux Containers)
+
+再来维基：
+LXC (Linux Containers) is an operating-system-level virtualization method for running multiple isolated Linux systems (containers) on a control host using a single Linux kernel.
+
+LXC combines the kernel's cgroups and support for isolated namespaces to provide an isolated environment for applications. Early versions of Docker used LXC as the container execution driver, though LXC was made optional in v0.9 and support was dropped in Docker v1.10. 
+
+LXC提供一个OS级别的虚拟化，其有自己的进程和网络空间。其依赖于Linux Kernel cgroups。
+
