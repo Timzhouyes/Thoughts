@@ -12,3 +12,12 @@ tags:								#标签
     - 记录
     - 学习
 ---
+# 1. 什么是Docker
+Docker的英文定义是：Docker is a computer program that performs operating-system-level virtualization.
+
+在阅读了资料之后，我认为Docker最开始的版本是一个使用了Linux Kernel的特性，例如cgroups和namespaces，来进行资源虚拟和封装的软件。
+
+## 1.1 Cgroups
+先上维基百科定义：cgroups (abbreviated from control groups) is a Linux kernel feature that limits, accounts for, and isolates the resource usage (CPU, memory, disk I/O, network, etc.) of a collection of processes.
+
+即：cgroups是一个Linux Kernel的特性，可以限制，管理和独立一系列进程对于资源的使用（CPU，memory，disk I/O，网络，等等）
