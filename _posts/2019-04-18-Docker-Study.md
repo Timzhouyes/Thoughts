@@ -43,3 +43,5 @@ LXC combines the kernel's cgroups and support for isolated namespaces to provide
 
 LXC提供一个OS级别的虚拟化，其有自己的进程和网络空间。其依赖于Linux Kernel cgroups。
 
+# 2. 为什么Docker比虚拟机要快
+虚拟机：将整个硬件
