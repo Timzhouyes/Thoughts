@@ -84,4 +84,87 @@ Spring Boot 即采用这种思想。
 两个基础环境：Java编译环境，构建工具环境
 一个开发工具：IDE开发工具
 
-Spring Boot 2.0 要求Java8作为最低版本，
+Spring Boot 2.0 要求Java8作为最低版本。
+
+构建工具是一个将源代码生成可执行应用程序的自动化工具，在Spring Boot之中使用的构建工具是Maven。
+
+IDE选择IDEA。
+
+#### settings.xml配置
+
+Maven解压之后会有一个settings.xml文件，用来配置Maven的仓库和本地Jar包存储地址。Maven仓库地址代表从哪去下载项目之中的依赖包Jar包。
+
+#### 项目结构介绍
+
+Spring Boot的基础结构共有三个文件，具体：
+- src/main/java：程序开发以及主程序⼊入⼝；
+- src/main/resources：配置文件；
+- src/test/java：测试程序
+
+
+Spring Boot的建议目录结构如下：
+
+src/main/java/com.neo 下：
+- Application.java: 放到根目录下，作为项目的启动类，Spring Boot项目只可以有一个Main（）方法
+- comm：建议放置公共的类，如全局的配置文件，工具类等等
+- model：主要用于Entity和Repository
+- repository：是数据库访问层代码
+- service：是业务类代码
+- web：负责页面访问控制
+
+src/main/resources 下：
+- static：存放web页面的静态资源，如js,css，图片等等
+- templates存放页面模板
+- application.properties 存放下项目的配置信息。
+- 
+test目录存放单元测试的代码，pom.xml用于哦欸之项目的依赖包和其他配置。
+
+#### Pom包介绍
+
+Pom.xml文件主要描述了项目包的依赖和项目构建时候的配置，在默认的pom.xml之中分为五大块：
+
+##### 1. 项目的描述信息
+
+```
+<groupId>com.neo</groupId>
+<artifactId>hello</artifactId>
+<version>2.0.5.RELEASE</version>
+<packaging>jar</packaging>
+<name>hello</name>
+<description>Demo project for Spring Boot</description>
+```
+
+- groupid：项目的包路径
+- artifactid：项目名称
+- version：项目版本号
+- packaging：一般有两个值，jar,war,表示用Maven打包的时候构建哪种包
+- name：项目名称
+- description：项目描述
+- 
+##### 2.项目的依赖配置信息
+
+```
+<parent>
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-starter-parent</artifactId>
+<version>2.0.5.RELEASE</version>
+<relativePath/> <!-- lookup parent from repository -->
+</parent>
+<dependencies>
+<dependency>
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-starter-web</artifactId>
+</dependency>
+<dependency>
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-devtools</artifactId>
+<scope>runtime</scope>
+</dependency>
+<dependency>
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-starter-test</artifactId>
+<scope>test</scope>
+</dependency>
+</dependencies>
+```
+
