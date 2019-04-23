@@ -24,7 +24,7 @@ Spring是Rod Johnson在不满当时的Java EE和EJB过于臃肿，不是所有�
 
 
 
-## 到底啥是J2EE？
+#### 到底啥是J2EE？
 
 
 
@@ -54,7 +54,7 @@ Spring是Rod Johnson在不满当时的Java EE和EJB过于臃肿，不是所有�
 
 
 
-## Spring Boot的诞生
+#### Spring Boot的诞生
 
 随着使用的人数越来越多，Spring集成的开源软件也越来越多，慢慢的到后期Spring开发大项目需要引入巨量的配置文件，太多的配置不仅难以理解，还很容易配置出错。
 
@@ -62,7 +62,7 @@ Spring是Rod Johnson在不满当时的Java EE和EJB过于臃肿，不是所有�
 
 2013年，微服务的概念也逐渐兴起，Spring刚好处于交叉点上。Spring Boot的目标不是为已解决的问题提供新的解决方案，而是为平台带来另一种的开发体验，从而简化这些技术的使用。
 
-## 约定优于配置
+#### 约定优于配置
 
 约定优于配置，（convention over configuration），也称作按约定变成，旨在减少软件开发人员需做决定的数量，而又不失灵活性。
 
@@ -70,7 +70,7 @@ Spring是Rod Johnson在不满当时的Java EE和EJB过于臃肿，不是所有�
 
 Spring Boot 即采用这种思想。
 
-## Spring Boot Starters
+### Spring Boot Starters
 
 其基于约定优于配置来设计，其中有两个核心组件，自动配置代码和提供自动配置模块及其他有用的依赖。其意味着我们引入某个Starter，就拥有了这个软件的默认使用能力。
 
@@ -79,4 +79,9 @@ Spring Boot 即采用这种思想。
 由于Spring Boot足够强大，很多第三方社区都进行了主动的集成，在Spring Boot下面使用这些软件，只需要引入对应的Starter包。
  
  
- # 
+# 第1-3课：Spring Boot依赖环境和项目结构介绍
+
+两个基础环境：Java编译环境，构建工具环境
+一个开发工具：IDE开发工具
+
+Spring Boot 2.0 要求Java8作为最低版本，
