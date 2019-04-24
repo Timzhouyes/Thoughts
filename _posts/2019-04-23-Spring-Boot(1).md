@@ -209,3 +209,32 @@ Pom.xml文件主要描述了项目包的依赖和项目构建时候的配置，�
 ```
 
 使用Maven构建Spring Boot项目依赖于spring-boot-maven-plugin组件，其以Maven的方式为应用提供Spring Boot的支持。spring-boot-maven-plugin 可以将Spring boot 应用打包为可执行的jar或者war文件，然后以简单的方式运行Spring Boot应用。
+
+
+# 第1-4课：写一个Hello World来感受Spring Boot
+
+#### 1. Pom.xml之中有一个默认模块：
+
+```
+<dependency>
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-starter-test</artifactId>
+<scope>test</scope>
+</dependency>
+```
+
+- `<scope>test</scope> `表示依赖的组件仅参与测试相关的工作，不会被打包包含进去
+- ` spring-boot-startee-test` 是spring boot提供项目测试的工具包，内置了多种测试工具。
+
+
+#### 2. 编写controller内容
+```
+@RestController
+public class HelloController {
+
+    @RequestMapping("/hello")
+    public String hello() {
+        return "hello world";
+    }
+}
+```
