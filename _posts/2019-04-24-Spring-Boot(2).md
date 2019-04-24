@@ -13,3 +13,14 @@ tags:								#标签
     - 学习
     - Java
 ---
+
+
+
+# 第2-1课：Spring Boot对基础Web开发的支持（上）
+
+
+
+Spring Boot对于Web的开发的支持很全面，包括开发，测试和部署都有支持。Spring-boot-starter-wew是spring Boot对于Web开发提供支持的组件，其主要包括RESTful，参数校验，使用Tomcat作为内嵌容器。下面是介绍:
+
+
+
