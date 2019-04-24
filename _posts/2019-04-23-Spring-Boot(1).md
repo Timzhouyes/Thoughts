@@ -263,7 +263,7 @@ public class HelloController {
 
 只要在后端处理请求的方法之中有和参数键相同名称的属性，在请求的过程中会自动将参数赋值到属性之中，最后在方法中直接使用即可。下面还是我们创建的`hello()`为例进行演示
 
-```
+{% highlight java linenos %}
 @RestController
 public class HelloController {
     @RequestMapping("/hello")
@@ -271,4 +271,4 @@ public class HelloController {
         return "hello world, " +name;
     }
 }
-```
+{% endhighlight %}
