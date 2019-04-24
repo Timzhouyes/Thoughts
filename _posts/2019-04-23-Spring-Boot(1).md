@@ -258,4 +258,17 @@ public class HelloController {
 
 再次搜索之后发现是因maven在User/m.2/repository下面和我自己定义的文件夹下面都下载了依赖包，解决方案为删除在m.2/repository下面的依赖包即可。
 
+#### 4.如果想传入参数怎么办
+下面是通过URL传参的演示：
 
+只要在后端处理请求的方法之中有和参数键相同名称的属性，在请求的过程中会自动将参数赋值到属性之中，最后在方法中直接使用即可。下面还是我们创建的`hello()`为例进行演示
+
+```
+@RestController
+public class HelloController {
+    @RequestMapping("/hello")
+    public String hello(String name) {
+        return "hello world, " +name;
+    }
+}
+```
