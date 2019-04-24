@@ -288,3 +288,18 @@ public class HelloController {
 </dependency>
 ```
 
+然后在`pom.xml`之中将其中添加Fork属性并且设为ture。修改完应该是下面所示：
+
+```xml
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <fork>true</fork>
+                </configuration>
+        </plugin>
+    </plugins>
+</build>
+```
