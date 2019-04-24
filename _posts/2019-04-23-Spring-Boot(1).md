@@ -140,7 +140,8 @@ Pom.xml文件主要描述了项目包的依赖和项目构建时候的配置，�
 - packaging：一般有两个值，jar,war,表示用Maven打包的时候构建哪种包
 - name：项目名称
 - description：项目描述
-- 
+
+
 ##### 2.项目的依赖配置信息
 
 ```
@@ -238,3 +239,23 @@ public class HelloController {
     }
 }
 ```
+
+- `@RestController`的意思是Controller之中的方法都使用JSON格式输出。如果这个配置是`@Controller`，代表输出内容到页面。
+- `@requestMapping("/hello")` 提供路由信息，"/hello" 上面的HTTP Request都会被映射到 `/hello` 方法上进行处理。
+
+
+#### 3. 启动主程序
+
+在这里我遇到了问题:使用IDEA启动可以成功，但是使用` mvn spring-boot:run` 就不行，直接报错如下：
+
+`[ERROR] No plugin found for prefix 'spring-boot' in the current project and in the plugin groups`
+
+
+后来发现这个问题是因为没有在`pom.xml`的目录下面启动导致的。在更换到`pom.xml`的目录之后启动此命令，仍然报错，报错信息为：
+
+`[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.8.0:compile (default-compile) on project hello: Compilation failure
+[ERROR] No compiler is provided in this environment. Perhaps you are running on a JRE rather than a JDK?`
+
+再次搜索之后发现是因maven在User/m.2/repository下面和我自己定义的文件夹下面都下载了依赖包，解决方案为删除在m.2/repository下面的依赖包即可。
+
+
