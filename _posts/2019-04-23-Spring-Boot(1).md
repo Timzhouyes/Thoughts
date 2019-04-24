@@ -176,4 +176,36 @@ Pom.xml文件主要描述了项目包的依赖和项目构建时候的配置，�
 - 默认使用Java8
 - 使用UTF-8编码
 - 一个引用管理的功能，使得上面提到的dependencies之中不需要再填写version信息，这些会从`spring-boot-dependencies`之中继承
+- 资源过滤（sensible resource filtering)
+- 识别插件配置（ Sensible plugin configuration)
+- 识别application.properties和application.yml类型的文件
 
+
+##### 3. 构建时需要的公共变量
+
+```
+<properties>
+<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+<java.version>1.8</java.version>
+</properties>
+```
+
+- 第一行是项目构建时候使用的编码
+- 第二行是项目输出时候所用的编码
+- 第三行是项目使用的JDk版本
+
+##### 4. 构建配置
+
+```
+<build>
+<plugins>
+<plugin>
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-maven-plugin</artifactId>
+</plugin>
+</plugins>
+</build>
+```
+
+使用Maven构建Spring Boot项目依赖于spring-boot-maven-plugin组件，其以Maven的方式为应用提供Spring Boot的支持。spring-boot-maven-plugin 可以将Spring boot 应用打包为可执行的jar或者war文件，然后以简单的方式运行Spring Boot应用。
