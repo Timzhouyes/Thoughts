@@ -264,16 +264,6 @@ public class HelloController {
 只要在后端处理请求的方法之中有和参数键相同名称的属性，在请求的过程中会自动将参数赋值到属性之中，最后在方法中直接使用即可。下面还是我们创建的`hello()`为例进行演示
 
 
-{% highlight java %}
-@RestController
-public class HelloController {
-    @RequestMapping("/hello")
-    public String hello(String name) {
-        return "hello world, " +name;
-    }
-}
-{% endhighlight %}
-
 ```java
 @RestController
 public class HelloController {
@@ -283,3 +273,18 @@ public class HelloController {
     }
 }
 ```
+
+### 热部署
+
+想实现在修改Controller内的代码，无需重新启动项目即可运行，就需要用到热启动了。热启动要在一开始引入组件：spring-boot-devtools 
+
+首先在`pom.xml` 之中添加组件：
+
+```xml
+<dependency>
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-Devtools</artifactId>
+<optional>true</optional>
+</dependency>
+```
+
