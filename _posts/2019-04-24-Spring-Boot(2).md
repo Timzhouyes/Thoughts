@@ -229,5 +229,94 @@ public class WebControllerTest {
 
 
 
+下面以User为对象演示如何使用。
+
+
+
+首先在WebController之中添加一个saveUser的方法，参数为User
+
+
+
+```java
+    @RequestMapping("/saveUser")
+    public void saveUser (@Valid User user, BindingResult result) {
+        System.out.println("user:" + user);
+        if (result.hasErrors()) {
+            List<ObjectError> list = result.getAllErrors();
+            for (ObjectError error : list) {
+                System.out.println(error.getCode() + "-" + error.getDefaultMessage());
+            }
+        }
+    }
+```
+
+
+
+- `@Valid` ：在 User 前面添加了 @Valid 的 annotation， 代表这个对象经过了参数校验。
+- `BindingResult` 参数校验的结果会存在这个对象之中，可以根据属性判断是否校验通过，若没有通过，就将错误信息打印出来。
+
+
+
+下面是添加了 annotation 之后的注解， 对不同的属性，添加不同的内容： 
+
+
+
+```java
+public class User {
+    @NotEmpty(message="Name can not be null!")
+    private String name;
+    @Max(value=200,message = "Age can not larger than 200")
+    @Min(value=18,message="You have to be adult!")
+    private int age;
+    @NotEmpty(message = "Password can not be null")
+    @Length(min = 6,message = "Password can not shorter than 6 characters")
+    private String pass;
+//……
+}
+```
+
+
+
+所有的 message 之中的信息，都是自己定义的错误提示信息
+
+
+
+下面是测试方法：
+
+
+
+```java
+    @Test
+    public void saveUsers() throws Exception{
+        mockMvc.perform(MockMvcRequestBuilders.post("/saveUser").param("name","").param("age","666").param("pass","abcd"));
+
+    }
+```
+
+
+
+测试得到的返回值如下，注意此处的 user 的返回值和教程不同。
+
+
+
+```
+user:com.neo.hello.model.User@619bfe29
+Length-Password can not shorter than 6 characters
+NotEmpty-Name can not be null!
+Max-Age can not larger than 200
+```
+
+
+
+- 个人测试：如果在测试之中，将 age 的传入参数改为 “asd", 会在 Age 的限定处返回：
+
+
+
+`typeMismatch-Failed to convert property value of type 'java.lang.String' to required type 'int' for property 'age'; nested exception is java.lang.NumberFormatException: For input string: "asd"`
+
+
+
+### 自定义Filter
+
 
 
