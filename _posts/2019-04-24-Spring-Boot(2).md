@@ -203,5 +203,7 @@ public class WebControllerTest {
 
 ### 个人提醒
 
-在第二个返回一个List的过程之中，我遇到了一些很有趣的事情。
+@RequestMapping 的 name 属性几乎没用，想要限定 route 的路径需要使用 value 属性。 具体可以看我在StackOverflow 上面的提问：[Confusion for @RequestMapping solving one value and a list values](https://stackoverflow.com/questions/55844721/confusion-for-requestmapping-solving-one-value-and-a-list-values)
+
+
 
