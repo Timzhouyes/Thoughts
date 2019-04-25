@@ -65,3 +65,77 @@ Tip：this指代的是当前class之中的变量，所以善用this可以在gett
 
 
 
+在根目录下面新建一个model的包，然后在包的下面新建一个实体类User，其信息如下：
+
+
+
+```java
+public class User {
+    private String name;
+    private int age;
+    private String pass;
+    //Getter和Setter可以通过IDE自动生成
+```
+
+
+
+在项目之中新建一个Web包，且在Web下面新建一个类WebController，类之中创建一个方法返回User，如下：
+
+
+
+```java
+@RequestMapping(name="/getUser",method= RequestMethod.POST)
+    public User getUser(){
+        User user=new User();
+        user.setName("mint");
+        user.setAge(19);
+        user.setPass("123456");
+        return user;
+    }
+```
+
+
+
+
+
+-  `@RestController`的注解相当于将`@ResponseBody`+`@Controller`合在一起使用，使用`@RestController`注解之后，代表整个类都会以JSON方式返回结果。
+- `@RequestMapping(name="/getUser",method= RequestMethod.POST)`这句设置了路由“/getUser”之中的返回值，而其中的`method=RequestMethod.POST` 意为只有Post的请求方式是被允许的，如果使用Get的方式，那么会报405不允许访问的错误。
+- 个人Tip：在这里我试了将上面的语句之中的`name="/getUser"` 改成`name="/getUser123"` ,之后发现在Postman测试时，使用POST方法访问，两个URL都可以获得信息。
+
+
+
+#### 测试代码
+
+
+
+在test之中新建WebController测试类，对getUser()方法进行测试：
+
+
+
+```java
+@SpringBootTest
+public class WebControllerTest {
+    private MockMvc mockMvc;
+
+    @Before
+    public void setUp() throws Exception{
+        mockMvc= MockMvcBuilders.standaloneSetup(new WebController()).build();
+    }
+
+    @Test
+    public void getUser() throws Exception{
+        String responseString=mockMvc.perform(MockMvcRequestBuilders.post("/getUser")).andReturn().getResponse().getContentAsString();
+        System.out.println("result:"+responseString);
+    }
+}
+```
+
+
+
+- @Before  之中的作用和之前一样，都是先让程序跑起来，建立测试环境。
+- @Test 之中的 `andReturn().getResponse().getContentAsString()` 意为得到相应之后将其转换成String。
+
+
+
+#### 返回一个JSON List
+
