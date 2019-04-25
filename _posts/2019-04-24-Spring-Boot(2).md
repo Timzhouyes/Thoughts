@@ -25,3 +25,21 @@ Spring Boot对于Web的开发的支持很全面，包括开发，测试和部署
 
 
 #### JSON的支持
+
+
+
+JSON(JavaScript Object Notation) 是一种轻量级的数据交换格式，易于阅读和编写。JSON的出现，改变了早期人们使用XML进行数据交互的方式。在现在的Spring Boot之中，在Web层的使用只需要加入一个注解就可以。
+
+
+
+在`pom.xml` 之中加入以下代码：
+
+
+
+```xml
+<dependency>
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-starter-web</artifactId>
+</dependency>
+```
+
