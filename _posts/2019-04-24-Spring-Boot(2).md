@@ -225,7 +225,9 @@ public class WebControllerTest {
 
 
 
-JSR
+**JSR**（Java规范请求，*Java Specification Requests*），指定了一整套API，通过标注给对象添加约束。Hibernate Validator 就是 JSR 规范的具体实现。 Spring Boot的参数校验依赖于hibernate validator来进行，使用其校验数据，需要定义一个接收的数据模型，使用注解的形式描述字段校验的规则。
+
+
 
 
 
