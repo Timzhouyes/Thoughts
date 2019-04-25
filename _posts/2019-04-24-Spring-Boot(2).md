@@ -49,3 +49,19 @@ JSON(JavaScript Object Notation) 是一种轻量级的数据交换格式，易�
 
 
 
+Tip：this指代的是当前class之中的变量，所以善用this可以在getter和setter之中省去命名新变量。如下所示：
+
+
+
+```java
+    public void setName(String name){
+        this.name=name;
+    }
+```
+
+
+
+上面的代码就实现了将method之中的name赋值给class之中的`private String name` 的作用。
+
+
+
