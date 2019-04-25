@@ -43,3 +43,9 @@ JSON(JavaScript Object Notation) 是一种轻量级的数据交换格式，易�
 </dependency>
 ```
 
+
+
+> 在本教程中，“根目录”所指为Main()所在程序的目录。
+
+
+
