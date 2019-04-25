@@ -99,7 +99,22 @@ public class User {
 
 
 -  `@RestController`的注解相当于将`@ResponseBody`+`@Controller`合在一起使用，使用`@RestController`注解之后，代表整个类都会以JSON方式返回结果。
-- `@RequestMapping(name="/getUser",method= RequestMethod.POST)`这句设置了路由“/getUser”之中的返回值，而其中的`method=RequestMethod.POST` 意为只有Post的请求方式是被允许的，如果使用Get的方式，那么会报405不允许访问的错误。
+- `@RequestMapping(name="/getUser",method= RequestMethod.POST)`这句设置了路由“/getUser”之中的返回值，而其中的`method=RequestMethod.POST` 意为只有Post的请求方式是被允许的，如果使用Get的方式，那么会报405不允许访问的错误。错误信息如下：
+
+
+
+
+
+```html
+There was an unexpected error (type=Method Not Allowed, status=405).
+Request method 'GET' not supported
+org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' not supported
+```
+
+
+
+
+
 - 个人Tip：在这里我试了将上面的语句之中的`name="/getUser"` 改成`name="/getUser123"` ,之后发现在Postman测试时，使用POST方法访问，两个URL都可以获得信息。
 
 
@@ -138,4 +153,55 @@ public class WebControllerTest {
 
 
 #### 返回一个JSON List
+
+下面是将一个由User组成的List返回的方法：
+
+
+
+首先，将WebController之中添加getUsers(),代码如下：
+
+
+
+```java
+    @RequestMapping(value="/getUsers")
+    public List<User> getUsers(){
+        List<User> users =new ArrayList<User>();
+        User user1=new User();
+        user1.setName("mint1");
+        user1.setAge(19);
+        user1.setPass("123456");
+        users.add(user1);
+        User user2=new User();
+        user2.setName("mint3");
+        user2.setAge(192);
+        user2.setPass("1234516");
+        users.add(user2);
+        return users;
+    }
+
+```
+
+
+
+然后添加测试方法：
+
+
+
+```java
+    @Test
+    public void getUsers() throws Exception{
+        String responseString=mockMvc.perform(MockMvcRequestBuilders.get("/getUsers")).andReturn().getResponse().getContentAsString();
+        System.out.println("result"+responseString);
+    }
+```
+
+
+
+注意，测试方法之中省去了 @Before 的部分。
+
+
+
+### 个人提醒
+
+在第二个返回一个List的过程之中，我遇到了一些很有趣的事情。
 
