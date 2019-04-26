@@ -43,14 +43,14 @@ MVC，也就是 Model, View, Controller 三层。
 
 下面是阮一峰老师的理解：
 
-MVC之中的通信通路如下：
-
-1. View传送指令到Controller
-2. Controller完成业务逻辑之后，要求Model改变状态
-   - 注意这里面的Model不仅仅是指数据库，而是指核心业务的状态
-3.  Model将新的数据发送给View，用户得到反馈。
-
-**所有通信都是单向的**
+> MVC之中的通信通路如下：
+>
+> 1. View传送指令到Controller
+> 2. Controller完成业务逻辑之后，要求Model改变状态
+>    - 注意这里面的Model不仅仅是指数据库，而是指核心业务的状态
+> 3.  Model将新的数据发送给View，用户得到反馈。
+>
+> **所有通信都是单向的**
 
 
 
