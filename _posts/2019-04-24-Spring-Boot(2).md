@@ -320,3 +320,22 @@ Max-Age can not larger than 200
 
 
 
+Filter。过滤器，可以在前端拦截用户的请求。Web开发者通过Filter技术，可以对Web服务器管理的所有Web资源，例如JSP，Servlet，静态图片文件或者HTML文件进行拦截，从而实现某些特殊的功能：URL级别的权限访问限制，过滤敏感词汇，排除有XSS威胁的字符，记录请求日志等等。
+
+
+
+Spring Boot有内置的Filter,也支持我们通过自己的需求来自定义Filter。
+
+
+
+自定义Filter有两种方式，一种是使用@WebFilter，第二种是使用FilterRegistrtionBean. 教程之中不推荐第一种，因为其实践之后发现 @WebFilter 自定义的优先级顺序不能生效， 因此推荐第二个方案。 
+
+
+
+使用FilterRegistrationBean自定义过滤器的方案如下:
+
+- 实现Filter接口，实现其中的doFilter()方法
+- 添加@Configuration注解，将自定义Filter加入过滤链。
+
+
+
