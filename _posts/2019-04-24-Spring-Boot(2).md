@@ -429,3 +429,45 @@ this is my Filter, url:/favicon.ico
 
 ### 配置文件
 
+配置文件，在我看来就是整个文件的全局变量，是一开始就被初始化写到整个程序里面的内容。下面是如何使用`resources/application.properties` 之中的变量来传值的步骤：
+
+
+
+注意，等号右边哪怕是String，也不要加双引号。不然会报错。
+
+
+
+```
+neo.hello.title=Zhou Haiming
+neo.hello.description=Do is better than say
+
+```
+
+
+
+在test 下面加入一个PropertiesTest的class：
+
+
+
+```java
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class PropertiesTest {
+    @Value("${neo.hello.title}")
+    private String title;
+
+    @Test
+    public void testSingle(){
+        Assert.assertEquals(title, "Zhou Haiming");
+//        System.out.println("title "+ title);
+    }
+}
+
+```
+
+
+
+可见在这个Test之中可以将`application.properties` 之中的值放到title里面，下面直接进行验证。
+
+
+
