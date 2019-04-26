@@ -37,3 +37,46 @@ MVC，也就是 Model, View, Controller 三层。
 
 
 
+阮老师在这篇文章之中还有提到，他认为软件架构的方向就是解耦，是模块化，各个服务之间通过接口相互链接，这样对于系统的部分升级会容易很多。刚巧，前几天看了陈皓的一篇博文[STEVEY对AMAZON和GOOGLE平台的吐槽](https://coolshell.cn/articles/5701.html)，其中提到了STEVEY认为Amazon只有三点做的比Google强，而最强的一点，是其将整个架构服务化，每个团队对外只是提供API，提供自己这部分的服务，这才是转型成为一个平台的标准。
+
+
+
+下面是阮一峰老师的理解：
+
+MVC之中的通信通路如下：
+
+1. View传送指令到Controller
+2. Controller完成业务逻辑之后，要求Model改变状态
+   - 注意这里面的Model不仅仅是指数据库，而是指核心业务的状态
+3.  Model将新的数据发送给View，用户得到反馈。
+
+**所有通信都是单向的**
+
+
+
+但是在其评论区，我发现大家对于MVC有很多自己的想法。很多人认为上面提到是前端的MVC，在Java之中，MVC的通信方向应该是 V->C->M->C->V
+
+ 
+
+
+
+# 2.互动模式
+
+
+
+接受用户指令之时，MVC可以分成两种模式：
+
+- 一种是通过View接受指令，传递给Controller，和上面所涉及到的一样
+- 一种是直接通过Controller接收指令：
+  - 用户可以直接给Controller发送指令，类似于改变URL从而触发事件，再由Controller进行处理，最后由Model发送给View。
+
+
+
+# 3. MVP
+
+MVP模式之中，将Controller改名为Presenter，也改变了通信方向。
+
+
+
+在MVP之中，Presenter是居于中间位置的，其既可以和View进行双向通信，也可以和Model进行双向通信。而Model和View之间是不发生联系的。
+
