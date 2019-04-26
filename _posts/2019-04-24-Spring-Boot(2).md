@@ -339,3 +339,88 @@ Spring Boot有内置的Filter,也支持我们通过自己的需求来自定义Fi
 
 
 
+此处需要加以注意，我在Filter之中加入了`java.util.logging.Filter;`这个引用，可能是由于IDEA自动加入的，但是这个引用导致了我在程序之中的`@Override` 全部提示错误。查阅资料之后发现，这个引用的作用为将Log之中的内容做过滤筛选，这自然不是我们想要的。使用IDEA的时候要注意这一点。下面这段代码，我把引用部分加上了，除了这三个之外的自动补全要小心。
+
+
+
+```java
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+
+public class MyFilter implements Filter {
+
+    @Override
+    public void init(FilterConfig arg0) throws ServletException {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void doFilter(ServletRequest srequest, ServletResponse sresponse, FilterChain filterChain) throws IOException, ServletException
+    {
+        HttpServletRequest request=(HttpServletRequest) srequest;
+        System.out.println(("this is my Filter, url:"+request.getRequestURI()));
+        filterChain.doFilter(srequest, sresponse);
+    }
+    
+    @Override
+    public void destroy(){
+        //// TODO: 4/26/2019
+    }
+}
+```
+
+
+
+将自定义的Filter加入过滤链：
+
+
+
+```java
+@Configuration
+public class WebConfiguration {
+    @Bean
+    public FilterRegistrationBean testFliterRegisteration(){
+
+        FilterRegistrationBean registration=new FilterRegistrationBean();
+        registration.setFilter(new MyFilter());
+        registration.addUrlPatterns("/*");
+        registration.setName("MyFilter");
+        registration.setOrder(6);
+        return registration;
+    }
+
+    @Bean
+    public FilterRegistrationBean test2FilterRegisteration(){
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        registration.setFilter(new MyFilter2());
+        registration.addUrlPatterns("/*");
+        registration.setName("MyFilter2");
+        registration.setOrder(1);
+        return registration;
+    }
+}
+```
+
+
+
+
+
+注意下面的代码是加入了两个Filter，其中Filter2 的构造和Filter一样，只是将名字改换一下而已。其中的`registration.setOrder()` 命令是设置Filter的过滤顺序，值越小说明越先过滤。
+
+
+
+下面是输出的结果：
+
+
+
+```
+this is my Filter222222, url:/getUsers
+this is my Filter, url:/getUsers
+this is my Filter222222, url:/favicon.ico
+this is my Filter, url:/favicon.ico
+```
+
+
+
+可见在console之中输出的结果，Filter2在Filter之前。说明我们顺序的设置是起作用的。
