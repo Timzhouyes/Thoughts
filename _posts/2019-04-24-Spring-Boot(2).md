@@ -836,3 +836,27 @@ A good smile<br/>
 
 ##### 页面布局
 
+有些元素，例如页眉和页脚，是所有网页之中都相同的，适合提取出来然后复用。JSP 可以通过 include 指令实现这个效果，include 指令作用在于在编译阶段包括一个文件，这个指令告诉容器在编译阶段，将其他外部文件的内容合并到JSP文件之中，可以在JSP页面的任何位置使用include进行编码。
+
+include 有两种用法：`<%@include file="relative url"%>` 和 `<jsp:include page="relative url" flush=”true”/>` 。前者在翻译阶段进行，后者在请求处理阶段进行。前者叫做静态包含，后者叫做动态包含，会在执行的时候检查包含内容变化。 下面是示例：
+
+新建一个`footer.jsp`， 内容如下：
+
+```html
+<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<body>
+我是页尾
+</body>
+</html>
+```
+
+然后在我们的`user.jsp`之中加入其内容，在这里我使用了上面提到的两种方式：
+
+```html
+<h3>布局</h3>
+<%@include file="footer.jsp"%>
+<jsp:include page="footer.jsp" flush="true"/>
+```
+
+再次访问`user.jsp`的时候，可以看到`footer.jsp`已经被展示到`user.jsp` 页面所引入的位置，且两个语句在本页面之中显示效果相同。
