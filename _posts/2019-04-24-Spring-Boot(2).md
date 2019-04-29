@@ -777,3 +777,54 @@ public class WelcomeController {
 
 
 
+##### For 循环
+
+```html
+<h3>For循环实例</h3>
+<%
+    int count=(int) session.getAttribute("count");
+    for(int fontSize=1;fontSize<=count;fontSize++){
+      %>
+A good smile<br/>
+<%}%>
+```
+
+ 上面这段代码会打印出 A good smile 六次，因为之前的User传入信息之中 count 值是6 。
+
+##### jstl语法：c:if , c: choose 和 c:when
+
+
+
+页面常常会实现一些逻辑，使用 jstl 语法很容易实现这些功能。
+
+
+
+```html
+<h3>标签 c:if</h3>
+<c:if test="${username!=null}">
+<p>用户名为:${username}</p>
+</c:if>
+```
+
+这段代码会判断 username 是否为空， 根据结果显示是否显示 username。
+
+如果多个条件判断怎么办？ 使用 < c: choose>, < c: when> 和 <c: otherwise> 搭配进行判断。
+
+```html
+<h3>标签 c:choose</h3>
+<c:choose>
+    <c:when test="${salary<=0}">
+        要死了
+    </c:when>
+    <c:when test="${salary>2000}">
+        极其有钱
+    </c:when>
+    <c:when test="${salary>1000}">
+        可以存活
+    </c:when>
+    <c:otherwise>
+         啥也没有
+    </c:otherwise>
+</c:choose>
+```
+
