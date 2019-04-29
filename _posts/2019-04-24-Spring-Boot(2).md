@@ -521,3 +521,8 @@ public class PropertiesTest {
 
 **@Service**
 
+@Service  之中有 business logic ， 并且可以call在 Repository layer的method。
+
+
+
+个人认为，@Service 是一个**无状态的的可重用的对象**。 
