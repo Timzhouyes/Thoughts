@@ -860,3 +860,4 @@ include 有两种用法：`<%@include file="relative url"%>` 和 `<jsp:include p
 ```
 
 再次访问`user.jsp`的时候，可以看到`footer.jsp`已经被展示到`user.jsp` 页面所引入的位置，且两个语句在本页面之中显示效果相同。
+
