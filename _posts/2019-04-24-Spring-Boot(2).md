@@ -513,8 +513,6 @@ public class PropertiesTest {
 
 @Controller 表明了一个特殊的类承担着controller的职责。
 
-
-
 @Controller不可以和其他的annotation，例如 @Service 和 @Repository 互换，因为调度程序会扫描所有的 @Controller 并且扫描其中的 @RequestMapping 注解。我们只可以在 @Controller 之中使用 @RequestMapping 注解。
 
 
