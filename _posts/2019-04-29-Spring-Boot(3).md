@@ -31,4 +31,22 @@ tags:								#标签
 Thymeleaf的特点如下：
 
 - Thymeleaf在有网络和无网络的条件下都可以运行，既可以查看页面布局等静态效果，又可以查看带数据的动态页面效果。原理是其支持HTML原型，然后在HTML标签之中加入额外的属性来达到模板+数据的方式。由于浏览器在解释HTML的时候会忽略未定义的标签属性，所以Thymeleaf的模板可以静态的运行，当有数据返回的时候，Thymeleaf标签便可以动态的替换掉静态内容，使页面动态显示。
-- 开箱即用：支持标准方言和Spring方言，
+- 开箱即用：支持标准方言和Spring方言，可以直接套用模板实现 JSTL 和 OGNL 等等效果。
+- Thymeleaf提供一个Spring标准方言和SpringMVC完美集成的可选模块，可快速实现表单绑定，属性编辑器，I18N等等。
+
+#### 对比
+
+Thymeleaf相比之下使用了自然的模板技术，意味着Thymeleaf的模板语法并不会破坏文档结构，模板依旧是有效的XML文档。
+
+下面是打印消息的对比：
+
+```
+Velocity: <p>$message</p>
+FreeMarker: <p>${message}</p>
+Thymeleaf: <p th:text="${message}">Hello World!</p>
+```
+
+可以看到Thymeleaf的作用于在HTML的标签之内，类似于标签的一个属性来使用，这就是其一个特点。
+
+**注意：由于Thymeleaf使用了XML DOM 解析器，因此不适合处理大规模的XML文件**
+
