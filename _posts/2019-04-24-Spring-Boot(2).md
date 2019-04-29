@@ -633,3 +633,92 @@ JSP实际上就是Java为了支持Web开发推出的类前端Servlet，可以在
 
 
 其与上一版目录的区别在于java目录下多了一个webapp 的文件夹，用于存放目录 JSP 文件。
+
+首先在`application.properties` 之中添加两个配置行
+
+
+
+```
+spring.mvc.view.prefix=/WEB-INF/jsp/
+spring.mvc.view.suffix=.jsp
+```
+
+- 其中`spring.mvc.view.prefix`代表的是jsp文件在webapp下面的哪个目录
+- `spring.mvc.view.suffix`指明jsp文件以什么后缀结尾
+
+
+
+#### 引入依赖包
+
+在pom里面加入依赖：
+
+```
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-jasper</artifactId>
+		</dependency>
+```
+
+
+
+- `spring-boot-starter-web`依赖了`spring-boot-starter-tomcat`, 所以Tomcat不需要再单独配置
+
+- JSTL： 一个 JSP标签集合， 封装了 JSP 应用的通用核心功能
+
+- `tomcat-embed-jasper` 用来支持 JSP 的解析和运行
+
+#### 编写页面
+
+在`welcome.jsp` 里面编写一个页面：
+
+
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+    <body>
+        Time: ${time}
+        <br>
+        Message: ${message}
+    </body>
+</html>
+```
+
+
+
+页面功能极其简单，就是展示后端传过来的时间和信息。
+
+
+
+#### 后端程序
+
+
+
+```java
+@Controller
+public class WelcomeController {
+
+    @GetMapping("/")
+    public String welcome(Map<String,Object> model)
+    {
+        model.put("time", new Date());
+        model.put("message", "hello world");
+        return "welcome";
+    }
+}
+```
+
+
+
+其作用为将时间和信息作为key-value对放入程序之中并返回。
+
+
+
