@@ -481,40 +481,40 @@ public class PropertiesTest {
 
 
 
-> **相似点**
->
-> 对于BeanDefination之中的scan-auto-detection和dependency injection，这些annotation都是一样的，都可以被扫描并注入。
->
-> 
->
-> **不同点**
->
-> **@Component**
->
-> 只是一个Component的标准注解。其特殊点在于：
->
-> `<context:component-scan>`只是扫描`@Component`，不寻找其他的annotation。
->
-> 
->
-> **@Repository**
->
-> 用于表明当前类定义了一个data repository
->
-> @Repository是抓取平台的特殊exception并且将它们当作Spring的统一的unchecker exception 给re-throw出来。
->
-> 
->
-> **@Controller**
->
-> @Controller 表明了一个特殊的类承担着controller的职责。
->
-> @Controller不可以和其他的annotation，例如 @Service 和 @Repository 互换，因为调度程序会扫描所有的 @Controller 并且扫描其中的 @RequestMapping 注解。我们只可以在 @Controller 之中使用 @RequestMapping 注解。
->
-> 
->
-> **@Service**
->
-> @Service  之中有 business logic ， 并且可以call在 Repository layer的method。
->
-> 个人认为，@Service 是一个**无状态的的可重用的对象**。 
+**相似点**
+
+对于BeanDefination之中的scan-auto-detection和dependency injection，这些annotation都是一样的，都可以被扫描并注入。
+
+
+
+**不同点**
+
+**@Component**
+
+只是一个Component的标准注解。其特殊点在于：
+
+`<context:component-scan>`只是扫描`@Component`，不寻找其他的annotation。
+
+
+
+**@Repository**
+
+用于表明当前类定义了一个data repository
+
+@Repository是抓取平台的特殊exception并且将它们当作Spring的统一的unchecker exception 给re-throw出来。
+
+
+
+**@Controller**
+
+@Controller 表明了一个特殊的类承担着controller的职责。
+
+@Controller不可以和其他的annotation，例如 @Service 和 @Repository 互换，因为调度程序会扫描所有的 @Controller 并且扫描其中的 @RequestMapping 注解。我们只可以在 @Controller 之中使用 @RequestMapping 注解。
+
+
+
+**@Service**
+
+@Service  之中有 business logic ， 并且可以call在 Repository layer的method。
+
+个人认为，@Service 是一个**无状态的的可重用的对象**。 
