@@ -726,4 +726,54 @@ public class WelcomeController {
 
 页面常用的展示后端传值，if判断，循环等功能，可以使用 jstl 语法进行处理，也可以直接写 Java 代码实现这些逻辑。 JSP 页面之中两种方式都支持， 但是不建议在 JSP 之中写入大量的 Java 代码，从而导致前端业务复杂，可读性差等等问题。
 
-在
+在`WelcomeController` 之中定义一个 user() 的方法，将一些值传到前端：
+
+```java
+    @GetMapping("/user")
+    public String user(Map<String,Object> model, HttpServletRequest request)
+    {
+        model.put("username", "neo");
+        model.put("salary", 3000);
+        request.getSession().setAttribute("count",6);
+        return "user";
+    }
+```
+
+
+
+将参数和值以 Key-Value 的形式存储在 Map 里面， JSP页面可以直接根据属性名来获取值（前两个的`model.put`)，也可以使用`request` 来传递后端属性和值， 返回值会以 Key-Value 的格式传递到 `user.jsp` 页面。
+
+在`user.jsp`开头添加两个标签：
+
+```
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %><html lang="en">
+```
+
+- 第一个是在网页之中支持中文显示
+- 第二个是页面使用 JSTL 语法来处理页面逻辑。
+
+
+
+#### Java 代码
+
+在 jsp 之中，如果一行代码直接用<%= %> 就可以，如果是多行代码，则使用<% %>的语法。示例如下：
+
+
+
+```html
+<h3>一行 Java 代码</h3>
+<p>
+    Date today is <%= (new java.util.Date())%>
+</p>
+<h3>多行 Java 代码</h3>
+<p>Your IP Address is :
+<%
+    out.println("Your IP address is "+request.getRemoteAddr()+"</br>");
+    out.println("一段代码");
+%>
+</p>
+```
+
+
+
