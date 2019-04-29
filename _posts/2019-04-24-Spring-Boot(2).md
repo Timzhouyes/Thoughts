@@ -471,9 +471,97 @@ public class PropertiesTest {
 
 
 
+```java
+    @Test
+    public void testMore() throws Exception{
+        System.out.println("title:"+ properties.getTitle());
+        System.out.println("description:"+properties.getDescription());
+    }
+```
 
 
 
+注意在此之前要
+
+```java
+    @Resource
+    private NeoProperties properties;
+```
+
+
+
+### 自定义配置文件
+
+有的时候需要自定义配置文件，用来和application.properties 区分开。下面是自定义配置文件的做法：
+
+注意：此处说的自定义配置文件指的是新建properties文件，和上面的`NeoProperties`用来一次性导入多个`application.properties` 的使用方法不同。
+
+在resources目录下面新建一个`other.properties` 文件，内容如下：
+
+```
+other.title=keep smile
+other.blog=timzhouyes.github.io
+```
+
+
+
+定义`OtherProperties` 类来接受配置文件的内容：
+
+
+
+```java
+@Component
+@ConfigurationProperties(prefix="other")
+@PropertySource("classpath:other.properties")
+public class OtherProperties {
+    private String title;
+    private String blog;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getBlog() {
+        return blog;
+    }
+
+    public void setBlog(String blog) {
+        this.blog = blog;
+    }
+}
+```
+
+- 要注意，此处多了一个`@PropertySource("classpath:other.properties")`,用来指定我们的配置文件的位置。
+
+
+
+#### 添加测试
+
+```java
+    @Resource
+    private OtherProperties otherProperties;
+	…………
+	
+	@Test
+    public void testOther() throws Exception{
+        System.out.println("title:"+ otherProperties.getTitle());
+        System.out.println("blog:"+otherProperties.getBlog());
+    }
+```
+
+
+
+最终结果之中输出结果即表明自定义的配置文件传值成功。
+
+
+
+
+
+### Spring之中annotation的浅析
 
 
 
