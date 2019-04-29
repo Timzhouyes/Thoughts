@@ -614,3 +614,18 @@ public class OtherProperties {
 > @Service  之中有 business logic ， 并且可以call在 Repository layer的method。
 >
 > 个人认为，@Service 是一个**无状态的的可重用的对象**。 
+
+
+
+# 第2-2课：Spring Boot项目中使用JSP
+
+
+
+JSP(Java Server Pages)， Java服务器页面，其根本是一个简化的Servlet设计。其是由Sun Microsystems公司倡导，许多公司一起建立的一种动态网页技术标准。
+
+JSP技术类似ASP技术，是在传统的HTML文件(.html) 之中插入Java程序段(Scriptlet)和 JSP tag 形成的 JSP 文件。
+
+JSP实际上就是Java为了支持Web开发推出的类前端Servlet，可以在 JSP 之中写 Java 或者 Html语法等等，后端根据 JSP 语法渲染后返回到前端进行显示。
+
+
+### 1. 快速上手
