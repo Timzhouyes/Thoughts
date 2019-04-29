@@ -1,7 +1,7 @@
 ---
 layout:     post   				    # 使用的布局（不需要改）
 title:      《Spring Boot 42讲》学习笔记（2） 				# 标题 
-subtitle:   构建基本项目  #副标题
+subtitle:   构建基本项目与Spring之中annotation的浅析  #副标题
 date:       2019-04-24				# 时间
 author:     Haiming 						# 作者
 header-img: img/post-bg-2015.jpg 	#这篇文章标题背景图片
@@ -470,4 +470,54 @@ public class PropertiesTest {
 可见在这个Test之中可以将`application.properties` 之中的值放到title里面，下面直接进行验证。
 
 
+
+
+
+
+
+
+
+在编程过程之中发现自己对于一些annotation的问题还不够清晰，下面是对于`@Component`， `@Repository`，`@Controller` ， `@Service` 的浅析
+
+
+
+**相似点**
+
+对于BeanDefination之中的scan-auto-detection和dependency injection，这些annotation都是一样的，都可以被扫描并注入。
+
+
+
+**不同点**
+
+**@Component**
+
+只是一个Component的标准注解。其特殊点在于：
+
+
+
+`<context:component-scan>`只是扫描`@Component`，不寻找其他的annotation。
+
+
+
+**@Repository**
+
+用于表明当前类定义了一个data repository
+
+
+
+@Repository是抓取平台的特殊exception并且将它们当作Spring的统一的unchecker exception 给re-throw出来。
+
+
+
+**@Controller**
+
+@Controller 表明了一个特殊的类承担着controller的职责。
+
+
+
+@Controller不可以和其他的annotation，例如 @Service 和 @Repository 互换，因为调度程序会扫描所有的 @Controller 并且扫描其中的 @RequestMapping 注解。我们只可以在 @Controller 之中使用 @RequestMapping 注解。
+
+
+
+**@Service**
 
