@@ -234,3 +234,128 @@ public class ExampleController {
 
 ### 条件判断If/Unless
 
+在 Thymeleaf 之中，使用 th:if 和 th:unless 进行判断，在下面例子之中， `<a>` 标签只有在 th:if 成立时才显示， 而只有在 th:unless 不成立时才显示。
+
+
+
+if.html 的代码：
+
+```html
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Example If/Unless</title>
+</head>
+<body>
+<div>
+    <h1>If/Unless</h1>
+    <a th:if="${flag=='yes'}" th:href="@{https://timzhouyes.github.io}">home</a>
+    <br/>
+    <a th:unless="${flag!='no'}" th:href="@{https://google.com}">unless test</a>
+</div>
+
+</body>
+</html>
+```
+
+
+
+后端传值Controller部分：
+
+```java
+    @RequestMapping("/if")
+    public String ifunless(ModelMap map)
+    {
+        map.addAttribute("flag","yes");
+        return "if";
+    }
+```
+
+也是使用KV方式传值到页面。
+
+ 该代码效果为只显示“home”， 不显示其他。
+
+
+
+##### for循环
+
+For 循环一般结合前端的表格使用。
+
+首先在后端定义一个用户列表，注意此处需要首先在model 的 User 里面加入一个 constructor：
+
+```java
+    public User(String name, int age, String pass) {
+        this.name = name;
+        this.age = age;
+        this.pass = pass;
+    }
+```
+
+这样就不必一次次的调用 setName 等等。
+
+
+
+再定义一个用户列表：
+
+```java
+    private List<User> getUserList(){
+        List<User> list=new ArrayList<User>();
+        User user1=new User("A1",13,"1234567");
+        User user2=new User("A2",14,"4321234");
+        User user3=new User("A3",19,"0933211");
+        list.add(user1);
+        list.add(user2);
+        list.add(user3);
+        return list;
+    }
+```
+
+
+
+按照键 users ，传递到前端：
+
+```java
+    @RequestMapping("/list")
+    public String list(ModelMap map)
+    {
+        map.addAttribute("users",getUserList());
+        return "list";
+    }
+```
+
+页面 `list.html` 进行数据展示：
+
+```html
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Example For test</title>
+</head>
+<body>
+<div>
+    <h1>for loop testing</h1>
+    <table>
+        <tr th:each="user,iterStat:${users}">
+            <td th:text="${user.name}">Neo</td>
+            <td th:text="${user.age}">19</td>
+            <td th:text="${user.pass}">6666666</td>
+            <td th:text="${iterStat.index}">index</td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>
+```
+
+其中的`iterStat` 称为状态变量，属性有：
+
+- index: 当前迭代对象的index,从0计算。
+- count: 当前迭代对象的index ，从1计算。
+- size:被迭代对象的大小。
+- current：当前迭代变量，我的变量是`com.neo.hello.model.User@703cd7ff`
+- even/odd: 布尔值，当前循环是否是偶数/奇数。
+- first: 布尔值，当前循环是否是第一个
+- last: 布尔值，当前循环是否是最后一个
