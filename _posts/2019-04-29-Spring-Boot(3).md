@@ -464,3 +464,8 @@ Thymeleaf对于URL的处理是通过语法@{...} 来处理的。如果需要 Thy
 
 注意此处我的 @RequestMapping 和 最后返回的名字并不相同，前者是浏览器之中的URL， 后者是在`\templates` 之中的` eq.html`
 
+
+
+### Switch选择
+
+switch/case 的情况用于多条件判断，还记得之前我们说JSTL里面的 <c:if >只要判断条件满足就立刻退出判断吗？
