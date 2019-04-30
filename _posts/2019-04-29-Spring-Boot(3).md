@@ -100,7 +100,30 @@ Thymeleaf: <p th:text="${message}">Hello World!</p>
 </html>
 ```
 
+这个页面，如果直接在IDEA之中使用Chrome打开，所显示的只有一行“Hello World”，这也体现了thymeleaf的特性，即可以离线访问已经输入页面，便于前端进行操作。
 
+注意，所有使用Thymeleaf的页面必须在HTML标签声明Thymeleaf
+
+`<html lang="en" xmlns:th="http://www.thymeleaf.org">`
+
+表明页面使用的是 Thymeleaf 语法
+
+#### Controller
+
+```java
+@Controller
+public class HelloController {
+    @RequestMapping("/")
+    public String index(ModelMap map)
+    {
+        map.addAttribute("message", "https://timzhouyes.github.io");
+        return "hello";
+    }
+}
+```
+
+- 此处和之前不同，使用的是`@Controller` 而非 `@RESTController` ，区别下面讲。
+- 代码的含义是将map传入到页面里面，然后将值替换掉。
 
 #### 一些问题
 
@@ -134,3 +157,6 @@ Thymeleaf: <p th:text="${message}">Hello World!</p>
 1. 如果只是使用@RestController注解Controller，那么Controller之中的方法就无法返回对应的 JSP 页面，也就是其配置的InternalResourceViewResolver不起作用，那么返回的就是Return里面的内容。也就是本来应该到`success.jsp`页面的，结果只显示“success”
 2. 如果想要返回到指定页面，需要使用@Controller配合视图解析器InternalResourceViewResolver才可以
 3. 如果需要返回JSON，XML或者自定义MediaType内容到页面，需要在对应的方法上面加上 @ResponseBody
+
+### 常用语法
+
