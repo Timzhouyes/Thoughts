@@ -50,3 +50,33 @@ Thymeleaf: <p th:text="${message}">Hello World!</p>
 
 **注意：由于Thymeleaf使用了XML DOM 解析器，因此不适合处理大规模的XML文件**
 
+> 为什么不适合？
+>
+>  **DOM（Document Object Model)**
+>
+> ​      DOM是用与平台和语言无关的方式表示XML文档的官方W3C标准。DOM是以层次结构组织的节点或信息片断的集合。这个层次结构允许开发人员在树中寻找特定信息。分析该结构通常需要加载整个文档和构造层次结构，然后才能做任何工作。由于它是基于信息层次的，因而DOM被认为是基于树或基于对象的。
+>
+> 【优点】
+>       ①允许应用程序对数据和结构做出更改。
+>       ②访问是双向的，可以在任何时候在树中上下导航，获取和操作任意部分的数据。
+> 【缺点】
+>       ①通常需要加载整个XML文档来构造层次结构，消耗资源大。
+>
+> 因此可以看出大规模的XML文件的预先加载会消耗过量资源，因此不是最适合的。
+
+
+
+### 快速上手
+
+
+
+下面是对于@Controller和@RestController的区别解析，由于在自己输入代码的过程之中将二者混淆，导致最后结果不太对，这个地方要明确注意一下。
+
+首先是官方文档的解释：@RestController注解相当于@ResponseBody ＋ @Controller合在一起的作用。
+
+但是在使用的过程之中有一些出入：
+
+1. 如果只是使用@RestController注解Controller，那么Controller之中的方法就无法返回对应的 JSP 页面，也就是其配置的InternalResourceViewResolver不起作用，那么返回的就是Return里面的内容。也就是本来应该到`success.jsp`页面的，结果只显示“success”
+2. 如果想要返回到指定页面，需要使用@Controller配合视图解析器InternalResourceViewResolver才可以
+3. 如果需要返回JSON，XML或者自定义MediaType内容到页面，需要在对应的方法上面加上 @ResponseBody
+
