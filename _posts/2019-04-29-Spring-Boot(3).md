@@ -66,9 +66,64 @@ Thymeleaf: <p th:text="${message}">Hello World!</p>
 
 
 
-### 快速上手
+### 快速上手：Thymeleaf的Hello world
+
+首先是加入Dependency
+
+```
+<dependency>
+   <groupId>org.springframework.boot</groupId>
+   <artifactId>spring-boot-starter-thymeleaf</artifactId>
+</dependency>
+```
+
+然后在applications.properties 之中配置变量
+
+`spring.thymeleaf.cache=false`
+
+含义为关闭Thymeleaf的缓存，不然在开发过程之中修改页面不会立刻生效，而是需要重启。生产配置可以为True。
 
 
+
+#### 模板页面编写
+
+```html
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"></meta>
+    <title>Hello</title>
+</head>
+<body>
+<h1 th:text="${message}">Hello World</h1>
+</body>
+</html>
+```
+
+
+
+#### 一些问题
+
+和教程不同，我一直是将新代码加到上一个代码的项目之中，而非开新的项目。当前的这个教程，即2-3，其`pom.xml` 之中的 Dependencies 有两项要删除，分别为：
+
+```
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-jasper</artifactId>
+		</dependency>
+```
+
+
+
+实测这两项加入之后，无论怎样调整，都会显示`Whitelabel Error Page`，个人认为这两项和Thymeleaf不兼容，会拦截所有想要导向`\templates\hello.html` 的请求，并且将其转到请求`\WEB-INF\jsp\hello.jsp`,从而导致 Whitelabel 的错误。顺带说一句，教程2-2之中的解决`Whitelabel Error Page` 的方法在这里不起作用。
+
+
+
+#### 对于@Controller 和 @RestController 的解析
 
 下面是对于@Controller和@RestController的区别解析，由于在自己输入代码的过程之中将二者混淆，导致最后结果不太对，这个地方要明确注意一下。
 
@@ -79,4 +134,3 @@ Thymeleaf: <p th:text="${message}">Hello World!</p>
 1. 如果只是使用@RestController注解Controller，那么Controller之中的方法就无法返回对应的 JSP 页面，也就是其配置的InternalResourceViewResolver不起作用，那么返回的就是Return里面的内容。也就是本来应该到`success.jsp`页面的，结果只显示“success”
 2. 如果想要返回到指定页面，需要使用@Controller配合视图解析器InternalResourceViewResolver才可以
 3. 如果需要返回JSON，XML或者自定义MediaType内容到页面，需要在对应的方法上面加上 @ResponseBody
-
