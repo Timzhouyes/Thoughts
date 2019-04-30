@@ -359,3 +359,108 @@ For 循环一般结合前端的表格使用。
 - even/odd: 布尔值，当前循环是否是偶数/奇数。
 - first: 布尔值，当前循环是否是第一个
 - last: 布尔值，当前循环是否是最后一个
+
+### URL
+
+Thymeleaf对于URL的处理是通过语法@{...} 来处理的。如果需要 Thymeleaf 对于URL 进行渲染，务必使用 th:href, th:src 等属性，下面是一个例子：
+
+此处的URL经过传值进入：
+
+##### `url.html`
+
+```html
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Example URL</title>
+</head>
+<body>
+<div>
+    <h1>URL</h1>
+    <a th:href="@{http://www.ityouknow.com/{type}(type=${type})}">link1</a>
+    <br/>
+    <a th:href="@{http://www.ityouknow.com/{pageId}/can-use-springcloud.html(pageId=${pageId})}">view</a>
+    <br/>
+    <div th:style="'background:url(' + @{${img}} + ');'">
+        <br/><br/><br/>
+    </div>
+</div>
+
+</body>
+</html>
+```
+
+
+
+##### 后端程序
+
+```java
+    @RequestMapping("/url")
+    public String url(ModelMap map)
+    {
+        map.addAttribute("type","link");
+        map.addAttribute("pageId","springcloud/2017/09/11/");
+        map.addAttribute("img","http://www.ityouknow.com/assets/images/neo.jpg");
+        return "url";
+    }
+```
+
+
+
+### 三目运算
+
+```
+<input th:value="${name}"/>
+<input th:value="${age gt 30 ? '中年':'年轻'}"/>
+```
+
+下面这个语句是年龄>30 显示中年， 年龄 < 30 显示年轻。
+
+- gt: greater than （大于）
+- ge: great equal （大于等于）
+- eq: equal （等于）
+- lt： less than （小于）
+- le: less equal (小于等于)
+- ne:not equal (不等于)
+
+
+
+##### 完整的页面内容 `eq.html`
+
+```html
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ternary operator</title>
+</head>
+<body>
+<div>
+    <h1>EQ</h1>
+    <input th:value="${name}"/>
+    <br/>
+    <input th:value="${age gt 30 ? 'Old':'young'}"/>
+    <br/>
+    <a th:if="${flag eq 'yes'}" th:href="@{https://google.com}">Google</a>
+</div>
+
+</body>
+</html>
+```
+
+##### 后端程序
+
+```java
+    @RequestMapping("/Sanmu")
+    public String Sanmu(ModelMap map)
+    {
+        map.addAttribute("name","neo");
+        map.addAttribute("age",90);
+        map.addAttribute("flag","yes");
+        return "eq";
+    }
+```
+
+注意此处我的 @RequestMapping 和 最后返回的名字并不相同，前者是浏览器之中的URL， 后者是在`\templates` 之中的` eq.html`
+
