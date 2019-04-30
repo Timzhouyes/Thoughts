@@ -160,3 +160,77 @@ public class HelloController {
 
 ### 常用语法
 
+##### 赋值，字符串拼接
+
+赋值：
+
+`<p th:text=${username}>Username</p>`
+
+`<span th:text="'Welcome to our application'+${username}+'!'"></span>`
+
+字符串拼接还有另一种简洁的方法：
+
+`<span th:text="|Welcome to our application,${username}!|"></span>`
+
+
+
+下面是`\templates\string.html`:
+
+```html
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Example String</title>
+</head>
+<body>
+    <div>
+        <h1>text</h1>
+        <p th:text="${username}">Username</p>
+        <span th:text="'Welcome to our application'+${username}+'!'"></span>
+        <br/>
+        <span th:text="|Welcome to our application,${username}!|"></span>
+    </div>
+</body>
+</html>
+```
+
+后端传值：
+
+```java
+@Controller
+public class ExampleController {
+    @RequestMapping("/string")
+    public String string(ModelMap map)
+    {
+        map.addAttribute("username", "Mint");
+        return "string";
+    }
+}
+
+```
+
+
+
+和之前一样，使用ModelMap以KV的形式传到页面。
+
+直接在 IDEA 里面打开的结果显示:
+
+> # text
+>
+> Username
+
+而在网页之中传递得到的结果是:
+
+> # text
+>
+> Mint
+>
+> Welcome to our applicationMint!
+>
+> Welcome to our application,Mint!
+
+
+
+### 条件判断If/Unless
+
