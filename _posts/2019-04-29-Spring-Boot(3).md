@@ -469,3 +469,43 @@ Thymeleaf对于URL的处理是通过语法@{...} 来处理的。如果需要 Thy
 ### Switch选择
 
 switch/case 的情况用于多条件判断，还记得之前我们说JSTL里面的 <c:if >只要判断条件满足就立刻退出判断吗？
+
+
+
+##### HTML 代码
+
+```HTML
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Switch test</title>
+</head>
+<body>
+<div>
+    <div th:switch="${sex}">
+    <p th:case="'woman'">She is a girl</p>
+        <p th:case="'man'">He is a boy</p>
+        <p th:case="*">The one with no sex</p>
+    </div>
+</div>
+</body>
+</html>
+```
+
+- 此处的 `th:case="*" `是case的缺省项，在上面两项不同的情况下默认找到这个选项。
+
+
+
+##### Controller代码
+
+```java
+    @RequestMapping("/switch")
+    public String Switch(ModelMap map){
+        map.addAttribute("sex","woman1");
+        return "switch";
+    }
+```
+
+- 输出为“The one with no sex"
+
