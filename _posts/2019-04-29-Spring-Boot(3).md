@@ -509,3 +509,19 @@ switch/case 的情况用于多条件判断，还记得之前我们说JSTL里面�
 
 - 输出为“The one with no sex"
 
+
+
+### 第2-4课：模板引擎Thymeleaf高阶用法
+
+
+
+#### 内联[[]]
+
+Thymeleaf之中的内联能够使人们写更少的代码，也可以用于在javascript代码块之中访问model的数据。
+
+内联的使用方法：[[...]] 是内联文本的表示方式，在使用之前必须通过 `th:inline="text"` 或者 `th:inline="javascript"`来激活，如果使用`th:inline="none"`，其意味着不使用inline，因为某些情况下我们需要输出`[[]]` 这种符号，那么就要提前写上 `th:inline=”none"`来防止其被识别为内联。
+
+`th:inline`可以在父级标签之中使用，甚至可以作为 body 的标签 。内联文本比 `th:text`的代码少，相对而言不利于展示。
+
+
+
