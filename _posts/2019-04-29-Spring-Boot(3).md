@@ -771,3 +771,35 @@ URL还可以设置参数： `@{/order/details(id=${orderId})}`
 </div>
 ```
 
+
+
+# 第2-5课：Thymeleaf页面布局
+
+**提示：从本课开始，博客内容不再是原有内容的精华部分，而是博主个人在编程时候遇到的难点或者疑问点。因此不会再有大段代码或者完整程序。**
+
+
+
+页面布局指的是对前端的页面进行划分区域，每个区域有自己不同的职责。布局是为了更好的重复利用前端代码，避免大量的重复性的劳动。在现有的前端之中，页面布局成为了前端开发的最重要的工作之一。Thymeleaf的相关语法可以很容易的实现对前端页面布局。
+
+个人理解，其意味着将整个页面划分成及部分，例如页眉，页脚等等，然后针对每部分进行自己的操作，相当于将整个页面模块化，可以起到更好的效果。
+
+### 快速入手
+
+- `th:insert` 和`th:replace` 区别：前者仅仅是加载，后者是替换。Thymeleaf 3.0 之中建议使用`th:insert` 来替换`th:replace`
+
+```html
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"><head>
+    <meta charset="UTF-8">
+    <title>The main page</title>
+</head>
+<body>
+    <div th:insert="layout/copyright::copyright"></div>
+    <div th:replace="layout/copyright::copyright"></div>
+</body>
+</html>
+```
+
+这段代码使用了两种形式来做copyright的插入，其中定位信息如下：
+
+- layout/copyright 是文件位置，copyright 的内容意义为在copyright 文件之中的<copyright>标签之中的内容
