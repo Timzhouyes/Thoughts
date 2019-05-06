@@ -564,13 +564,13 @@ Thymeleaf之中的内联能够使人们写更少的代码，也可以用于在ja
 #### 基本对象
 
 Thymeleaf 包含了了⼀一些基本对象，可以⽤用于我们的视图中，这些基本对象使⽤用 # 开头。
-  - #ctx ：上下⽂文对象
-  - #vars ：上下⽂文变量量
+  - #ctx ：上下文对象
+  - #vars ：上下文变量
   - #locale ：区域对象
-  - #request ：（仅 Web 环境可⽤用）HttpServletRequest 对象
-  - #response ：（仅 Web 环境可⽤用）HttpServletResponse 对象
-  - #session ：（仅 Web 环境可⽤用）HttpSession 对象
-  - #servletContext ：（仅 Web 环境可⽤用）ServletContext 对象
+  - #request ：（仅 Web 环境可用）HttpServletRequest 对象
+  - #response ：（仅 Web 环境可用）HttpServletResponse 对象
+  - #session ：（仅 Web 环境可用）HttpSession 对象
+  - #servletContext ：（仅 Web 环境可用）ServletContext 对象
 
 
 
@@ -623,4 +623,151 @@ Thymeleaf 包含了了⼀一些基本对象，可以⽤用于我们的视图中�
 - ss：秒
 
 
+
+为了使模板更易用，Thymeleaf还内置了一系列Utility对象，内置于context之中，可以通过#直接访问。
+
+下面举一些使用日期和字符串的方法：
+
+##### 页面
+
+```html
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Utility Example</title>
+</head>
+<body>
+<h1>时间相关</h1>
+格式化时间
+<p th:text="${#dates.format(date,'yyyy-MM-dd HH:mm:ss')}">neo</p>
+创建时间精确到天
+<p th:text="${#dates.createToday()}">neo</p>
+创建时间 精确到秒
+<p th:text="${#dates.createNow()}">neo</p>
+<h1>字符串相关</h1>
+判断字符串是否为空
+<p th:text="${#strings.isEmpty(username)}">username</p>
+判断list是否为空
+<p th:text="${#strings.listIsEmpty(users)}">username</p>
+输出字符串长度
+<p th:text="${#strings.length(username)}">username</p>
+拼接字符串
+<p th:text="${#strings.concat(username,username)}">username+username</p>
+创建自定义长度的字符串
+<p th:text="${#strings.randomAlphanumeric(count)}">username</p>
+</body>
+</html>
+```
+
+
+
+##### 后端传值
+
+```java
+    @RequestMapping("/utility")
+    public String utility(ModelMap map)
+    {
+        map.addAttribute("date",new Date());
+        map.addAttribute("username", "Neoolee");
+        map.addAttribute("users", getUserList());
+        map.addAttribute("count", 12);
+        return "utility";
+    }
+```
+
+
+
+### 表达式
+
+表达式一共分为五类：
+
+- 变量表达式：${...} :
+
+变量表达式即spring EL 表达式，类似${session.user.name} 。其也是含有变量的值的表达式。
+
+其一般以HTML标签的一个属性来表示，即
+
+```html
+<span th:text="${book.author.name}">
+<li th:each="book : ${books}">
+```
+
+- 选择或星号表达式：*{...}
+
+选择表达式与变量表达式不同，其用一个预先选择的对象来代替上下文变量容器(map)来执行。类似`*{customer.name}`
+
+被指定的object由`th:object`来定义：此处title即为book的属性。
+
+```html
+<div th:object="${book}">
+...
+<span th:text="*{title}">...</span>
+...
+</div>
+```
+
+- 文字国际化表达式
+
+文字国际化表达式是根据不同的国家地区可以显示不同页面内容的方法。其可以从一个外部文件获得区域文字信息，然后用key索引value，还可以提供一组可选的参数。
+
+```html
+<table>
+...
+<th th:text="#{header.address.city}">...</th>
+<th th:text="#{header.address.country}">...</th>
+...
+</table>
+```
+
+- URL表达式
+
+URL表达式在需要将某些信息重写回URL的时候使用。例如`@{/order/list}`
+
+URL还可以设置参数： `@{/order/details(id=${orderId})}`
+
+可以设置相对路径：`@{.../documents/report}`
+
+```html
+<form th:action="@{/createOrder}">
+<a href="main.html" th:href="@{/main}">
+```
+
+- 片段表达式
+
+片段表达式是一种将其他片段做标记，然后将其移动到模板之中的方法。其优势是可以被复制或者作为参数传递到其他模板。片段表达式可以有参数。
+
+最常见的方法是使用`th:insert` 或者 `th:replace` 插入片段。
+
+`<div th:insert="~{commons :: main}">...</div>`
+
+也可以在页面的其他位置使用：
+
+```html
+<div th:with="frag=~{footer :: #main/text()}">
+	<p th:insert="${frag}">
+</div>
+```
+
+- 变量表达式和星号表达式有什么区别？
+
+如果不考虑上下文的情况下，两者之间没有区别。星号语法是在选定对象上表达，而不是整个上下文。选定对象指的是父标签的值。例如：
+
+```html
+<div th:object="${session.user}">
+<p>Name: <span th:text="*{firstName}">Sebastian</span>.</p>
+<p>Surname: <span th:text="*{lastName}">Pepper</span>.</p>
+<p>Nationality: <span th:text="*{nationality}">Saturn</span>.</p>
+</div>
+```
+
+和下面这一段完全等价：
+
+```html
+<div th:object="${session.user}">
+<p>Name: <span th:text="${session.user.firstName}">Sebastian</span>.</p>
+<p>Surname: <span th:text="${session.user.lastName}">Pepper</span>.</p>
+<p>Nationality: <span th:text="${session.user.nationality}">Saturn</span>.</p>
+</div>
+```
 
