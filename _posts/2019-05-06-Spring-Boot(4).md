@@ -39,3 +39,18 @@ Spring Boot 通过不同的 annotation 来支持开发 RESTful 服务。
 - @PatchMapping，用于更新部分资源。
 
 上面这些方法都是 @RequestMapping的一种简写方式。例如 @GetMapping 就是 `@RequestMapping(value="xxx",method=RequestMethod.GET)` 的简写。
+
+#### 快速上手
+
+按照RESTful的思想，设计一组面向用户操作的API：
+
+| 请求   | 地址          | 说明               |
+| ------ | ------------- | ------------------ |
+| get    | /messages     | 获取所有信息       |
+| post   | /message      | 创建一个信息       |
+| put    | /message      | 修改消息内容       |
+| patch  | /message/text | 修改消息的text字段 |
+| get    | /message/id   | 根据ID获取消息     |
+| delete | /message/id   | 根据ID删除消息     |
+
+put 用来更新整个资源， patch 用于更新部分字段。
