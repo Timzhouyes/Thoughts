@@ -802,4 +802,184 @@ URL还可以设置参数： `@{/order/details(id=${orderId})}`
 
 这段代码使用了两种形式来做copyright的插入，其中定位信息如下：
 
-- layout/copyright 是文件位置，copyright 的内容意义为在copyright 文件之中的<copyright>标签之中的内容
+- layout/copyright 是文件位置，copyright 的内容意义为在copyright 文件之中的<copyright>标签之中的内容。所以上面这段代码是将<copyright> 里面的内容重复两次。
+
+
+
+#### 片段表达式
+
+片段表达式，支持在一个网页之中写fragment，在另一个网页之中引用并使用类似于`~{commons::footer}` 的传值方法，并且将其作用在`th:insert`或者`th:replace`的内部。
+
+代码模板：
+
+```html
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="common_header(title,links)">
+    <title th:replace="${title}">common title</title>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/myapp.css}">
+    <link rel="shortcut icon" th:href="@{/images/favicon.ico}">
+    <script type="type/javascript" th:src="@{/js/myapp.js}"></script>
+    <th:block th:replace="${links}"/>
+</head>
+<body>
+
+</body>
+</html>
+```
+
+- 其中使用`common_header` 是名称，支持传入两个参数title和links。指明了使用位置是：
+  - `<title th:replace="${title}">common title</title>` 将使用模板的网页的title传入其中
+  - `<th:block th:replace="${links}"/>`将使用模板的网页的link（也就是使用<link >标签的）传入其中，而 th:block 作为页面的自定义使用不会展示到页面之中。实际而言，`<th:block>` 所包含的是代码块。 
+
+##### 使用模板的代码
+
+```html
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="base::common_header(~{::title},~{::link})">
+    <title>Fragment-Page</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/cs/fragmen.css}">
+
+</head>
+<body>
+
+</body>
+</html>
+```
+
+这段代码，在head处直接写入了一个`th:replace`，将`base` 文件之中的`common_header`放进本页面的头文件之中。又在下面指出了所有值，包括title和link，所以在最后的html里面，查看源代码，其显示为：
+
+```html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Fragment-Page</title>
+    <link rel="stylesheet" type="text/css" media="all" href="/css/myapp.css">
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <script type="type/javascript" src="/js/myapp.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css"><link rel="stylesheet" href="/cs/fragmen.css">
+</head>
+<body>
+
+</body>
+</html>
+```
+
+可见其就是将 title 和 两个 link 填充到上面的模板之中所形成的文件。这样就完成了一个网页的模板填充。
+
+这是片段表达式最常使用的方式之一，也是3.0版本之中针对页面布局推出的新语法。
+
+##### 页面布局
+
+我们在 templates/layout 下面新建页面 footer.html , header.html , left.html 页面，内容如下:（以footer.html 举例）
+
+```html
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"><head>
+<head>
+    <meta charset="UTF-8">
+    <title>footer</title>
+</head>
+<body>
+    <footer th:fragment="footer">
+        <h1> I am footer of HTML</h1>
+    </footer>
+</body>
+</html>
+```
+
+可见这里面我们自己定义了一个<footer> 的标签，一样的，我们在另外几个 HTML 之中也新建几个和名字对应的标签。
+
+新建一个使用所有模板的模板：
+
+```html
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+    <head>
+        <meta charset="UTF-8">
+        <title>Total layout</title>
+    </head>
+<body>
+<div>
+    <div th:replace="layout/header::header"></div>
+    <div th:replace="layout/left::left"></div>
+    <div layout:fragment="content">content</div>
+    <div th:replace="layout/footer::footer"></div>
+</div>
+</body>
+</html>
+```
+
+注意这段代码，在我们之前的命名空间基础之上加入了新的语法命名空间：`xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"` 。而且我们在这个命名空间的下面重新定义了一个content，作为后期要替换的内容。
+
+新建一个 layout.html 使用模板：
+
+```html
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="layout">
+<head>
+    <head>
+        <meta charset="UTF-8">
+        <title>Home site to test1</title>
+    </head>
+<body>
+<div layout:fragment="content">
+    Self content done by myself
+</div>
+</body>
+</html>
+```
+
+
+
+- html 标签之中的 `layout:decorate="layout"` 是在之前基础上新增加的，意味使用`layout.html`这个模板文件之中的布局。
+- `<div layout:fragment="content">` 意为将下面内容替换 `layout.html` 之中的 content 代码片段。
+
+采用页面布局的时候有两个关键设置，一个是在模板之中定义需要替换的部分 `layout:fragment="content"` 另一个是在**需要引入模板的页面头** 之中写 `layout:decorate="layout"`，再修改其中的内容。
+
+# 第2-6课：使用Spring Boot 和 Thymeleaf 演示上传文件
+
+Spring boot 使用了 MultipartFile 的特性来接收和处理上传的文件， MultipartFile 是 Spring 的一个封装接口，封装了文件上传的相关操作，利用 MultipartFile 可以很方便的接受前端文件，并存储其到本机或者其他中间件之中。
+
+启动类之中要加入以下代码，不然上传文件超过10M 会出现问题。而此处将其设置为(-1) 可以避免连接重置（因为文件大小没有限制了）。这个异常内容 GlobalException 捕获不到。只会显示 ERR_Connection_Reset
+
+```java
+package com.neo.hello;
+
+import org.apache.coyote.http11.AbstractHttp11Protocol;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.embedded.tomcat.TomcatConnectorCustomizer;
+import org.springframework.boot.web.embedded.tomcat.TomcatReactiveWebServerFactory;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.context.annotation.Bean;
+
+@SpringBootApplication
+public class HelloApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(HelloApplication.class, args);
+    }
+
+    //Tomcat large file upload connection reset
+    @Bean
+    public TomcatServletWebServerFactory tomcatEmbedded() {
+        TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory();
+        tomcat.addConnectorCustomizers((TomcatConnectorCustomizer) connector -> {
+            if ((connector.getProtocolHandler() instanceof AbstractHttp11Protocol<?>)) {
+                    //-1 means unlimited
+                ((AbstractHttp11Protocol<?>) connector.getProtocolHandler()).setMaxSwallowSize(-1);
+            }
+        });
+        return tomcat;
+    }
+
+}
+
+```
+
