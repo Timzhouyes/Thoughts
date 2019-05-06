@@ -983,3 +983,8 @@ public class HelloApplication {
 
 ```
 
+其结构为：
+
+前端由两个页面组成，一个负责上传文件，一个负责返回传输状态。
+
+后端有两部分，一部分用来做 RequestMapping ,包括数据的传输和页面判断，另一部分使用 @ControllerAdvice 做ExceptionHandling，将Exception信息使用redirectAttribute() 传输到“传输状态” 页面。
