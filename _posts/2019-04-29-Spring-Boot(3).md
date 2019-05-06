@@ -523,5 +523,104 @@ Thymeleaf之中的内联能够使人们写更少的代码，也可以用于在ja
 
 `th:inline`可以在父级标签之中使用，甚至可以作为 body 的标签 。内联文本比 `th:text`的代码少，相对而言不利于展示。
 
+##### Html template code:
+
+```html
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Inline example</title>
+</head>
+<body>
+<div>
+    <h1>内联</h1>
+    <div th:inline="text">
+        <p>Hello,[[${username}]]!</p>
+        <br/>
+    </div>
+    <div>
+        <h1>不使用内联</h1>
+        <p th:text="'hello,'+${username}+'!'"></p>
+        <br/>
+    </div>
+</div>
+
+</body>
+<script th:inline="javascript">
+    var name=[[${username}]]+', Sebasitian';
+    alert(name);
+</script>
+</html>
+```
+
+- 内联：要先在标签之内激活，然后下面的标签之中便不需要重新`<th:text= >`,可以直接写变量。
+- 要是想在script之中使用后端传入的值，则必须写内联，脚本内联可以在 js 之中收到后台传过来的参数。其内联参数为 `th：inline="javascript"`
+
+
+
+
+
+#### 基本对象
+
+Thymeleaf 包含了了⼀一些基本对象，可以⽤用于我们的视图中，这些基本对象使⽤用 # 开头。
+  - #ctx ：上下⽂文对象
+  - #vars ：上下⽂文变量量
+  - #locale ：区域对象
+  - #request ：（仅 Web 环境可⽤用）HttpServletRequest 对象
+  - #response ：（仅 Web 环境可⽤用）HttpServletResponse 对象
+  - #session ：（仅 Web 环境可⽤用）HttpSession 对象
+  - #servletContext ：（仅 Web 环境可⽤用）ServletContext 对象
+
+
+
+下面对于`#request` ，`#session`和`#locale` 做一点介绍。
+
+##### HTML页面
+
+```html
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Basic Object</title>
+</head>
+<body>
+<div>
+    <h1>基本对象</h1>
+    <p th:text="${#request.getAttribute('request')}">
+    <br/>
+    <p th:text="${session.session}"></p>
+    Established locale country:<span th:text="${#locale.country}">SIN</span>
+
+</div>
+
+</body>
+</html>
+```
+
+以上我们可以看到：
+
+- request 的值使用 getAttribute 来得到
+- session 的值可以直接取到
+- locale 指区域对象（没错，是地理区域）。在前端看本页面显示"Established locale country:SIN"， 但是程序之中显示的是"Established locale country:CN"。说明这个变量读取的是地理区域。
+
+
+
+
+
+##### 内嵌变量
+
+插一嘴时间格式的问题：
+
+- yyyy：年份
+- MM：月份
+- dd：日期
+- HH：24小时制
+- hh：12小时制，当在0-12之间时候显示正常，在13-24之间显示的是（原值-12)，即如果是14：00：00则显示为2：00：00
+- mm：分钟，注意和上面那个月份之间的区别
+- ss：秒
+
 
 
