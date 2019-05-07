@@ -54,3 +54,30 @@ Spring Boot 通过不同的 annotation 来支持开发 RESTful 服务。
 | delete | /message/id   | 根据ID删除消息     |
 
 put 用来更新整个资源， patch 用于更新部分字段。
+
+
+
+#### Atomic类
+
+在代码之中我们使用了 AtomicInteger 类，其 Atomic 这个属性在下面有所介绍：
+
+先看 Atomic 官方定义：
+
+A small toolkit of classes that support lock-free thread-safe programming on single variables. In essence, the classes in this package extend the notion of `volatile` values, fields, and array elements to those that also provide an atomic conditional update operation.
+
+按我个人的理解，其意味着使用 Atomic 的操作是不可中断的，即使多个线程一起执行，一个操作一旦开始，就不会被其他线程干扰。
+
+
+
+要注意，测试的时候发现路由进不去，有可能是因为 Application 的总文件和其他文件夹目录不一致，这样就导致了扫描的时候扫描不到其文件。应该 Application 文件和其他文件夹在 project 的总目录下面。
+
+
+
+本项目之中的信息表存储是使用 ConcurrentMap 来存储的：
+
+`private final ConcurrentMap<Long, Message> messages= new ConcurrentHashMap<>();`
+
+
+
+# 第2-9课：使用Swagger2 构建 RESTful APIs
+
