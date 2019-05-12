@@ -76,6 +76,8 @@ NaN: Not a number ，表示其是非数值。
 
 ​	NaN和任何数值都不等，包括NaN
 
+**NaN和任何数字相加返回都是 NaN**
+
 `        console.log(NaN==NaN);`返回 false
 
 isNaN():任何不可以转换成数值的值，都会让其返回 true
@@ -163,5 +165,67 @@ null 和 undefined 这两个值没有 toString() 方法。
 
 #### 其他数据类型-->Number
 
-###### 方法一：使用 Number() 函数
+##### 方法一：使用 Number() 函数
 
+###### 情况一：字符串-->数字
+
+- 字符串之中时纯数字，则将其转换为数字
+- 字符串之中有非数字的内容，转换成NaN （此处也可看其局限，不能对字符串进行操作）
+- 字符串是空或者全是空格，则转换为0。
+
+###### 情况二：布尔-->数字
+
+- true 变成1
+- false 变成0
+
+###### 情况三：null / undefined -->数字
+
+null:0
+
+undefined：NaN
+
+原因在于 Null 是空，而 undefined 是没有定义的变量，只是无法识别，但是依然有值。
+
+##### 方法二：`parseInt()` 字符串 --> 整数
+
+parseInt() 作用为将字符串之中的**有效内容**转换为数字。特性为：
+
+1. 只保留字符串最开头的数字，且只会取整数部分
+
+2. 如果对非String使用parseInt() 或者 parseFloat(), 会先转换成 String 之后进行操作。
+
+```javascript
+    var a = true;
+    console.log(parseInt(a));  //打印结果：NaN （因为是先将a转为字符串"true"，然后然后再操作）
+
+    var b = null;
+    console.log(parseInt(b));  //打印结果：NaN  （因为是先将b转为字符串"null"，然后然后再操作）
+
+    var c = undefined;
+    console.log(parseInt(c));  //打印结果：NaN  （因为是先将b转为字符串"undefined"，然后然后再操作）
+
+    var d = 168.23;
+    console.log(parseInt(d));  //打印结果：168  （因为是先将c转为字符串"168.23"，然后然后再操作）
+```
+
+3. 带两个参数时候代表进制转换：parseInt(string, radix)  有2个参数，第一个string 是传入的数值，第二个radix是 传入数值的进制，参数radix 可以忽略，默认为 10，各种进制的数转换为 十进制整数（如果不是整数，向下取整）。
+
+   radix 的取值范围是 2~36，如果 radix 为 1 或 radix>36 ，转换结果将是 NaN ，如果 radix 为 0 或其它值将被忽略，radix 默认为 10 。
+
+   ###### `parseFloat()` 字符串-->浮点数
+
+   其和 parseInt() 作用相似，但是其是将字符串转换为浮点数。
+
+   ##### 转换成Boolean
+
+   使用 Boolean（）函数
+
+   1. 数字-->布尔：除了0和 NaN，其他的都是 true
+   2. String-->布尔：除了空字符串其他都是true，字符串之中时空格也是 true
+   3. null 和 undefined 会转换成 false
+   4. 对象也会转换成 true
+
+   ##### 其他进制的数字
+
+   - 16进制的数字以 `0x`开头
+   - 
