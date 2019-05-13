@@ -402,7 +402,7 @@ console.log(NaN == NaN); //false
 
 2. ```javascript
    	console.log("6" === 6);		//false
-   	console.log(6 === 6);		//true
+      	console.log(6 === 6);		//true
    ```
 
 # 05-流程控制语句：选择结构（if和switch）
@@ -427,4 +427,45 @@ console.log(NaN == NaN); //false
 			break;
 	}
 ```
+
+省略 break 可能会出现 case 穿透。即执行完一个 case 之后接着执行下一个 case 而不是直接结束。
+
+# 06-流程控制语句：循环结构（for和while）
+
+#### for循环的语法
+
+```
+	for(①初始化表达式; ②条件表达式; ④更新表达式){
+		③语句...
+	}
+```
+
+1. 初始化表达式之中可以给多个变量赋值。
+
+那就举个栗子：
+
+```
+	for (var i = 1; i <= 10; i++) {
+
+	}
+	console.log(i);
+```
+
+输出结果：11
+
+但是对于下面的代码，就不行：
+
+```javascript
+        for (let i = 1; i <= 10; i++) {
+
+        }
+        console.log(i);
+
+```
+
+输出：ReferenceError: i is not defined at operator04.html:42
+
+原因就在于 let 是局部变量，我们之前的文章之中[浅析JavaScript之中的let和const](<https://timzhouyes.github.io/2019/04/15/JavaScript-let-var/>)
+
+有过具体详细的介绍，这里就不多过赘述了。
 
