@@ -315,3 +315,51 @@ this 的指向也不同，这些我们之前说过了：
 
 如果是，则返回true；否则返回false。
 
+```
+      function Person() {}
+
+      function Dog() {}
+
+      var person1 = new Person();
+
+      var dog1 = new Dog();
+
+      console.log(person1 instanceof Person); // 打印结果： true
+      console.log(dog1 instanceof Person); // 打印结果：false
+
+      console.log(dog1 instanceof Object); // 所有的对象都是Object的后代。因此，打印结果为：true
+```
+
+根据上方代码中的最后一行，需要补充一点：**所有的对象都是Object的后代，因此 任何对象 instanceof Object 的返回结果都是true**。
+
+另外，对象和json没有长度，json.length的打印结果是undefined。于是乎，自然也就不能用for循环遍历（因为遍历时需要获取长度length）。
+
+**json遍历的方法：**
+
+json 采用 `for...in...`进行遍历，和数组的遍历方式不同。如下：
+
+```
+<script>
+    var myJson = {
+        "name": "smyhvae",
+        "aaa": 111,
+        "bbb": 222
+    };
+
+    //json遍历的方法：for...in...
+    for (var key in myJson) {
+        console.log(key);   //获取 键
+        console.log(myJson[key]); //获取 值（第二种属性绑定和获取值的方法）
+        console.log("------");
+    }
+</script>
+```
+
+打印结果：
+
+[![img](https://camo.githubusercontent.com/95d76ec3b144bc5481dfb761af243a24f9fd7a5a/687474703a2f2f696d672e736d79687661652e636f6d2f32303138303230335f313531382e706e67)](https://camo.githubusercontent.com/95d76ec3b144bc5481dfb761af243a24f9fd7a5a/687474703a2f2f696d672e736d79687661652e636f6d2f32303138303230335f313531382e706e67)
+
+
+
+# 13-原型对象
+
