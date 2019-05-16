@@ -744,3 +744,169 @@ obj:王一,王二,王三
 
 [![img](https://camo.githubusercontent.com/4318682f9f7ff4f7ffa9e2fc2aece1f40da4de6b/687474703a2f2f696d672e736d79687661652e636f6d2f32303138303132365f313432352e706e67)](https://camo.githubusercontent.com/4318682f9f7ff4f7ffa9e2fc2aece1f40da4de6b/687474703a2f2f696d672e736d79687661652e636f6d2f32303138303132365f313432352e706e67)
 
+#### every()方法
+
+解释：对数组中每一项运行回调函数，如果都返回true，every就返回true；如果有一项返回false，则停止遍历，此方法返回false。
+
+注意：every()方法的返回值是boolean值，参数是回调函数。
+
+举例：
+
+```
+    var arr1 = ["千古", "宿敌", "南山忆", "素颜"];
+    var bool1 = arr1.every(function (element, index, array) {
+        if (element.length > 2) {
+            return false;
+        }
+        return true;
+    });
+    console.log(bool1);  //输出结果：false。只要有一个元素的长度是超过两个字符的，就返回false
+
+    var arr2 = ["千古", "宿敌", "南山", "素颜"];
+    var bool2 = arr2.every(function (element, index, array) {
+        if (element.length > 2) {
+            return false;
+        }
+        return true;
+    });
+    console.log(bool2);  //输出结果：true。因为每个元素的长度都是两个字符。
+```
+
+#### some()方法
+
+解释：对数组中每一项运行回调函数，只要有一项返回true，则停止遍历，此方法返回true。
+
+# 16-数组的常见方法
+
+数组的常见方法如下：
+
+| 方法      | 描述                                                         | 备注           |
+| --------- | ------------------------------------------------------------ | -------------- |
+| slice()   | 从数组中**提取**指定的一个或多个元素，返回结果为**新的数组** | 不会改变原数组 |
+| splice()  | 从数组中**删除**指定的一个或多个元素，返回结果为**新的数组** | 会改变原数组   |
+| concat()  | 连接两个或多个数组，返回结果为**新的数组**                   | 不会改变原数组 |
+| join()    | 将数组转换为字符串，返回结果为**转换后的字符串**             | 不会改变原数组 |
+| reverse() | 反转数组，返回结果为**反转后的数组**                         | 会改变原数组   |
+| sort()    | 对数组的元素,默认按照**Unicode编码**，从小到大进行排序       | 会改变原数组   |
+
+##### slice()
+
+`slice()`：从数组之中提取一个或者多个元素，返回成为新数组
+
+**语法**：
+
+```
+	新数组 = 原数组.slice(开始位置的索引, 结束位置的索引);    //注意：包含开始索引，不包含结束索引
+```
+
+举例：
+
+```
+	var arr = ["a", "b", "c", "d", "e", "f"];
+
+	var result1 = arr.slice(2); //从第二个值开始提取
+	var result2 = arr.slice(-2); //提取最后两个元素
+	var result3 = arr.slice(2, 4); //提取从第二个到第四个之间的值（不包括第四个值）
+	var result4 = arr.slice(4, 2); //空
+
+	console.log("arr:" + JSON.stringify(arr));
+	console.log("result1:" + JSON.stringify(result1));
+	console.log("result2:" + JSON.stringify(result2));
+	console.log("result3:" + JSON.stringify(result3));
+	console.log("result4:" + JSON.stringify(result4));
+```
+
+打印结果：
+
+```
+	arr:["a","b","c","d","e","f"]
+	result1:["c","d","e","f"]
+	result2:["e","f"]
+	result3:["c","d"]
+	result4:[]
+```
+
+#### **javascript伪数组**
+
+1: 什么是伪数组
+
+```
+伪数组是一个含有length属性的json对象，
+
+它是按照索引的方式存储数据，
+
+它并不具有数组的一些方法，只能能通过Array.prototype.slice转换为真正的数组，并且带有length属性的对象。
+```
+
+
+
+```
+    var obj = {0:'a',1:'b',length:2}; // 伪数组
+    var arr = Array.prototype.slice.call(obj); // 转化为数组    
+    console.log(arr);  // 返回["a","b"]
+ 
+```
+
+2 : 它和数组的关系
+
+```
+都是模拟集合
+```
+
+3：为什么会有伪数组
+
+```
+	 在日常开发中，有许多的对象是由伪数组组成，比如函数内arguments对象，还有像调用getElementsByTagName,document.childNodes之类的，它们都返回NodeList对象都属于伪数组.
+```
+
+4：为什么使用Array.prototype.slice.call()方法可以将伪数组转化数组
+
+```
+ 其实我们也可以通过[].slice.call这种形式实现同样的效果，但是通过prototype的形式执行程序效率更高，同样代码也更加优美。 
+
+这个是V8引擎中Array.js对slice方发的实现过程，有兴趣的同学可以研究下。
+
+我理解的大概思路就是 ↓ ，可能不对，仅供参考。
+function slice(obj) {
+    var arr =[];
+    var len = obj.length; // length 正好对应伪数组中的length属性
+    for(var i = 0;i < len;i++){
+        arr.push[i] = obj[i]; // i 正好对应伪数组中的索引值
+    }
+    return arr;
+}
+ 
+```
+
+
+
+5：Jquery与伪数组
+
+```
+其实Jquery内部大量运用了伪数组。可以说整个Jquery对象，都是构建在伪数组的基础之上的。
+```
+
+很多前端开发人员会用 slice()将伪数组，转化为真数组。写法如下：
+
+```
+array = Array.prototye.slice.call(arrayLike)
+或者
+array = [].slice.call(arrayLike)
+```
+
+ES6 看不下去这种蹩脚的转化方法，于是出了一个新的 API：（专门用来将伪数组转化成真数组）
+
+```
+array = Array.from(arrayLike)
+```
+
+##### splice()
+
+`splice()`：从数组中**删除**指定的一个或多个元素，返回结果为**新的数组**（会改变原来的数组，会将指定元素从原数组中删除）。
+
+语法：
+
+```
+	新数组 = 原数组.splice(起始索引index, 需要删除的个数, 第三个参数, 第四个参数...);
+```
+
