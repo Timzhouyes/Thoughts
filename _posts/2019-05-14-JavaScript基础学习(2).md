@@ -577,3 +577,170 @@ arr4 = [15,16,17]
 
 # 15- 数组的四个基本方法&数组遍历
 
+先上表：
+
+**数组的四个基本方法如下**：
+
+注意此处的返回值：如果参数是元素，那么返回的是改变之后数组的长度；如果没有参数，返回的是修改的元素。
+
+| 方法      | 描述                                                         | 备注         |
+| --------- | ------------------------------------------------------------ | ------------ |
+| push()    | 向数组的**最后面**插入一个或多个元素，返回结果为**该数组新的长度** | 会改变原数组 |
+| pop()     | 删除数组中的**最后一个**元素，返回结果为**被删除的元素**     | 会改变原数组 |
+| unshift() | 在数组**最前面**插入一个或多个元素，返回结果为**该数组新的长度** | 会改变原数组 |
+| shift()   | 删除数组中的**第一个**元素，返回结果为**被删除的元素**       | 会改变原数组 |
+
+**遍历数组的方法如下**：
+
+| 方法      | 描述                               | 备注                                                   |
+| --------- | ---------------------------------- | ------------------------------------------------------ |
+| for循环   | 这个大家都懂                       |                                                        |
+| forEach() | 和 for循环类似，但需要兼容IE8以上  | forEach() 没有返回值。也就是说，它的返回值是 undefined |
+| filter()  | 返回结果是true的项，将组成新的数组 | 可以起到过滤的作用                                     |
+| map()     | 对原数组中的每一项进行加工         |                                                        |
+| every()   | 如果有一项返回false，则停止遍历    | 意思是，要求每一项都返回true，最终的结果才返回true     |
+| some()    | 只要有一项返回true，则停止遍历     |                                                        |
+
+## 数组的遍历
+
+遍历数组的方法包括：every()、filter()、forEach()、map()、some()
+
+PS：这几个方法**不会修改原数组**。
+
+语法格式：
+
+```
+数组/boolean/无 = 数组.every/filter/forEach/map/some(
+                            function(element,index,arr){
+                                            程序和返回值；
+```
+
+##### forEach() 循环遍历
+
+forEach() 需要一个函数作为参数，这种函数是我们创建但是不是我们调用的，称为回调函数。数组之中有几个元素，回调函数就会执行几次。
+
+回调函数之中传递三个参数：
+
+- 第一个：当前正在遍历的元素
+- 第二个：当前正在遍历的元素的索引
+- 第三个：正在遍历的数组
+
+代码举例：
+
+```
+    var arr = ["王一", "王二", "王三"];
+
+    arr.forEach(function(item, index, obj) {
+    console.log("item:" + item);
+    console.log("index:" + index);
+    console.log("obj:" + obj);
+    console.log("----------");
+    });
+```
+
+打印结果：
+
+```
+item:王一
+index:0
+obj:王一,王二,王三
+----------
+
+item:王二
+index:1
+obj:王一,王二,王三
+----------
+
+item:王三
+index:2
+obj:王一,王二,王三
+----------
+```
+
+注意，forEach() 的返回值是 undefined。也就是说，它没有返回值。如果你尝试 `tempArry = arr.forEach()`这种方式来接收，是达不到效果的。
+
+##### filter()
+
+语法：
+
+```
+    Array.prototype.filter(function(item, index){})
+```
+
+对数组之中每一项运行回调函数，对于返回结果是 true 的项，将组成新的数组。返回值就是这个新的数组。
+
+其中的function 的参数和之前的一样。
+
+举例1：找出数组 arr1 中大于4的元素，返回一个新的数组。代码如下：
+
+```
+    var arr1 = [1, 3, 6, 2, 5, 6];
+
+    var arr2 = arr1.filter(function (item, index) {
+        return item > 4; //将arr1中大于4的元素返回
+    })
+    console.log(arr2);
+```
+
+打印结果：
+
+[![img](https://camo.githubusercontent.com/1f7d8482faf3e375eb8c28af65bd500673366a1b/687474703a2f2f696d672e736d79687661652e636f6d2f32303138303430325f303935312e706e67)](https://camo.githubusercontent.com/1f7d8482faf3e375eb8c28af65bd500673366a1b/687474703a2f2f696d672e736d79687661652e636f6d2f32303138303430325f303935312e706e67)
+
+举例2：
+
+```
+    var arr1 = ["千古", "宿敌", "南山忆", "素颜"];
+
+    var arr2 = arr1.filter(function (element, index, array) {
+        if (element.length > 2) { //arr1中的元素，如果是长度超过2个字符的，我就把它放到arr2中去
+            return true;
+        }
+        return false;
+    });
+    console.log(arr1);
+    console.log(arr2);
+```
+
+结果：
+
+[![img](https://camo.githubusercontent.com/828e99007afdafaa4946f503ed25e2708ac000d4/687474703a2f2f696d672e736d79687661652e636f6d2f32303138303132365f313431302e706e67)](https://camo.githubusercontent.com/828e99007afdafaa4946f503ed25e2708ac000d4/687474703a2f2f696d672e736d79687661652e636f6d2f32303138303132365f313431302e706e67)
+
+##### map() 方法
+
+对数组之中每一项都使用回调函数，然后返回该函数的结果，也就是返回一个加工之后的数组。
+
+解释：对数组中每一项运行回调函数，返回该函数的结果，组成的新数组（返回的是**加工之后**的新数组）。
+
+比如说，有一个已知的数组arr1，我要求让arr1中的每个素加10，这里就可以用到map方法。举例：
+
+```
+    var arr1 = [1, 3, 6, 2, 5, 6];
+
+    var arr2 = arr1.map(function (item, index) {
+        return item + 10;  //让arr1中的每个元素加10
+
+    })
+    console.log(arr2);
+```
+
+打印结果：
+
+[![img](https://camo.githubusercontent.com/d060b1224e56f2d1a1b9807cd368dedc80fe0f39/687474703a2f2f696d672e736d79687661652e636f6d2f32303138303430325f303933382e706e67)](https://camo.githubusercontent.com/d060b1224e56f2d1a1b9807cd368dedc80fe0f39/687474703a2f2f696d672e736d79687661652e636f6d2f32303138303430325f303933382e706e67)
+
+举例2：
+
+```
+    var arr1 = ["千古", "宿敌", "南山忆", "素颜"];
+
+    var arr2 = arr1.map(function (element, index, array) {
+        return element + "vae";  //给arr1中所有的元素增加字符串"vae"，放到arr2中。
+    });
+
+    console.log(arr1);
+    console.log(arr2);
+```
+
+结果：
+
+[![img](https://camo.githubusercontent.com/4318682f9f7ff4f7ffa9e2fc2aece1f40da4de6b/687474703a2f2f696d672e736d79687661652e636f6d2f32303138303132365f313432352e706e67)](https://camo.githubusercontent.com/4318682f9f7ff4f7ffa9e2fc2aece1f40da4de6b/687474703a2f2f696d672e736d79687661652e636f6d2f32303138303132365f313432352e706e67)
+
