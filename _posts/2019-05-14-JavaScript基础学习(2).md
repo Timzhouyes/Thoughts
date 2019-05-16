@@ -363,3 +363,101 @@ json 采用 `for...in...`进行遍历，和数组的遍历方式不同。如下�
 
 # 13-原型对象(Prototype)
 
+#### 原型的引入
+
+如果我们要使用一个 class 去创建很多个 Object， 那么给每一个 Object 一个方法有些过于浪费空间的奢侈，将函数直接定义在全局作用域之中又会有安全因素，因此使用原型对象。
+
+#### 原型 prototype 的概念
+
+原型对象就相当于一个公共的区域，所有同一个类的实例都是访问一个原型对象。
+
+在应用之中，对于Object ， 可以使用 `__proto__`，对于 Class，可以使用`.prototype`来指向原型对象。
+
+以后就可以将所有对象共有的属性直接放在 prototype 之中了，下面是例子：
+
+```javascript
+       function Person(name, age, gender) {
+            this.name = name;
+            this.age = age;
+            this.gender = gender;
+
+        }
+        Person.prototype.sayName = function () {
+            console.log("Hello大家好，我是:" + this.name);
+        };
+        Person.prototype.test="test";
+
+
+        var per1 = new Person("name1", 1, "M");
+        var per2=new Person("name2",2,"F");
+
+        console.log(per1.__proto__);
+        console.log(per1.sayName());
+        console.log("age" in per1);     //true
+        console.log("sayName" in per1);     //true
+        console.log(per1.hasOwnProperty("sayName"));        //false
+        
+        console.log("Name of User 2 is "+per2.test);    //All objects from Person can visit
+        
+        console.log(per1.__proto__ == Person.prototype); // 打印结果：true
+```
+
+#### 对象的 toString() 方法
+
+我们先来看下面这段代码：
+
+```
+	function Person(name, age, gender) {
+	this.name = name;
+	this.age = age;
+	this.gender = gender;
+	}
+
+	var per1 = new Person("vae", 26, "男");
+
+	console.log("per1 = " + per1);
+	console.log("per1 = " + per1.toString());
+```
+
+打印结果：
+
+```
+per1 = [object Object]
+per1 = [object Object]
+```
+
+上面的代码中，我们尝试打印实例 per1 的内部信息，但是发现，无论是打印 `per1` 还是打印 `per1.toString()`，结果都是`object`，这是为啥呢？分析如下：
+
+- 当我们直接在页面中打印一个对象时，其实是输出了对象的toString()方法的返回值。
+- 如果我们希望在打印对象时，不输出[object Object]，可以手动为对象添加一个toString()方法。意思是，重写 toString() 方法。
+
+**想要在页面输出对象，那么需要我们重写 toString() 方法**
+
+```javascript
+		function Person(name, age, gender) {
+            this.name = name;
+            this.age = age;
+            this.gender = gender;
+
+        }
+        //Method 1 "overwrite function for Person Class"
+        Person.prototype.toString = function () {
+            return ("Person[name:"+this.name+",age="+this.age+",Gender="+this.gender);
+
+
+        }
+        console.log(per2.toString());
+```
+
+上面的方法是针对所有的 Person 类都进行重写，当然我们也可以只针对 per2 进行重写，方法相似，只是换个作用对象。
+
+#### JS 的 GC （垃圾回收） 机制
+
+如果堆内存中的对象，没有任何变量指向它时，这个堆内存里的对象就会成为垃圾。
+
+JS拥有自动的垃圾回收机制，会自动将这些垃圾对象从内存中销毁。我们不需要也不能进行垃圾回收的操作。我们仅仅需要做的是：如果你不再使用该对象，那么，将改对象的引用设置为 null 即可。
+
+
+
+# 14-数组简介
+
