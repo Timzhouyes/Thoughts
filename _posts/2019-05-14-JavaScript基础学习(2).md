@@ -911,3 +911,8 @@ array = Array.from(arrayLike)
 ```
 
 上面的语法之中，第三个及以后的参数，表示向原数组之中添加新的元素，会自动插入到开始位置索引之前。
+
+挣钱：
+
+https://www.moe.gov.sg/careers/teach/how-to-apply/teaching-schemes/relief-teaching
+
