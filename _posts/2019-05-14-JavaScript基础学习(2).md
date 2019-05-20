@@ -882,6 +882,8 @@ function slice(obj) {
 
 5：Jquery与伪数组
 
+伪数组，就是带有编号，内容和长度的json，其本身并不带有数组的方法，但是可以通过转换形成真的数组。
+
 ```
 其实Jquery内部大量运用了伪数组。可以说整个Jquery对象，都是构建在伪数组的基础之上的。
 ```
@@ -912,7 +914,111 @@ array = Array.from(arrayLike)
 
 上面的语法之中，第三个及以后的参数，表示向原数组之中添加新的元素，会自动插入到开始位置索引之前。
 
-挣钱：
+我个人的认为，splice 的意思其实是从第几位开始从原数组转移到另一个数组之中。下面的代码和输出结果就是：
 
-https://www.moe.gov.sg/careers/teach/how-to-apply/teaching-schemes/relief-teaching
+举例1：
 
+```
+	var arr1 = ["a", "b", "c", "d", "e", "f"];
+	var result1 = arr1.splice(1); //从第index为1的位置开始，删除元素
+
+	console.log("arr1：" + JSON.stringify(arr1));
+	console.log("result1：" + JSON.stringify(result1));
+
+	console.log("-----------------------");
+
+	var arr2 = ["a", "b", "c", "d", "e", "f"];
+	var result2 = arr2.splice(-2); //从第一个位置开始，删除元素
+
+	console.log("arr2：" + JSON.stringify(arr2));
+	console.log("result2：" + JSON.stringify(result2));
+
+	console.log("-----------------------");
+
+	var arr3 = ["a", "b", "c", "d", "e", "f"];
+	var result3 = arr3.splice(1, 3); //从第index为1的位置开始删除元素,一共删除三个元素
+
+	console.log("arr3：" + JSON.stringify(arr3));
+	console.log("result3：" + JSON.stringify(result3));
+
+	console.log("-----------------------");
+```
+
+打印结果：
+
+```
+举例1：
+
+	var arr1 = ["a", "b", "c", "d", "e", "f"];
+	var result1 = arr1.splice(1); //从第index为1的位置开始，删除元素
+
+	console.log("arr1：" + JSON.stringify(arr1));
+	console.log("result1：" + JSON.stringify(result1));
+
+	console.log("-----------------------");
+
+	var arr2 = ["a", "b", "c", "d", "e", "f"];
+	var result2 = arr2.splice(-2); //从第一个位置开始，删除元素
+
+	console.log("arr2：" + JSON.stringify(arr2));
+	console.log("result2：" + JSON.stringify(result2));
+
+	console.log("-----------------------");
+
+	var arr3 = ["a", "b", "c", "d", "e", "f"];
+	var result3 = arr3.splice(1, 3); //从第index为1的位置开始删除元素,一共删除三个元素
+
+	console.log("arr3：" + JSON.stringify(arr3));
+	console.log("result3：" + JSON.stringify(result3));
+
+	console.log("-----------------------");
+打印结果：
+
+arr1：["a"]
+result1：["b","c","d","e","f"]
+-----------------------
+
+arr2：["a","b","c","d"]
+result2：["e","f"]
+-----------------------
+
+arr3：["a","e","f"]
+result3：["b","c","d"]
+-----------------------arr1：["a"]
+result1：["b","c","d","e","f"]
+-----------------------
+
+arr2：["a","b","c","d"]
+result2：["e","f"]
+-----------------------
+
+arr3：["a","e","f"]
+result3：["b","c","d"]
+-----------------------
+```
+
+可以看到如果第一个参数是1，那么表示从位置为1 （第二个）开始就可以留住，如果是 -2， 那么表示从倒数第二位开始留，以此类推。
+
+举例2：（我们来看看**第三个参数**的用法）
+
+```
+var arr4 = ["a", "b", "c", "d", "e", "f"];
+
+//从第index为1的位置开始删除元素,一共删除三个元素。并且在 index=1 的前面追加两个元素
+var result4 = arr4.splice(1, 3, "千古壹号", "vae");
+
+console.log("arr4：" + JSON.stringify(arr4));
+console.log("result4：" + JSON.stringify(result4));
+```
+
+可以看到从第二位开始都进入了另一个数组，与此同时，其在开始的位置插入了两个元素，就是我们的第三个和第四个参数。
+
+#### concat()
+
+`concat()`连接两个或者多个数组，返回结果是新的数组。
+
+语法：
+
+```
+	新数组 = 数组1.concat(数组2, 数组3 ...);
+```
