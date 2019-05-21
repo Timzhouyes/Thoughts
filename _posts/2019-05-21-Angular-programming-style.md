@@ -124,3 +124,110 @@ tags:								#标签
 
 ### 5.Angular NgModule 命名
 
+**坚持**为符号名添加 `Module` 后缀
+
+**坚持**为文件名添加 `.module.ts` 扩展名。
+
+**坚持**用特性名和所在目录命名模块。
+
+**为何？**提供一致的方式来快速标识和引用模块。
+
+**为何？**大驼峰命名法是一种命名约定，用来标识可用构造函数实例化的对象。
+
+**为何？**很容易就能看出这个模块是同名特性的根模块。
+
+**坚持**为 *RoutingModule* 类名添加 `RoutingModule` 后缀。
+
+**坚持**为 *RoutingModule* 的文件名添加 `-routing.module.ts` 后缀。
+
+**为何？**`RoutingModule` 是一种专门用来配置 Angular 路由器的模块。 “类名和文件名保持一致”的约定使这些模块易于发现和验证。
+
+### 6.编程约定
+
+#### 类
+
+##### 风格03-01
+
+使用大驼峰命名法来命名类。
+
+原因是：类可以被实例化和构造实例，根据约定，用大驼峰表示可以构造的东西。
+
+#### 常量
+
+##### 风格03-02
+
+坚持用 const 声明常量，除非其值在应用的生命周期之内可能变化。
+
+**注意，const 所声明的常量只是：对于对象，不可以改变指针的位置，但是里面的值随便换**
+
+#### 接口
+
+##### 风格03-03
+
+**坚持**使用大写驼峰命名法来命名接口。
+
+**考虑**不要在接口名字前面加 `I` 前缀。
+
+**考虑**在服务和可声明对象（组件、指令和管道）中用类代替接口。
+
+**考虑**用接口作为数据模型。
+
+**为何？**[TypeScript 指导原则](https://github.com/Microsoft/TypeScript/wiki/Coding-guidelines)不建议使用 “I” 前缀。
+
+**为何？**单独一个类的代码量小于*类+接口*。
+
+**为何？**类可以作为接口使用（只是用 `implements` 代替 `extends` 而已）。
+
+**为何？**在 Angular 依赖注入系统中，接口类（译注：指写成类的形式，但是只当做接口使用）可以作为服务提供商的查找令牌。
+
+#### 属性和方法
+
+##### 样式03-04
+
+避免为私有属性和方法添加下划线
+
+**为何？** JavaScript 不支持真正的私有属性和方法。
+
+**为何？** TypeScript 工具让识别私有或公有属性和方法变得很简单。
+
+#### 导入语句之中的空行
+
+##### 风格03-06
+
+**坚持**在第三方导入和应用导入之间留一个空行。
+
+**考虑**按模块名字的字母顺排列导入行。
+
+**考虑**在解构表达式中按字母顺序排列导入的东西。
+
+**为何？**空行可以让阅读和定位本地导入更加容易。
+
+**为何？**按字母顺序排列可以让阅读和定位本地导入更加容易。
+
+```typescript
+//avoid
+import { ExceptionService, SpinnerService, ToastService } from '../../core';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Hero } from './hero.model';
+
+//try to
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+
+import { ExceptionService, SpinnerService, ToastService } from '../../core';
+import { Hero } from './hero.model';
+```
+
+#### 定位
+
+##### 风格04-03
+
+坚持文件名要看到名字立刻知道其包含什么，代表什么。
+
+#### 扁平
+
+##### 风格04-04
+
+扁平，更多的子目录，而非深的要死的文件树。
+
