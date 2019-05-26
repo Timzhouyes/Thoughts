@@ -1037,3 +1037,7 @@ console.log("result4：" + JSON.stringify(result4));
 	新的字符串 = 原数组.join(参数); // 参数选填
 ```
 
+#### reserve()
+
+`reserve()` :反转数组，返回结果为反转之后的数组（会改变原来的数组）
+
