@@ -13,3 +13,7 @@ tags:								#标签
     - 记录
     - 学习
 ---
+
+
+
+![photo](../img/photo.jpg)
