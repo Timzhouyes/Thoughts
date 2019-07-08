@@ -140,3 +140,36 @@ transient int modCount;  // 出现线程问题时，负责及时抛异常
 transient int size;     // HashMap中实际存在的Node数量
 ```
 
+对于HashMap而言，其 `Node[] table`的初始化长度是16， Load factor，也即其负载因子，默认是0.75。 所以`threshold=loadFactor*length`，当数组之中的元素达到这个个数之后就会触发其扩容。
+
+`modCount` 字段是用来记录HashMap内部结构发生变化的次数，注意这个部分之中的变化次数指的是结构发生变化，例如put了一个新的键值对，但是某个 key 所对应的 value 值被覆盖不属于结构变化。这个字段是 HashMap 的fail-fast 策略的基石，也就是在 Iterator 之中，每次都会先记录这个字段的值是多少，在迭代过程之中判断modCount和exceptedModCount 是否相等，不相等则直接抛出异常。
+
+*在HashMap之中，table的长度length大小必须为2的n次方。*实际在Hash 函数的设计之中，如果其长度为素数(prime number)，那么冲突的概率会更小。这里这样的设计方法主要是为了在取模和扩容时候做优化，同时减少冲突。我们后文会讲。
+
+## 2.功能实现
+
+> 首先对Java之中的移位计算符进行一点提及：
+>
+> java中有三种移位运算符
+>
+> <<      :     左移运算符，num << 1,相当于num乘以2
+>
+> \>>      :     右移运算符，num >> 1,相当于num除以2
+>
+> \>>>    :     无符号右移，忽略符号位，空位都以0补齐
+
+### 2.1 确定哈希桶数组索引的位置
+
+Hash 算法在此处分为三步：
+
+(1) **取key的hashCode值**，h = key.hashCode()； 
+(2) **高位参与运算**，h ^ (h >>> 16)；  也就是向右移16位之后做异或xor
+(3) **取模运算**，h & (length-1)。
+
+下面是图片说明，其中 n 为 table 的长度：
+
+![Hash算法示意图](../img/20170805173855551.jpg)
+
+## 2.2 分析 HashMap 的 put 方法
+
+个人认为其主要是分为一下几个比较大的步骤：
