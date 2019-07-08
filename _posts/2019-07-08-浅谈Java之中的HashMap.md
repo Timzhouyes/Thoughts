@@ -119,6 +119,26 @@ HashMap 使用的是哈希表来存储值，哈希表为了解决冲突问题，
 
 其简而言之，就是上面的示意图之中所说的，整个数据结构是数组加链表的组合，在数组的每个元素之中都加上一个链表结构。
 
-当数据被
-
  	段首缩进试用
+
+当数据被Hash之后，得到数组下标，将数据放在对应下标元素的联表上。比如
+
+```java
+map.put("Google","Haiming");
+```
+
+系统会首先调用"Google"这个key的hashCode() 方法得到其 hashCode() 的值，然后通过 Hash 算法的后两步运算（高位运算和取模运算）来定位该键值对的存储位置。 若是几个 key 定位到了相同的位置，那么表示发生了 Hash 碰撞。
+
+为了在空间成本和时间成本之中均衡，Hash 算法之中引入了扩容机制。 
+
+下面是 HashMap 之中的默认构造函数， 其即对下面这些字段进行初始化：
+
+```java
+int threshold;             // 扩容阈值 
+final float loadFactor;    // 负载因子
+transient int modCount;  // 出现线程问题时，负责及时抛异常
+transient int size;     // HashMap中实际存在的Node数量
+```
+
+
+
