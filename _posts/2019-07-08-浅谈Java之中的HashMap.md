@@ -10,7 +10,7 @@ tags:								#标签
     - 编程
     - Java
     - HashMap
-	- 数据结构
+    - 数据结构
 ---
 
 
@@ -139,6 +139,4 @@ final float loadFactor;    // 负载因子
 transient int modCount;  // 出现线程问题时，负责及时抛异常
 transient int size;     // HashMap中实际存在的Node数量
 ```
-
-
 
