@@ -16,4 +16,4 @@ tags:								#标签
 
 
 
-![photo](../img/photo.jpg)
+![photo](https://timzhouyes.github.io/img/photo.jpg)
