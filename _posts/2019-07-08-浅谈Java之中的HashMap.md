@@ -52,3 +52,16 @@ HashMap是Java之中的java.util.map 接口的一种实现，其继承关系如�
 
 > 其并发性不如ConcurrentHashMap的原因在于ConcurrentHashMap引入了分段锁，**分段锁**可以理解为其将整个Map分成了N个Segment，在put() 和 get() 的时候，根据key.hashCode() 先找到在哪个Segment， 再在内部操作，相当于用到哪部分就锁哪部分，**ConcurrentHashMap**键和值都不可为null
 
+**LinkedHashMap**
+
+LinkedHashMap是HashMap的一个子类，其保存了记录的插入顺序，在使用Iterator来遍历LinkedHashMap的时候，先得到的记录是先插入的。其也可以在构造的时候加入参数，按照访问次数排序等等
+
+**TreeMap**
+
+1. TreeMap底层是使用二叉树实现，其实现SortedMap 接口，可以将其保存的记录按照键的大小来排序，默认是按照键值的升序排序，也可以实现指定排序的比较器。
+2. 在使用TreeMap的时候，key必须实现Comparable的接口或在其中给出Comoarator,不然会抛出java.lang.ClassCastException 的异常。
+
+
+
+对于以上这四种Map的类型，均要求映射之中的key是不可变对象，其意味着对象在创建之后其hash值不可变。如果对象的hash值可变，那么map就无法定位到映射位置了。
+
