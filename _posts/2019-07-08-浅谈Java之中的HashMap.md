@@ -10,8 +10,7 @@ tags:								#标签
     - 编程
     - Java
     - HashMap
-    - 记录
-    - 学习
+	- 数据结构
 ---
 
 
@@ -32,7 +31,7 @@ https://blog.csdn.net/v123411739/article/details/78996181
 
 HashMap是Java之中的java.util.map 接口的一种实现，其继承关系如下所示：
 
-> ![map继承](../img/20170802205635418.png)
+![map继承](../img/20170802205635418.png)
 
 ##### 对于几个实现类的特点的一点说明：
 
@@ -65,3 +64,61 @@ LinkedHashMap是HashMap的一个子类，其保存了记录的插入顺序，在
 
 对于以上这四种Map的类型，均要求映射之中的key是不可变对象，其意味着对象在创建之后其hash值不可变。如果对象的hash值可变，那么map就无法定位到映射位置了。
 
+
+
+下面从：
+
+1. 存储结构
+2. 常用方法分析
+3. 扩容
+4. 安全性
+
+讲解HashMap的工作原理。
+
+# 1. 存储结构
+
+从实现结构来看，HashMap是数组+链表+红黑树(从JDK 1.8开始)实现的，如下图所示：
+
+![hashmap存储结构](../img/20170803204952538-1562571887311.png)
+
+
+
+其中每一个黑点是一个最基本的存储单位，是其内部的底层类。而对于数组的每一个单元，其都有一个链表来保存hash之后相同的值的元素，且当 size>8 的时候其会转化成红黑树。
+
+两个问题：
+
+1. 数据底层，也就是上图之中的黑点，到底存储的是什么？
+2. 这样的存储方式优势在哪？
+
+下面是上面两个问题的回答：
+
+HashMap之中有一个非常重要的字段，其为`Node[] table`，就是哈希桶数组。那么这个`Node` 类就是我们上面提到过的“ 黑点 ” 的本质。
+
+```java
+static class Node<K,V> implements Map.Entry<K,V> {
+    final int hash;    //用来定位数组索引位置
+    final K key;
+    V value;
+    Node<K,V> next;   //链表的下一个node
+
+    Node(int hash, K key, V value, Node<K,V> next) { ... }
+    public final K getKey(){ ... }
+    public final V getValue() { ... }
+    public final String toString() { ... }
+    public final int hashCode() { ... }
+    public final V setValue(V newValue) { ... }
+    public final boolean equals(Object o) { ... }
+}
+```
+
+其中 Node 是HashMap 的一个内部类，可见例如 `getKey()` ，`getValue()`等等，其实现了 Map.Entry 的接口。
+
+其中`final int hash`和`final K key` 都是`final`修饰，其不可以再进一步的修改，这也和我们之前说的一旦key 产生，那么其值不可以变动相呼应。
+
+HashMap 使用的是哈希表来存储值，哈希表为了解决冲突问题，可以采用链地址法(separate chaining) 或者是开地址法(open addressing) 来处理问题，Java 之中采用的方法是链地址法(separate chaining) 来解决这个问题。
+
+其简而言之，就是上面的示意图之中所说的，整个数据结构是数组加链表的组合，在数组的每个元素之中都加上一个链表结构。
+
+当数据被
+
+ 	段首缩进试用
