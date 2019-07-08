@@ -20,4 +20,4 @@ tags:								#标签
 
 
 
-![photo](../img/photo-1562555947819.jpg)
+![photo](/img/photo-1562555947819.jpg)
