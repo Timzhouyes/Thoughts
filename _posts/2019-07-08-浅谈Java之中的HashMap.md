@@ -31,7 +31,7 @@ https://blog.csdn.net/v123411739/article/details/78996181
 
 HashMap是Java之中的java.util.map 接口的一种实现，其继承关系如下所示：
 
-![map继承](../img/20170802205635418.png)
+![map继承](/img/20170802205635418.png)
 
 ##### 对于几个实现类的特点的一点说明：
 
@@ -79,7 +79,7 @@ LinkedHashMap是HashMap的一个子类，其保存了记录的插入顺序，在
 
 从实现结构来看，HashMap是数组+链表+红黑树(从JDK 1.8开始)实现的，如下图所示：
 
-![hashmap存储结构](../img/20170803204952538-1562571887311.png)
+![hashmap存储结构](/img/20170803204952538-1562571887311.png)
 
 
 
@@ -168,8 +168,88 @@ Hash 算法在此处分为三步：
 
 下面是图片说明，其中 n 为 table 的长度：
 
-![Hash算法示意图](../img/20170805173855551.jpg)
+![Hash算法示意图](/img/20170805173855551.jpg)
 
 ## 2.2 分析 HashMap 的 put 方法
 
 个人认为其主要是分为一下几个比较大的步骤：
+
+1. 计算Hash，逻辑判断（包括key是否为null与为null之后的处理）
+2. 扩容
+3. 链表与红黑树
+
+下面的这个图之中并没有包括key是否为null的判断，其应该位于table是否为空之后。
+
+![put](/img/20170805174132771.jpg)
+
+### 2.3 扩容机制
+
+扩容机制的亮点在于：每次都扩容为之前的2倍，那么可以直接通过位运算而不需要对每一个元素执行完整的Hash计算过程。
+
+我们使用的是2的n次幂的扩展，所以元素的位置要么是原位置，要么是原位置移动2次幂的位置。
+
+在扩充 HashMap 的时候，不需要重新计算Hash，只要看原来的hash值新增的bit是0还是1就可以，新增的bit如果为0，那么索引就不变。新增的bit为1，那么索引就变为“原索引+oldCap" 。下面是16扩展为32的resize示意：
+
+![resizeExample](/img/20170805180104619.jpg)
+
+### 2.4 线程安全性 
+
+HashMap 不是线程安全的，在多个线程同时put的情况下可能会造成死循环，(Infinity Loop)。
+
+参考地址：https://coolshell.cn/articles/9606.html
+
+多个线程同时put的时候，如果同时触发了rehash操作，那么HashMap之中会出现循环节点，进而使得后面的get出出现死循环。这种情况之下应该使用 CurrentHashMap 进行处理。
+
+### 2.5 遍历Map对象
+
+由于java 之中所有Map的实现类都实现了 Map 接口，所以以下方法适合所有的 Map 实现：
+
+**方法1：在 for-each 之中使用 entities 来遍历**
+
+非常常见，且在大多数情况下可取的遍历方式。在键和值都需要的时候使用。
+
+*但是！！如果遍历的是一个空的map对象， for-each 循环将抛出 NullPointerException, 所以在遍历之前应该检查空引用。*
+
+```java
+Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+    System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
+}
+```
+
+**方法2：在for-each 循环之中遍历 keys 或者 values**
+
+如果仅仅需要map之中的键或值，可以通过 keySet() 或者 values() 来实现遍历，而不是使用 entrySet() 。
+
+```java
+Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+//遍历map中的键
+for (Integer key : map.keySet()) {
+    System.out.println("Key = " + key);
+}
+//遍历map中的值
+for (Integer value : map.values()) {
+    System.out.println("Value = " + value);
+}
+```
+
+**方法3：使用 Iterator 遍历**
+
+```java
+Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+// 使用泛型
+Iterator<Map.Entry<Integer, Integer>> entries = map.entrySet().iterator();
+while (entries.hasNext()) {
+    Map.Entry<Integer, Integer> entry = entries.next();
+    System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
+}
+```
+
+1. 在老版本java 之中，这是唯一一种遍历 Map 的方式。
+2. 可以在遍历时候使用 `iterator.remove()`来删除，但是另外两个方法则不可以。
+
+## 小结
+
+HashMap是如何工作的？
+
+HashMap在Map.Entry静态内部类实现中存储key-value对。HashMap使用哈希算法，在put和get方法中，它使用hashCode()和equals()方法。当我们通过传递key-value对调用put方法的时候，HashMap使用Key hashCode()和哈希算法来找出存储key-value对的索引。Entry存储在LinkedList中，所以如果存在entry，它使用equals()方法来检查传递的key是否已经存在，如果存在，它会覆盖value，如果不存在，它会创建一个新的entry然后保存。当我们通过传递key调用get方法时，它再次使用hashCode()来找到数组中的索引，然后使用equals()方法找出正确的Entry，然后返回它的值。
