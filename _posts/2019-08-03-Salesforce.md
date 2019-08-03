@@ -11,3 +11,16 @@ tags:								#标签
     - Salesforce
     - Web
 ---
+
+Here is the note for Salesforce Basics tutorial on Trailhead.
+
+# Get Started with the Salesforce Platform
+
+## What does Salesforce Platform offer?
+
+1. Develop custom data models and applications for desktop and mobile.
+2. Heroku platform which let developers build scalable web apps and backend services by several languages.
+3. Salesforce APIs, which let developers integrate and connect their enterprise data.
+4. Mobile SDK.
+5. so on 
+
