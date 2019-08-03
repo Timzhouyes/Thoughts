@@ -38,3 +38,22 @@ There are three core programmatic technologies to learn about as a Salesforce de
 - Apex: Salesforce’s proprietary programming language with Java-like syntax.
 - Visualforce: A markup language that lets you create custom Salesforce pages with code that looks a lot like HTML, and optionally can use a powerful combination of Apex and JavaScript.
 
+
+
+The difference between Lightning components and Visualforce pages.:
+
+1. The primary difference is right in the name. With Lightning components, you’re developing components that can be pieced together to create pages. With Visualforce, you’re developing entire pages at once. 
+2. While Lightning components are newer and better for things like mobile development, there are several situations where it can make more sense to use Visualforce.
+
+# Extend the Salesforce Platform
+
+## Get to Know the Lightning Platform APIs
+
+The` __c` denotes that the object is a custom object or field. This query is using the automatically created API access point for the Property object to retrieve information about properties in your org.
+
+##  Unleash Your Apps with Heroku
+
+Heroku is a web development **platform** that lets you quickly build, deploy, and scale web apps.
+
+# Import Data
+
