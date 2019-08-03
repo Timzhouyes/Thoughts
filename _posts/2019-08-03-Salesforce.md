@@ -24,3 +24,17 @@ Here is the note for Salesforce Basics tutorial on Trailhead.
 4. Mobile SDK.
 5. so on 
 
+# Develop without code
+
+## What is metadata
+
+In short, metadata forms structure of your organization.
+
+# Code with Salesforce Languages
+
+There are three core programmatic technologies to learn about as a Salesforce developer.
+
+- Lightning Component Framework: A UI development framework similar to AngularJS or React.
+- Apex: Salesforce’s proprietary programming language with Java-like syntax.
+- Visualforce: A markup language that lets you create custom Salesforce pages with code that looks a lot like HTML, and optionally can use a powerful combination of Apex and JavaScript.
+
