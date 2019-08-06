@@ -129,3 +129,75 @@ So we can also check the formula online. Such as :
 - **Unknown function**: In this case, check that Salesforce supports the functions you’re using. You’ll also get this error for misspelled functions.
 
 ![A formula that includes an unsupported function.](../img/f548b71771f8a6e3eb37a2182b1a0171_formulas_unknown_function.png)
+
+# Implement Roll-Up Summary Fields
+
+This part is used for the Master-Detail relationship for the records.
+
+Keep in mind that the types of fields you can calculate in a roll-up summary field depend on the type of calculation. For example:
+
+- Number, currency, and percent fields are available when you select SUM as the roll-up type.
+- Number, currency, percent, date, and date/time fields are available when you select MIN or MAX as the roll-up type.
+
+# Create Validation Rules
+
+Just create validation by clicking.
+
+Here are some examples:
+
+### Account Number Is Numeric
+
+| Field               | Value                                                        |
+| :------------------ | :----------------------------------------------------------- |
+| **Description:**    | Validates that the Account Number is numeric if not blank.   |
+| **Formula:**        | `	AND(    NOT(ISBLANK(AccountNumber)),    NOT(ISNUMBER(AccountNumber)) )` |
+| **Error Message:**  | Account Number is not numeric.                               |
+| **Error Location:** | Account Number                                               |
+
+### Date Must Be in the Current Year
+
+| Field               | Value                                                        |
+| :------------------ | :----------------------------------------------------------- |
+| **Description:**    | Validates that a custom date field contains a date within the current year. |
+| **Formula:**        | YEAR( My_Date__c ) <> YEAR ( TODAY() )                       |
+| **Error Message:**  | Date must be in the current year.                            |
+| **Error Location:** | My Date                                                      |
+
+### Number Range Validation
+
+| Field               | Value                                                        |
+| :------------------ | :----------------------------------------------------------- |
+| **Description:**    | Validates that the range between two custom fields, Salary Min and Salary Max, is no greater than $20,000. |
+| **Formula:**        | `(Salary_Max__c - Salary_Min__c) > 20000`                    |
+| **Error Message:**  | Salary range must be within $20,000. Adjust the Salary Max or Salary Min values. |
+| **Error Location:** | Salary Max                                                   |
+
+### Website Extension
+
+| Field               | Value                                                        |
+| :------------------ | :----------------------------------------------------------- |
+| **Description:**    | Validates a custom field called Web Site to ensure that its last four characters are in an explicit set of valid website extensions. |
+| **Formula:**        | `OR(    RIGHT( Web_Site__c, 4) <> ".COM",    RIGHT( Web_Site__c, 4) <> ".com",    RIGHT( Web_Site__c, 4) <> ".ORG",    RIGHT( Web_Site__c, 4) <> ".org",    RIGHT( Web_Site__c, 4) <> ".NET",    RIGHT( Web_Site__c, 4) <> ".net"  ) ` |
+| **Error Message:**  | Web Site must have an extension of .com, .org, or .net.      |
+| **Error Location:** | Web Site                                                     |
+
+### Valid Billing Country
+
+| Field               | Value                                                        |
+| :------------------ | :----------------------------------------------------------- |
+| **Description:**    | Validates that the account Billing Country is a valid ISO 3166 two-letter code. |
+| **Formula:**        | `OR( LEN(BillingCountry) = 1, NOT( CONTAINS( "AF:AX:AL:DZ:AS:AD:AO:AI:AQ:AG:AR:AM:" & "AW:AU:AZ:BS:BH:BD:BB:BY:BE:BZ:BJ:BM:BT:BO:" & "BA:BW:BV:BR:IO:BN:BG:BF:BI:KH:CM:CA:CV:KY:" & "CF:TD:CL:CN:CX:CC:CO:KM:CG:CD:CK:CR:CI:HR:" & "CU:CY:CZ:DK:DJ:DM:DO:EC:EG:SV:GQ:ER:EE:ET:FK:" & "FO:FJ:FI:FR:GF:PF:TF:GA:GM:GE:DE:GH:GI:GR:GL:" & "GD:GP:GU:GT:GG:GN:GW:GY:HT:HM:VA:HN:HK:HU:" & "IS:IN:ID:IR:IQ:IE:IM:IL:IT:JM:JP:JE:JO:KZ:KE:KI:" & "KP:KR:KW:KG:LA:LV:LB:LS:LR:LY:LI:LT:LU:MO:MK:" & "MG:MW:MY:MV:ML:MT:MH:MQ:MR:MU:YT:MX:FM:MD:MC:" & "MC:MN:ME:MS:MA:MZ:MM:MA:NR:NP:NL:AN:NC:NZ:NI:" & "NE:NG:NU:NF:MP:NO:OM:PK:PW:PS:PA:PG:PY:PE:PH:" & "PN:PL:PT:PR:QA:RE:RO:RU:RW:SH:KN:LC:PM:VC:WS:" & "SM:ST:SA:SN:RS:SC:SL:SG:SK:SI:SB:SO:ZA:GS:ES:" & "LK:SD:SR:SJ:SZ:SE:CH:SY:TW:TJ:TZ:TH:TL:TG:TK:" & "TO:TT:TN:TR:TM:TC:TV:UG:UA:AE:GB:US:UM:UY:UZ:" & "VU:VE:VN:VG:VI:WF:EH:YE:ZM:ZW", BillingCountry)))` |
+| **Error Message:**  | A valid two-letter country code is required.                 |
+| **Error Location:** | Billing Country                                              |
+
+# Automate Simple Business Processes with Process Builder
+
+### The Components of a Process
+
+Every process consists of a trigger, at least one criteria node, and at least one action. You can configure immediate actions or schedule actions to be executed at a specific time.
+
+There are 2 kinds of actions that the Process can do:
+
+- Each immediate action is executed as soon as the criteria evaluates to true.
+- Each scheduled action is executed at the specified time, such as 10 days before the record’s close date or 2 days from now. At the specified time, Salesforce makes sure that the associated criteria node still evaluates to true. If so, the scheduled action is executed.
+
