@@ -81,3 +81,17 @@ Here are different situations for different tools:
 ## Add Field Access with a Permission Set
 
 Remember, a permission set is for *expanding* a user’s access to fields that are restricted in their profile.
+
+# Use Formula Fields
+
+## The Formula Editor in Action
+
+### Example 1: Displaying an Account Field on the Contact Detail Page
+
+### Example 2: Displaying the Number of Days Until an Opportunity Closes on a Report
+
+In this part, the most important part is to use `TODAY` to get the value of today.
+
+### Example 3: Finding Distinct Objects Using the Power of One
+
+It is used to figure out the number of distinct items, such as there are only 6 users but 100 records related, `Power of One` can do the distinction.
