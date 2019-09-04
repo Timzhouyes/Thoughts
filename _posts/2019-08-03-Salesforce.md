@@ -100,7 +100,7 @@ To write this formula, create a custom formula field on the User object. Name it
 
 Yes,just the number 1.
 
-![The Power of One formula.](../img/345cb6052afab5fdfbcab44958df3d46_formulas_one.png)
+![The Power of One formula.](/img/345cb6052afab5fdfbcab44958df3d46_formulas_one.png)
 
 ## Debugging Formulas
 
@@ -108,27 +108,27 @@ So we can also check the formula online. Such as :
 
 -  **Missing parentheses**: This error most often occurs when the number of opening parentheses doesn’t match the number of closing parentheses. It can be particularly difficult to avoid this error if you’re using several functions at once. Try breaking your function into multiple lines so it’s easier to tell which sets of parentheses belong together.
 
-![A formula that's missing a parenthesis.](../img/1c7cf053bc8a8a8e35441bed5fed42f4_formulas_missing_paren.png)
+![A formula that's missing a parenthesis.](/img/1c7cf053bc8a8a8e35441bed5fed42f4_formulas_missing_paren.png)
 
 - **Incorrect parameter type**: If you give a function a number parameter when it expects text (or any other combination of data types), this is the error you’ll see. Always check the help text or the documentation so you know what kind of parameters a function accepts.
 
-![A formula with an incorrect parameter type.](../img/62e5028d414dd905f4deabc99fbfc925_formulas_incorrect_param.png)
+![A formula with an incorrect parameter type.](/img/62e5028d414dd905f4deabc99fbfc925_formulas_incorrect_param.png)
 
 - **Incorrect number of parameters for function**: If you input too many or too few parameters into a function, the syntax checker alerts you. Again, check the help text or documentation for guidelines on inputting parameters to specific functions.
 
-![A formula with too many parameters.](../img/41d384fba9ed9ed93d44fb714247920b_formulas_incorrect_num_params.png)
+![A formula with too many parameters.](/img/41d384fba9ed9ed93d44fb714247920b_formulas_incorrect_num_params.png)
 
 - **Formula result is incompatible with formula return type**: You’ll see this error if you select one data type when creating the formula field but write a formula that returns a different data type. In the example below, you can see that My Account Formula expects to return a number (shown in parentheses next to the formula name), but the TODAY() function returns a date. The error tells you what the expected data type is, but you can always reference the documentation beforehand to avoid the error.
 
-![A formula that returns a result of the incorrect data type.](../img/28195bf4a64481276a7ef8624c1a83e4_formulas_incompatible_type.png)
+![A formula that returns a result of the incorrect data type.](/img/28195bf4a64481276a7ef8624c1a83e4_formulas_incompatible_type.png)
 
 - **Field does not exist**: This error indicates that you’ve included a field in your formula that your object doesn’t support. In this case, check your spelling and capitalization. If you can’t find any mistakes, try inserting the field from the **Insert Field** menu again to make sure you’re referencing it correctly.
 
-![A formula with a misspelled field name.](../img/b13d463398c3259a2b611121992cc6af_formulas_field_doesnt_exist.png)
+![A formula with a misspelled field name.](/img/b13d463398c3259a2b611121992cc6af_formulas_field_doesnt_exist.png)
 
 - **Unknown function**: In this case, check that Salesforce supports the functions you’re using. You’ll also get this error for misspelled functions.
 
-![A formula that includes an unsupported function.](../img/f548b71771f8a6e3eb37a2182b1a0171_formulas_unknown_function.png)
+![A formula that includes an unsupported function.](/img/f548b71771f8a6e3eb37a2182b1a0171_formulas_unknown_function.png)
 
 # Implement Roll-Up Summary Fields
 
