@@ -68,7 +68,7 @@ Ray Dalio的这一系列文章的意义在其[intro](linkedin.com/pulse/changing
 
 为了理解这些特征和其之间的因果关系，作者需要从一个更高的层次去观察事物，同时还不能丧失低层次的细节把控。大部分事务的发展路径都如下图所示：
 
-![No alt text provided for this image](../img/2020-05-23-经济周期/0)
+![No alt text provided for this image](/img/2020-05-23-EconomicCycle/0)
 
 比如，随着时间的流逝，我们的生活水平上升，这个会导致更高的生产力。但是同时在经济之中也有涨有落，因为我们有债务周期来在不断上升的趋势之中驱动经济上涨或者下降。
 
