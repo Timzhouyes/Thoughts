@@ -345,3 +345,6 @@ MP2：政府开始印钞购买市场上面的资产来兜底
 
 MP3：政府开始定向直接拨款，比如今年4月9日的直接每个人发钱这种”直升机撒钱“
 
+下面是经济周期的概略图：
+
+![No alt text provided for this image](../img/2020-05-23-EconomicCycle/0.png)
