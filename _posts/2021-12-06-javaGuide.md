@@ -314,5 +314,85 @@ Epoll：是被动接受通知，有 callback 函数，每次醒来的时候只�
 	- 水平触发：只要该 fd 还有数据可读，每次 epoll_wait 都会返回其事件来让用户操作
 	- 边缘触发：只提示一次，直到下次有数据流入之前都不会再提示。所以 ET(edge trigger) 之中，读一个 fd 的时候一定要把 buffer 全部读完。
 
-## 2.2. Java集合
+## 三 Java集合
+
+## 3.1 Collection 子接口之 List
+
+### 3.1.1 Arraylist 与 LinkedList 区别?
+
+1. 是否线程安全？均非同步，所以都不是线程安全
+2. 底层数据结构：ArrayList之中是`Object[]`，LinkedList 底层是**双向链表**
+3. 插入和删除是否受元素位置影响？
+   - `ArrayList`：受。当整个 List 的长度为 n，要在指定位置 i 插入和删除元素的时候，时间复杂度为 O(n-i)。因为在将位置 i 处增加一个元素之后，需要将后面 (n-i) 个元素全部都往后挪一位
+   - `LinkedList`: 其在寻找插入位置的时候也是会受到影响：假设在位置 i 处增加一个元素，那么需要遍历到位置 i 才能够进行插入或者删除操作。但是在找到这个节点之后，就只需要对其前面后面的指针做修改，不需要将后面的元素再挪位置。
+4. 是否支持快速随机访问：`ArrayList`  接受，但是`LinkedList`不接受
+5. 内存空间占用：`ArrayList`之中要在 list 的末尾预留一部分空间，`LinkedList` 不用预留空间，但是其中每个节点的空间都要更多，因为要保存前驱和后驱节点
+
+### 3.1.2 ArrayList 扩容机制分析
+
+如果没有传入数组容量，新创建的数组默认是一个空数组，在第一次使用时候才会按照默认容量10来创建。
+
+扩容之中采用的位运算：`        int newCapacity = oldCapacity + (oldCapacity >> 1); `。每次增加之后的容量是愿容量的1.5倍。
+
+增加的逻辑是新建一个容量为 `newCapacity` 的数组，用`Arrays.copyOf()`方式将老数组之中内容拷贝过去且指向内部用来保存数据的`Object[]` elementData。
+
+## 3.2  Collection 子接口之 Set
+
+### 3.2.1 比较 HashSet、LinkedHashSet 和 TreeSet 三者的异同
+
+相同点：三者都线程不安全
+
+不同点：底层实现各不相同：
+
+- `hashSet `的底层实现是`HashMap`。
+- `LinkedHashSet` 的底层实现是`HashMap` 和链表
+- `TreeSet` 的底层实现是红黑树
+
+底层数据结构的不同，导致三者的应用场景也不同。
+
+- `HashSet`：元素不需要有序，最基本的 Set 实现
+- `LinkedHashSet`：元素有序插入和取出，符合 FIFO
+- `TreeSet`:红黑树天然排序，需要对元素自定义排序规则场景
+
+## 3.3 Collection 子接口之 Queue
+
+### 3.3.1 Queue 与 Deque 的区别
+
+**不同：**
+
+queue 是单端队列，实现 FIFO。
+
+Deque 是双端队列，队列两端均可以插入或者删除元素。
+
+
+
+事实上，`Deque` 还提供有 `push()` 和 `pop()` 等其他方法，可用于模拟栈。
+
+**相同：**
+
+`Deque` 和 queue 在**因为容量问题而导致操作失败后处理方式不同**方面都有两套方法，一套抛出异常，一套返回特殊值。
+
+| `Queue` 接口 | 抛出异常  | 返回特殊值 |
+| ------------ | --------- | ---------- |
+| 插入队尾     | add(E e)  | offer(E e) |
+| 删除队首     | remove()  | poll()     |
+| 查询队首元素 | element() | peek()     |
+
+| `Deque` 接口 | 抛出异常      | 返回特殊值      |
+| ------------ | ------------- | --------------- |
+| 插入队首     | addFirst(E e) | offerFirst(E e) |
+| 插入队尾     | addLast(E e)  | offerLast(E e)  |
+| 删除队首     | removeFirst() | pollFirst()     |
+| 删除队尾     | removeLast()  | pollLast()      |
+| 查询队首元素 | getFirst()    | peekFirst()     |
+| 查询队尾元素 | getLast()     | peekLast()      |
+
+### 3.3.2 说一说 PriorityQueue
+
+`PriorityQueue` 和`Queue` 的区别是元素的出队顺序和**优先级**是相关的。
+
+1. `PriorityQueue` 利用了二叉堆的数据结构实现，底层是可变长的数组来存储数据
+2. 在**插入元素** 和**删除堆顶元素（出队）**的过程之中，时间复杂度是`O(logn)` =》 单个元素快排的时间复杂度， 通过堆元素的上浮和下沉来达到的。
+3. `PriorityQueue` 是非线程安全的，且不支持存储`NULL` 和`non-comparable` 的对象 =》如果不能够被比较，就无法得到 priority,也就没有在这个 queue之中存在的意义
+4. `PriorityQueue` 默认是小顶堆，但可以通过接收一个`Comparator` 作为构造参数，来自定义元素优先级的先后
 
