@@ -396,3 +396,192 @@ Deque 是双端队列，队列两端均可以插入或者删除元素。
 3. `PriorityQueue` 是非线程安全的，且不支持存储`NULL` 和`non-comparable` 的对象 =》如果不能够被比较，就无法得到 priority,也就没有在这个 queue之中存在的意义
 4. `PriorityQueue` 默认是小顶堆，但可以通过接收一个`Comparator` 作为构造参数，来自定义元素优先级的先后
 
+## 3.4 Map 接口
+
+### 3.4.1 HashMap 和 HashTable 的区别
+
+1. 线程是否安全：HashMap 是非线程安全的，HashTable 是线程安全的，因为`HashTable` 内部一般都经过`syncronized`修饰
+
+2. 效率：`HashMap` 不考虑线程安全，效率因此比`HashTable` 高一些。HashTable 本身基本被淘汰，需要线程安全的时候可以用 ConcurrentHashMap
+
+3. 对 Null key 和 Null Value 的支持
+   **在 HashMap 之中：**
+
+   ```java
+   
+       /**
+        * Computes key.hashCode() and spreads (XORs) higher bits of hash
+        * to lower.  Because the table uses power-of-two masking, sets of
+        * hashes that vary only in bits above the current mask will
+        * always collide. (Among known examples are sets of Float keys
+        * holding consecutive whole numbers in small tables.)  So we
+        * apply a transform that spreads the impact of higher bits
+        * downward. There is a tradeoff between speed, utility, and
+        * quality of bit-spreading. Because many common sets of hashes
+        * are already reasonably distributed (so don't benefit from
+        * spreading), and because we use trees to handle large sets of
+        * collisions in bins, we just XOR some shifted bits in the
+        * cheapest possible way to reduce systematic lossage, as well as
+        * to incorporate impact of the highest bits that would otherwise
+        * never be used in index calculations because of table bounds.
+        */
+       static final int hash(Object key) {
+           int h;
+           return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
+       }
+   
+   ```
+
+   可以看出来如果 key 是Null，其 hash 值为0. 这也是 HashMap 可以存储 null 键的原因。HashMap 之中的null 值可以有很多
+
+   **在 HashTable 之中**
+
+   不允许有 Null  键和 Null 值。抛 NullPointerException
+
+4. 初始容量大小和每次扩充容量大小的不同
+   如果没有指定初始值，那么 Hashtable 的默认大小是11，每次扩充之后容量都变为之前的2n+1. 如果给定了初始值，那么 Hashtable 会用给定的大小。
+
+   HashMap 的初始值是16，每次扩充都是之前的2倍。如果给定了初始值，而 HashMap 会将其扩充到2的幂次方大小。
+
+5. 底层数据结构
+   此处主要是 HashMap 的巧妙设计，为了解决哈希冲突，当链表长度大于阈值的时候，将链表转换成红黑树来减少搜索时间。
+
+### 3.4.2 HashMap 和 HashSet 区别
+
+HashSet 就是基于 HashMap 实现的，其是使用了 HashMap 的 key 半边，在 value 半边全部放置的是 new Object()。
+
+|               `HashMap`                |                          `HashSet`                           |
+| :------------------------------------: | :----------------------------------------------------------: |
+|           实现了 `Map` 接口            |                       实现 `Set` 接口                        |
+|               存储键值对               |                          仅存储对象                          |
+|     调用 `put()`向 map 中添加元素      |             调用 `add()`方法向 `Set` 中添加元素              |
+| `HashMap` 使用键（Key）计算 `hashcode` | `HashSet` 使用成员对象来计算 `hashcode` 值，对于两个对象来说 `hashcode` 可能相同，所以`equals()`方法用来判断对象的相等性 |
+
+### 3.4.3 HashMap 和 TreeMap 区别
+
+TreeMap 和 HashMap 都继承自 AbstractMap。但是需要注意的是，TreeMap 还实现了 Navigable 接口和 SortedMap 接口。
+
+Navigable 接口是对 TreeMap 有了搜索集合之内元素的能力。SortedMap 接口让 TreeMap 有了对集合之内的元素根据键排序的能力。
+
+> 个人认为，TreeMap 之中的天然顺序性是 Navigable 和 SortedMap 接口实现的根源。有序是让搜索性能更高的根本。
+
+### 3.4.4 HashSet 如何检查重复
+
+先看 HashSet 之中的add()方法：
+
+```java
+    private transient HashMap<E,Object> map;
+    
+  // Dummy value to associate with an Object in the backing Map
+    private static final Object PRESENT = new Object();
+
+/**
+     * Adds the specified element to this set if it is not already present.
+     * More formally, adds the specified element <tt>e</tt> to this set if
+     * this set contains no element <tt>e2</tt> such that
+     * <tt>(e==null&nbsp;?&nbsp;e2==null&nbsp;:&nbsp;e.equals(e2))</tt>.
+     * If this set already contains the element, the call leaves the set
+     * unchanged and returns <tt>false</tt>.
+     *
+     * @param e element to be added to this set
+     * @return <tt>true</tt> if this set did not already contain the specified
+     * element
+     */
+    public boolean add(E e) {
+        return map.put(e, PRESENT)==null;
+    }
+```
+
+可见是直接调用 HashMap 之中的 put()，将要存储的值放在 HashMap 的 key 之中。
+
+再看 HashMap 之中的 put():
+
+```java
+
+    /**
+     * Associates the specified value with the specified key in this map.
+     * If the map previously contained a mapping for the key, the old
+     * value is replaced.
+     *
+     * @param key key with which the specified value is to be associated
+     * @param value value to be associated with the specified key
+     * @return the previous value associated with <tt>key</tt>, or
+     *         <tt>null</tt> if there was no mapping for <tt>key</tt>.
+     *         (A <tt>null</tt> return can also indicate that the map
+     *         previously associated <tt>null</tt> with <tt>key</tt>.)
+     */
+    public V put(K key, V value) {
+        return putVal(hash(key), key, value, false, true);
+    }
+```
+
+ 将之前这个 key 所捆绑的 value 返回，如果是 null，那么说明之前对应的 key 并没有什么对应的 value，也就是这个 key 不存在。
+
+### 3.4.5 HashMap 的底层实现
+
+**JDK 1.8之前**
+
+JDK1.8之前，是数组和链表结合在一起使用。
+
+HashMap 通过key 的hashCode 扰动处理之后，得到相应的 hash 值，然后通过(n-1)&hash 判断当前元素存放的位置。再看当前位置是否存在元素，是的话就将该元素和要存入的元素的 hash 值和 key 值都进行比较，相同则覆盖，不同就用拉链法来解决冲突。
+
+因为 hashCode()方法多半会被覆写，怕一些实现的比较差的 hashCode 实现方法，因此会进行一定的扰动，也就是将其右移之后在进行按位异或。
+
+JDK1.8的hash方法：
+
+```java
+    static final int hash(Object key) {
+      int h;
+      // key.hashCode()：返回散列值也就是hashcode
+      // ^ ：按位异或
+      // >>>:无符号右移，忽略符号位，空位都以0补齐
+      return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
+  }
+
+```
+
+而 JDK1.7的 hash 方法扰动了4次，相对性能就会差一些。
+
+**JDK1.8 之后**
+
+相比于之前的版本， JDK1.8 之后在解决哈希冲突时有了较大的变化，当链表长度大于阈值（默认为 8）（将链表转换成红黑树前会判断，如果当前数组的长度小于 64，那么会选择先进行数组扩容，而不是转换为红黑树）时，将链表转化为红黑树，以减少搜索时间。
+
+### 3.4.6 HashMap 的长度为什么是 2 的幂次方
+
+为了**加快哈希计算**和**减少哈希冲突**
+
+为了找到 key 的位置在 hashMap 的哪个槽中，我们要计算 `hash(KEY) % 数组长度`
+
+但是%的效率太低了，我们可以用&来代替%。为了保证&的计算结果等于%的结果，要将 length-1
+
+也就是` hash(KEY) & (length-1)`
+
+而且为2的幂次方，在扩容的时候永远乘2，也能够保证所有的元素要么在原位，要么在扩容之后的+n 的位置，不会有其他的情况，这样方便扩容。
+
+### 3.4.7 HashMap 多线程操作导致死循环问题
+
+因为 jdk1.7之前是头插，jdk1.8及之后改成尾插，在数组容量不够的情况下，发生 rehash 的过程之中，多线程操作有可能会出现循环链表——两个元素相互指向。
+
+详情请查看：[https://coolshell.cn/articles/9606.html(opens new window)](https://coolshell.cn/articles/9606.html)
+
+### 3.4.8 ConcurrentHashMap 和 Hashtable 的区别
+
+二者虽然都是线程安全，但是实现线程安全的方式并不相同。
+
+1. 底层数据结构
+
+   - JDK1.7 的 ConcurrentHashMap 底层采用 分段的数组+链表 的方式实现。其中分段的数组指的是分成很多个 Segment 的 HashEntry 数组。而 JDK1.8之中采用的数据结构和 HashMap1.8一样，数组+链表+红黑树。
+   - HashTable 之中采用的还是和 HashMap在 JDK1.8之前的 HashMap 底层数据结构一样的方式，数组+链表；数组是 HashMap 的主体，链表是使用拉链法来解决哈希冲突的方式。
+
+2. 实现线程安全的方式
+
+   - 在 JDK1.7之中，ConcurrentHashMap 对整个桶数组进行了分割分段(Segment)，且 Segment 之中实现了 ReentrantLock 这个可重入锁。
+
+     ```java
+     static class Segment<K,V> extends ReentrantLock implements Serializable {
+     }
+     ```
+
+     多线程访问容器之中不同数据端的数据，就不会存在锁竞争。
+
+   - 
