@@ -887,3 +887,256 @@ jdk 内部对于轻量级锁的实现，主要是通过对象头部的`mark word
    2. 可以选择公平锁：syncronized 非公平锁，其效率更高，但是 ReentrantLock 可以选择其是公平锁还是非公平锁。
    3. ReentrantLock 可以给线程来选择要注册在哪个 Condition 之中，从而有选择性的实现线程通知，在线程调度上面更灵活。synchronized 相当于只有一个 Condition 实例，所有线程注册在其身上，要 notifyAll()就会通知所有处在等待状态的线程。
 
+## 5.2 volatile 关键字
+
+### 5.2.1. CPU 缓存模型
+
+CPU有缓存，是为了解决 CPU 的计算速度和内存的读取速度不匹配的问题。先复制一份数据到 cpu cache之中，再当 CPU 需要的时候，直接从 CPU cache 之中读取数据，运算完成之后写回到 memory。但是这样可能会造成数据不一致，这也是要引入 volatile 的原因。
+
+### 5.2.2 JMM（Java 内存模型）
+
+JDK1.2之前，Java 的内存模型总是从主存，也就是共享内存读取变量，而现在的架构之中，可以先将变量保存在**本地内存**，比如机器的寄存器之中，这就可能造成了一个线程在驻村之中修改了一个变量的值，但是另外的线程还在用变量在其中的拷贝，造成不一致。
+
+**如何解决？**
+
+使用 volatile,那么每次使用这个变量，都要从主存之中进行读取。
+
+volatile 的作用？
+
+1. 防止指令重排序
+2. 让变量每次都从主存之中读取，可见性。
+
+### 5.2.3 并发编程的三个特性
+
+1. 原子性：syncronized 可以保证
+2. 可见性：其更改可以及时的被其他线程看到。可以用 volatile 实现
+3. 有序性：代码执行的前后顺序要有保证（上面的双重校验单例模式就有），可以用 volatile 实现。
+
+### 5.2.4 synchonized 和 volatile 区别
+
+相同：其都是在多线程编程之中使用
+
+不同：
+
+1. volatile 用于变量，syncronized 范围要大很多
+2. volatile 可以保证数据的可见性，但是不保证原子性。但是 syncronized 都可以保证
+3. 其本身作用范围就不同，volatile 是多个线程的**可见性**，但是 syncronized 是多个线程之间访问资源的**同步性**。
+
+## 5.3 ThreadLocal
+
+### 5.3.1 ThreadLocal 简介
+
+用来给每个线程有自己的版本的变量。其变量的指针会在这个线程所处的栈上。
+
+### 5.3.2 ThreadLocal 示例
+
+在使用的时候，一般都是 ThreadLocal\<Class> ，ThreadLocal 可以作为这 class 的容器。
+
+### 5.3.3 ThreadLocal 原理
+
+总结：Thread 类之中有两个关于 `ThreadLocal.ThreadLocalMap`的变量，可看出其本身是和 ThreadLocalMap 相关，而非和 ThreadLocal 直接关联。
+
+```java
+public class Thread implements Runnable {
+    //......
+    //与此线程有关的ThreadLocal值。由ThreadLocal类维护
+    ThreadLocal.ThreadLocalMap threadLocals = null;
+
+    //与此线程有关的InheritableThreadLocal值。由InheritableThreadLocal类维护
+    ThreadLocal.ThreadLocalMap inheritableThreadLocals = null;
+    //......
+}
+
+```
+
+**ThreadLocal 可以当成 ThreadLocalMap 的封装类而已，最后操作的时候都是操作 ThreadLocalMap**。
+
+ ThreadLocal 之中的 get()和 set()都是操作 ThreadLocalMap 之中的 get()和 set()。首先通过 Thread.currentThread()得到当前的线程，然后再进行设置操作。
+
+```java
+public void set(T value) {
+    Thread t = Thread.currentThread();
+    ThreadLocalMap map = getMap(t);
+    if (map != null)
+        map.set(this, value);
+    else
+        createMap(t, value);
+}
+ThreadLocalMap getMap(Thread t) {
+    return t.threadLocals;
+}
+
+```
+
+ThreadLocalMap 之中，key 是对应的 threadLocal,value 是对应要放的值。
+
+### 5.3.4 ThreadLocal内存泄露问题
+
+threadLocalMap 之中使用的 key，是 threadLocal 的弱引用，但是 value 是强引用。这样，如果 threadLocal 没被外部强引用的情况下，GC 的时候，key 就会被清理掉，但是 value 不会，那么 threadLocalMap 之中就会出现 key 是 null 的 entry。不做任何措施的情况下，value()就永远无法被 GC 回收。可能产生内存泄露。
+
+**如何解决？**
+
+threadLocalMap之中，在调用 set()，get()，remove()之后，会自动清理掉 key 是 null 的记录。
+
+> 为什么？
+>
+> 参考：https://zhuanlan.zhihu.com/p/304240519
+>
+> https://blog.csdn.net/tmr1016/article/details/100141446
+>
+> ![img](../img/2021-12-06-javaGuide/20190829172740246.png)
+>
+> 我们想要的，是 threadLocal所在的对象被 GC 之后，对应的 entry 也失效。但是假设threadLocalMap 的 key 是强引用，那么当前线程失效之前，这个 threadLocal 永远不会被 GC 触及到，也就是 threadLocal 和持有其线程的生命周期相关，而非和对象的销毁相关。
+>
+> 为什么要和对象的销毁相关？
+>
+> threadLocalMap本身是 threadLocal 的内部类，其只能通过 threadLocal 的 get 和 set 来取得。而 threadLocal 依附于某个对象和某个线程。当对象已经被 GC 之后，这个 threadLocalMap 的 entry 就已经没有办法拿到了，那自然就没意义了，不需要等到 thread 被销毁时候才销毁
+
+## 5.4 线程池
+
+### 5.4.1 为什么要用线程池
+
+1. 降低资源消耗：重复利用已经创建了的线程来降低线程创建和销毁造成的消耗
+2. 提高响应速度：任务到达的时候，不需要等待线程的创建和销毁就能执行
+3. 便于管理：相比于独立的去创建和销毁线程，使用线程池可以做到统一的分配，调优和监控
+
+### 5.4.2 实现 Runnable 和 Callable 接口区别
+
+Runnable.java:
+
+```java
+@FunctionalInterface
+public interface Runnable {
+   /**
+    * 被线程执行，没有返回值也无法抛出异常
+    */
+    public abstract void run();
+}
+
+```
+
+Callable.java:
+
+```java
+@FunctionalInterface
+public interface Callable<V> {
+    /**
+     * 计算结果，或在无法这样做时抛出异常。
+     * @return 计算得出的结果
+     * @throws 如果无法计算结果，则抛出异常
+     */
+    V call() throws Exception;
+}
+
+```
+
+Callable 相比于 runnable,可以用来返回结果或者抛出异常。--> call 本身也有这个含义
+
+用文中的一个例子进行讲解（我们以 **`AbstractExecutorService` 接口** 中的一个 `submit` 方法为例子来看看源代码）：
+
+```java
+public Future<?> submit(Runnable task) {
+    if (task == null) throw new NullPointerException();
+  
+    RunnableFuture<Void> ftask = newTaskFor(task, null);
+    execute(ftask);
+    return ftask;
+}
+
+   /**
+     * Returns a {@code RunnableFuture} for the given runnable and default
+     * value.
+     *
+     * @param runnable the runnable task being wrapped
+     * @param value the default value for the returned future
+     * @param <T> the type of the given value
+     * @return a {@code RunnableFuture} which, when run, will run the
+     * underlying runnable and which, as a {@code Future}, will yield
+     * the given value as its result and provide for cancellation of
+     * the underlying task
+     * @since 1.6
+     */
+protected <T> RunnableFuture<T> newTaskFor(Runnable runnable, T value) {
+  //这个地方的 value，可以从下面看出来就是成功执行之后用来返回的 value
+    return new FutureTask<T>(runnable, value);
+}
+
+public void execute(Runnable command) {
+  ...
+}
+
+
+    /**
+     * Creates a {@code FutureTask} that will, upon running, execute the
+     * given {@code Runnable}, and arrange that {@code get} will return the
+     * given result on successful completion.
+     *
+     * @param runnable the runnable task
+     * @param result the result to return on successful completion. If
+     * you don't need a particular result, consider using
+     * constructions of the form:
+     * {@code Future<?> f = new FutureTask<Void>(runnable, null)}
+     * @throws NullPointerException if the runnable is null
+     */
+public FutureTask(Runnable runnable, V result) {
+        this.callable = Executors.callable(runnable, result);
+        this.state = NEW;       // ensure visibility of callable
+    }
+
+```
+
+### 5.4.3 执行 execute()和 submit()方法之间的区别是什么？
+
+1. Execute() 用于提交不需要返回值的任务，所以**无法判断**任务是否被线程池执行成功。
+2. submit() 用于提交需要返回值的任务，线程池会返回一个`Future` 的对象，可以通过判断 Future 来判断任务是否成功，也可以通过 Future 的 get()获取返回值。对于 Future 对象：
+   - Get() 会阻塞当前的线程，直到任务完成。
+   - `Get(long timeout, TimeUnit unit)` 会阻塞当前线程一段时间之后返回
+
+实际在实现上，submit()就是在 execute()外面包上了一个一层`FutureTask<T>`来做到有返回值。
+
+### 5.4.4 如何创建线程池
+
+#### 绝对不允许的方式
+
+绝对不可以采用 Executors 来自动创建线程池，必须通过 ThreadPoolExecutors 的方式，理由是默认的线程池要么允许队列的长度为 Integer.MAX_VALUE,要么允许的创建线程数量是 Integer.MAX_VALUE。都可能会造成 OOM 风险。
+
+>
+> Executors 返回线程池对象的弊端如下： 
+> - FixedThreadPool 和 SingleThreadExecutor ： 允许请求的队列长度为 Integer.MAX_VALUE ，可能堆积大量的请求，从而导致 OOM。 
+> - CachedThreadPool 和 ScheduledThreadPool ： 允许创建的线程数量为 Integer.MAX_VALUE ，可能会创建大量线程，从而导致 OOM。
+>
+
+建议采用ThreadPoolExecutor 的方式来创建线程池。
+
+### 5.4.5 ThreadPoolExecutor 类分析
+
+直接上最长的：
+
+```java
+/**
+ * 用给定的初始参数创建一个新的ThreadPoolExecutor。
+ */
+public ThreadPoolExecutor(int corePoolSize,
+                      int maximumPoolSize,
+                      long keepAliveTime,
+                      TimeUnit unit,
+                      BlockingQueue<Runnable> workQueue,
+                      ThreadFactory threadFactory,
+                      RejectedExecutionHandler handler) {
+    if (corePoolSize < 0 ||
+        maximumPoolSize <= 0 ||
+        maximumPoolSize < corePoolSize ||
+        keepAliveTime < 0)
+            throw new IllegalArgumentException();
+    if (workQueue == null || threadFactory == null || handler == null)
+        throw new NullPointerException();
+    this.corePoolSize = corePoolSize;
+    this.maximumPoolSize = maximumPoolSize;
+    this.workQueue = workQueue;
+    this.keepAliveTime = unit.toNanos(keepAliveTime);
+    this.threadFactory = threadFactory;
+    this.handler = handler;
+}
+
+```
+
