@@ -1140,3 +1140,256 @@ public ThreadPoolExecutor(int corePoolSize,
 
 ```
 
+1. corePoolSize：核心线程数，定义了最小可以同时运行的线程数量
+2. maximumPoolSize：当**队列**之中存放的任务达到队列数量时候，当前**可以同时运行的线程数量**变为最大线程数。
+3. workQueue：当新任务来的时候，会先判断**当前运行的线程数量**是否达到核心线程数，达到的话，新任务会被存放在队列中
+4. KeepAliveTime：当线程池之中的线程数量大于 corePoolSize 的时候，没有新的任务提交，核心外的线程会先等待一段时间之后再被回收销毁。
+5. Unit: 超时时间的单位
+6. threadFactory：前面讲到了 maximumPoolSize，那么其和 corePoolSize 的差值就是需要被 threadFactory 创建时候使用的线程创建工厂
+7. Handler: 用来处理的饱和策略
+
+#### 讲讲饱和策略？
+
+当workQueue 饱和，且内部的 maximumPoolSize 也已经达到的时候，就需要使用拒绝策略了。
+
+有四种拒绝策略：
+
+1. 抛出异常。
+2. 谁调用的线程池，用自己的线程去跑吧。如果*程序可以承受这种延迟，*而且*任何一个请求都要被执行*，可以使用这策略
+3. 直接丢弃，不通知
+4. 丢弃队列里面最早的任务请求，算是搞了一个 FIFO。
+
+#### 原理？
+
+![图解线程池实现原理](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAn8AAAETCAMAAABwTpB1AAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAIuUExURf///1qq8oS/9c/m+yOH4b3d+uDv/SaP7gu+yHzKYqPQ+O/3/pHD8O36+87m+0qi8cnx8/L4/keHwHTa4EXO1bTr7vf9/fj7/tz29/f7/vT5/vX786jG4Zjj6Mjw847F9vr8/zTJ0YfB9vP8/Oz46LXhppvXiDGV7zCP49fvz3jb4C2T7/z+/4y02Pj89vb6/oDd4vn+/hnCzNbp+eLz3TB4uHWl0Nvt/MjpvUCd8Pv9//n9+G+19PD7/Pz++8Lg+jWX7/P5/snc7F6WyF+t8ymR7mqy85HH9/b89efz/ZvM96zV+T2b8PX8/fP68BTBynu79VOn8hlpsJfVgluq8jCU78Xi+/b7/uPw+6XR+Fml6YnPccPnt+72/n3KY1Cl8WKu8/v9+oG+9Y3h5qDZjbrt8CfGz0Of8Lrb+sjh99X09tfq/D6W5Wix813V2/3+/YXf5IrQc0fP1rDfoYnC9ljT2kDN1C7I0bfa+U7Q1w+/yTmZ76TakqLm6oPNaWew84K776/q7bLX+SLFztPuy5TI977u8VTS2SWO7KDO+Eih8eDv/Feo8pjK92jX3eT03t7y13K29LvkrpTj50vP13a48uX5+prXhm3Y3jrL02is6srk+63S9Eyd5+f14rfiqZ/L8iSL57rZ9rLgoqjcl6vp7NDsx/7//5zXieLw/dnw0uD3+K/W+abn64/SecTv8jGS6Y7Rd9Hn+5rk6M7y9Or5+trw04bA9X7d4g63y3NWUXwAABP/SURBVHja7J37f1P1Gce/53x77o1LSdKGhkg30kgqAh3dqK2AoCIIRX11A4Vah9PNOZ1jzLkLMnWM6S7Ciw1xNxibl81tTn/Z/r19LycnaZJzThJyLg2f9wtocpKYp08/38/zPN9zGgkBAAAAAAAAAAAAAAAAAAAAHnu3H1rs/9XbS4eQQtAvi3svXTm3fGbV6pPVM9feXzkGCYJ+KFXOnrIGwPLcy0gm6LXwLk5bg+KTC9uRUNCT+V04bw2QGyWkFHTPoRVrsHx2fS+yCrqdW6etQbN6DAIEXcpvxRo8q9eRWNANpy9bUfAZekDQlf2dj0R/1o1F5BaEj75XrIi4gK1oEK6/qORnffIRsgtCWLwQmf6sS6eRXxAyfZyKTn/LGEFACBVf9cxNWxX+jCq/U5VfLGu6qV7PzYUI8BjyC4LtbyVQf+xLRQpvbr5+dI6/jitvOkTAlrWCAgyCN1/O+WmH1c6a639eGa1Z1ZI1bdXmpSXOz62xw3bexwQMgqff5a7qL2GKq3CnK3G9Sf2xW7WQ6fkaCjAIHn9PBenPpUr4zekaqdbmG/rjFjkXLMAzuBALBON/tXOJVORTrFq1VnFFaJVq8iBTI6nO88PE/+qFVeQX9Ol/pMLqb9WdPqzKfEXKrOF/rhBL8D/Q//wR2P+VeAcoFUjqNbep/lqlqlWtYAMQ9D9/PBugv3lSqe++kGrFrb/VKtefW4utYP2dw/wBAtl71k87NVIjcovPItL8KqTG/a9EanNENH5V3iTOB+hvGvUXBPNfK0IuIb8gxAAjlN8pXIMP+m8Ab5mzaP9AGB9Hp78KsgtCd2D+HpX8prH7AsK5HJH8zmP4BV2w+Ldo9Pch7A90NQJHMoKsQH6gyxn4WgSzLy79A8ltwqyg+QM9lODB9oDna9j5Az0NIZcHuA1z4xDcD/TI9o8HU4RPfXgMkwfopwvcWzv77HL/vw+8emb53JXrpzF4gL7LcKkU+KlBI8GvPlbCFQcgQkaQAgD9AegPAOgPQH8AQH8A+gMA+gPQHwDQH4D+AID+APQHAPQHoD8AoD8A/QEA/QHoDwDoD0B/AEB/APoDAPoD0B8A0B+A/gD0BwD0B6A/AKA/AP0BAP0B6A8A6A9AfwBAfwD6AwD6A9AfANAfgP4AgP7AOmHX6OjoCPu7C6kACTA2Itg6hlSAJBgV+htFIkByBgj7A0kaIOwPJGiAsD+QpAHC/kCCBgj7Awmy8Yl0xjWe1nzF+m5PvnSvMWiOPvjIttSkc/+3D94xkcIf854XXrkzjRKMNV+7H7/LiIS7jqQknQs/Z9F8IX0/5m3fNU1zJn1xxZqv3cbdRkR89b5UZHP34yKaz6XMAmeLPzA5n0+ZBcacr6cjk59hPPRw8umcesQLJ1UWOPt1s06qLDDmfD15vxEhd+9LOpv/+EpTOOmxwNl/fs9skB4LjD1fLxmRcjDhdNot8aTEAmd/a64lJRYYf77ujVZ/9yeazcNfawsoDRY4++6PzFbSYIFJ5MuImCQ3sf71UKeIErfA8X//2OxA4haYSL6GVn9TzkGfkJK1wPHMK2ZnkrXAhPI1rPrb8cOAXc0ELXDpgy+aviRogUnlazj1NzH5WGBUSVng+JZ3zCCSssDk8jWU+pvc95OwuBKxwC3P/cwMYeY2y9cQ6m9i4pkuAovfAsfHc2Y48VtgovkaPv3tON7lnlLMFrh08RtmV8zcTvkaNv1t3Pb9rmOL0wLHX54xuyVOC0w6X0Omv/13/LKX6GKzwC13vmr2wMxtk6/h0t+2h3sMLyYL/Gin2RsxWWDy+Rom/Y3tfrr3AGOwwD0v/N7smZnbI19DpL+F3/QVYeQW2HSlVaosMBX5Ghr9Lfzq14ZBVf6W7ltTTX5VqGFo8jYl1OZPtg2F37W16C2wfpmpaWYL7J+M3IMhplkueFLLlpuFR2KxQJGvJnTDUHVxyyaOwp/B0sazpOhRWuCw6G/qbaEvrj9Frb+34ulQs3X2r0OpYtvsiG1oRPX0F6UFjntXWuWKBUKy/JhpFnN1/bG7WTPLRVkQz2e3MnFYoMxXA5sqhko1pjVKHYUvWZsaKtE66W+Q+RoO/U0dftB9M0qIoxOpK2l6LJdE0WzDYcJTqeHqj93WVKY/O9IucPbd33liypj5QqEg7K1YNstEKI8dLeal/kx+y8wXm/QXmQW6+Vpjf7rNskOZ8AzHcPXHkqRqTH+qEpkFDoX+Jo7US67KsydtTajPFhGImsty6DBxyvrLF7Wmaux+lF3g+GvNdbUoDxaZFeZJ3vU/pr96/c1zRbboLxoL9PLVkB8hmiMaE9ajEKLK+uuIVSpzF5EFDoH+pp76qfdu1KhLTRX64wnli1mkkUmOuk9UbZ07pWbo0Q3Cs5lftM4UBbfRK+YyJMvLsZnJM7kVs24XWC636i8CC2zK19r+j/1l0jPU+ppUVL5yHd3QoxuE17/+Trzp/QYVdRze5ams1yNu9WVa1EUUuiKi0TX+GmmQvP7qkQ3CSx882iyjfOMRM0tEwS0K/2M1OcMlV85ky8V8u/4GbYFN+WpCU7kHCqPTXf8TqRH1V49uEF7v+psau6/RQ+uUdSpE5Z2z7upPVamY5HSbWSFlKGwW4Q84CtMfJTSiwW58z3c67qqUmdXlClnmfxwmPTOXzRW4L+bMPNNhB/0N1AKb89U8fohOhKosHzZ1WI+sisRQm+vPcaLbC2z9T4ppR69PkJS4PQH7WaqNKBz5OG/j6yNkQvrb8fya39+jrKVjuVS5+Lj+FK9x4ZOdovP5g79MFQJV24IPX9Ib7iFk05fCz7e90XaZqWeAzPvYwJHJSf9jXsjmDuKWZTOX6aC/Liywy7ha8tWCSsT0weYPt0gQ6X+3sBcYFldH/fGOSS4Jdpf19LxmUd6e6tyYRUcq5ySpPx6tKGtEi1d/Eyeeaasihs66GNWdP2xdDB3EcDSHqU+uauF/7A5/spzyeljSB1guN2xqO/yttea39J6f95Vlq8eEVnDrr9gXLPPbpOAOyn2cDukqrokTj73VWUhi6KA6tXnW+M9VZkpj+uN6cPo+HRIWV3sclIohkb+zzuWlK9IrbDkO6ewP6wgUKTsqLYRVNYf9Y8erv/3Hj7aGr4p9PbGIVGl03k4g72dUqsiX8q1WeVPpcUk/sGnTA+1HR0deb3zE0Z6LPpeZ5lnnV3D1x+Qm9ZcVimQlWDaFeXG4dwvsIq79z386ctPfzHSb937SAWWSxB23BPZrgSFxdfA/qrBIdP7z020eiuhIJRrXn0416vqIbdsiYqa/2P1vYuF/0bSswUv6wIYNBzrlc2TkD3JRj8/OmJEwc2txTTx1kt25mbJ8de7/5OTDm3bPQ6hiuKaiiQ6L2QdlfmNrrC/kKyRu/5v84zejmpmCl/SGDsvZ/YjzP/+JdX7/edWMiGALDInr8FVx82bK8tU+COk6Ed2AqL+O3NOt25+ovw4Tnk5sZoSK2OtV1ST8T4tyat834sco+fI99fR14MUnCmaEPNd3XLu2urdSlq+WfpSy3o7JjrugmD9c/+MTkcodUfR/ttsRiGld88yRKnHOv5PH/fyv3uL5JUtxu4yA9TwZ8MY8nz7r+cW/jJEtF/38L++Nv37dId99yeYD/G9L/3FNvu6nv0Tz1aH+8l2xlmCYEKmjEbf+2rY4i8rEpdX1Z4udGkLjnD8WfH5nUG4Y8G9Bqz9VcTtqIr4F6h3tyObgj//0zefJv8oP+Z19z0dfxfroUai/LG9m6nvSZk5enCCOdmRn8Melhsa1cNJHf0nmq2MwDt+MtFn15aMv3+yzCZ9KWADCAl39qUShIiZF7pXH6398M2vf0VD/o6RlIXlTltrPYvZjdOvJxv/ea6nzr1mu8b8sWfNYxpNoNteP+XUV1459n4b6X9z5aouFalzoClEccaZAbAFyX+PqcuoXiPH6q4s7jhs59VkiEZ97uxrof/zbIYqIyr0AkPezthKwnjf399nHu9Z+wPTSO4H+x6SYJXlhdAVvzy9bzgf4387+Piu6Ja4TV0dSlq91fv5tY6f9fNXdshKXHBCeVd0rLXxzXRGXGw1uMXc6/fZGh4/ZyPFHyuKruAyLb/UVvPqb551f0SwOzvw65WskZfla99cftJ3P9DYrZe1wv8PGeuZnEn2+980D/OD3tvO/xfojmearnAtN5zzck8JkUOa3HvK1/q9/GTvSej2H453YbXQFWmO/RqNsnFJ0w4nK/FwBvvZoi4wyuf+3d76vURxxGJ+9zf5g9xY27m1dxUUhL1KaFOVEQ4pibBMDmhIjavFFsRiMRVFDqLZafGFLa+kvEPqi0j+h9E1/QPvfdWZ2NyaibbzL7Hxn7nkg5pLcycMzn3lmdm/vrrnmPt1caPPn52vyNAnZS69/mbA3L7uu/6v2M7HcofrNpkY+WdjkKZ/ejL0ojt1YXflVx8F/bb/+r5fIq56LZhMor3du+MtFByZ5mSRpoq786OVlxfXPh7e9mMF3mf/K+cyP2eWl+Gzr9Ty7X371VTDb3ma3SFnxyv5jvbQMk5Ivy1misPzI5WXV6z+q1cRtTmRtnc/O5tMmTr2rYbHK8qsr8Nctr/9ImxN/W/uvOebNxelnSR5LVJYftbxsef3bvh+GMKmk/OoD4dWhnvCdsD0va17/Oz7z/aAeD6r8vLOTN+8Pit8RlZ8PRyQvi97/4NAitfKrF+F1auVHKC+L+GPjt64SK7+6Av98Rqz86ORlE3+Mvcab2bVUfrWvt6iVH5W87OKPnf7lW2LlV5+Jeb2rUo+09cnA2vOyjD8+pa9RK79KdzNq5UciL+v4Y4dPzRIrv0rvX18jVn4U8rKPP8b2nqdWfvW5wB+plZ/+vGzkj33gfU6s/OoKzL8kVn7a87KSP76vfkqt/OrjkDvUyk9zXpbyxw5/MUms/OoK/K1PrPz05mUrf+zQh2eolV+1CfyPz7+c0OhLU17W8sfY/miBWPnVa3D5kFj5aczLYv5e8Xne+5luvfzzzye0+9KRl8388V3NWWrlV1fgKrXy05XXrFr8buie0t9dJFZ+dQUWG8TKT1NeT9Xyd157onu/olZ+9XHIOrXy05LXlSmV+E1d1h/o+K0VYuVXqbkwlU75aclrRSF+C5+QSPSdg9TKr9L039TKT0NeM+rwu3SCSKCnfz9DrPzqCkzvESs/DXnNrKhZghfmIjqJju1jJDX2BlFfbeZ1ZX5p1+lbml+cppQnIzrO8DUSwjiDP+QJX+APvsAf8oQv8Adf4A/jDF/gD77AH8YZvsAffIE/jDN8gT/4gjDO8AX+4AvCOMMX+IMvCOMM/sAffEEYZ/BnirrwZYUvI3VBfAL8ngPwZbgvU3XsAs084Ws0tOft90jmCV8jwp8Ik+I4w9eI8PfuMZrjDF+jwR87fpzkOMPXiPDHjtEcZ/gaEf4OXDgAX4b7giAIgiAIeg3heVY7fJkqXGdihy/wB18Qxhn8gT/4gjDO4A/8wReEcQZ/4A++IIwz+EOe8AVhnMGffh3tdrtj/OsofBnty1SNj0m9OQ5fRvsyVl2ZZxe+DPdldAESnM7wNUIF2IUv430ZXIAkpzN8jUwBduHLAl/GFiDR6QxfJuvK7dlgh/pmp3dcmj87PayvP56shTvUPzu949pPq3dtzctMzaxMBko0eW4oXzfv90Ml6j+yMi9T8QumAkW6dGIY/MLlUJGW71iYl6m6qizOIFhYHNzXM2X4heHDdfvyMnXvNxco1NTlgfd+/VChlq8TzevUqPF3O1Cqa4P6ehIq1T2ieZ0ZNf5m1eZ5Y1Bfa2r56xPNa27U+AsUa1BfoWLZlhf4A3/gD/yBP/AH/sAf+AN/4A/8gb/B84xi8a8XVT95HfnNDwJH/j7o8EeL/8Jvm7+kt3kzK7f+Id32E2ubP5152cgfi6Mqx5i5kbizy0N0O4Hji6Q9P+a3+G/a5+/5zTLJN3lKwzTjt3L5+Gzb3drhT2deFvLnR4Hr+o6Yx65T3dvl09n1eIqeCDGWs7tt/iRfZYWYgLH+Fha9ir9Q3Ap7Rev8ac3LPv58j//jVHn6cl533MDlmfr8YfxvHv/W0bP+8oU2DfMavKLhr1l/e6IL2+dPb1728dfhucWBzNPlK0sTnC+/YhYFDtN0/FHwomv4K9NqN5j0OG5FWu8Cy7J9/vTmZeP66wR1nnxau6yaxVEk5jQTe2u3ns9xy/z10rDY5C/plWnVf3keJoncEqZl0dOx/urMy0r+Ir/KM/a8+niuIx/idfjc7vhxx5M76pb5K3O+w6v5S/N6B5iEWZrlOV+As7DHOdTCn8a8bOSP71+qPB3mxPLeTvUXR9zwxWmF+iivVf744UVS85cLxjLGV+AkZRn/Q/W4IguzpH3+dOZl5/orIuN5Rj7fvsjzWmITHXl8fkeuPJ7T0H9ZIVZdefybVoiVLBWwiS4sxdEIy188TdPW+qsvLwv5i+S+xWOOOGPgss2p63riR0fk6cvfRq3yl2Q9Vsr+y4oGSXlMLPeBfAmuTsz0WNEyf1rzwvNveP4Nz7+BP/AH/sAf+AN/4A/8gT/wB/7AH/gDf+AP/IE/alpSG+fsoL6ovv6cal6m6qLaPAd+R6cNtfxt2JaXqTp7SWWckx8P6mt1WWn9PbYtL1M1Pakyz/mBfd1V+v5XD6zLy1idUzihJ4d49+NHCguwf9K+vIzViQVlcQ71bnZ3HirD77qNeRmrRTXv6Dl5ccjZvK6mAfsbJ+3My1hdPn9j19Oc++izoX19/fOnu0/fg8fW5gVBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARB/69/AUmVy3iWKLVNAAAAAElFTkSuQmCC)
+
+#### 线程池之中的线程数量设置？
+
+有一个简单并且适用面比较广的公式：
+
+- **CPU 密集型任务(N+1)：** 这种任务消耗的主要是 CPU 资源，可以将线程数设置为 N（CPU 核心数）+1，比 CPU 核心数多出来的一个线程是为了防止线程偶发的缺页中断，或者其它原因导致的任务暂停而带来的影响。一旦任务暂停，CPU 就会处于空闲状态，而在这种情况下多出来的一个线程就可以充分利用 CPU 的空闲时间。
+- **I/O 密集型任务(2N)：** 这种任务应用起来，系统会用大部分的时间来处理 I/O 交互，而线程在处理 I/O 的时间段内不会占用 CPU 来处理，这时就可以将 CPU 交出给其它线程使用。因此在 I/O 密集型任务的应用中，我们可以多配置一些线程，具体的计算方法是 2N。
+
+**如何判断是 CPU 密集任务还是 IO 密集任务？**
+
+CPU 密集型简单理解就是利用 CPU 计算能力的任务比如你在内存中对大量数据进行排序。但凡涉及到网络读取，文件读取这类都是 IO 密集型，这类任务的特点是 CPU 计算耗费时间相比于等待 IO 操作完成的时间来说很少，大部分时间都花在了等待 IO 操作完成上。
+
+## 5.5 Atomic 原子类
+
+### 5.5.1 介绍一下原子类
+
+原子类，简单讲就是具有原子特征的类。
+
+### 5.5.4 原子类的实现原理？
+
+用 AtomicInteger 来做例子：
+
+```java
+// setup to use Unsafe.compareAndSwapInt for updates（更新操作时提供“比较并替换”的作用）
+private static final Unsafe unsafe = Unsafe.getUnsafe();
+private static final long valueOffset;
+
+static {
+    try {
+        valueOffset = unsafe.objectFieldOffset
+            (AtomicInteger.class.getDeclaredField("value"));
+    } catch (Exception ex) { throw new Error(ex); }
+}
+
+private volatile int value;
+
+```
+
+ 可以看到， 其本身用 CAS+volatile 来保证原子操作，从而避免 syncronized 的开销
+
+> 用 volatile 来保证值的可见性，用 CAS 来做一个乐观锁从而保证其原子更新。
+
+## 5.6 AQS
+
+AQS 全称是`AbstractQueuedSyncronizer`.
+
+### 5.6.1 AQS原理分析
+
+#### AQS 原理概览
+
+AQS 核心思想，是如果被请求的资源空闲，就当当前请求资源的线程设置为**有效的工作线程**，然后将共享资源设置成锁定状态。如果被请求的资源被占用，那么就需要一套线程阻塞等待和唤醒时候锁分配的机制。这个机制是使用 CLH 队列锁实现的，就是将暂时获取不到锁的线程加入队列之中。
+
+![AQS原理图](../img/2021-12-06-javaGuide/AQS原理图.png)
+
+AQS 之中使用 CAS 来对该同步状态进行原子操作，实现对值的修改。
+
+```java
+private volatile int state;//共享变量，使用volatile修饰保证线程可见性
+
+//返回同步状态的当前值
+protected final int getState() {
+    return state;
+}
+//设置同步状态的值
+protected final void setState(int newState) {
+    state = newState;
+}
+//原子地（CAS操作）将同步状态值设置为给定值update如果当前同步状态的值等于expect（期望值）
+protected final boolean compareAndSetState(int expect, int update) {
+    return unsafe.compareAndSwapInt(this, stateOffset, expect, update);
+}
+
+```
+
+AQS 之中的资源共享方式分为两种，独占和共享。
+
+独占之中只有一个线程能执行，比如`ReentrantLock`。又可以分为公平锁和非公平锁。
+
+共享之中多个线程可以同时执行，比如`CountDownLatch`,`Semaphore`
+
+ReentrantReadWriteLock，可以看做是组合式，因为其是读写锁，允许多个线程同时对一个资源读。
+
+对于采用 AQS 模板实现的同步器，本身争用共享资源的方式也不同，自定义同步器在实现的时候只需要实现**共享资源 state 的获取和释放方式**即可。
+
+#### 共享锁对于 state 的操作方式
+
+用 ReentrantLock 为例，其 state 初始化是0，表示还没锁定。A 线程 lock()时候，调用 tryAcquire()独占，并且将其 state+1.之后其他线程再想去 tryAcquire()就会失败，直到 A 线程 unlock()到 state=0为止。在释放锁之前，A 线程自己可以重复获取此锁，state 会累加，这就是可重入的概念。
+
+# 6. JVM
+
+## 6.1 Java内存区域详解
+
+### 6.1.1 介绍一下运行时数据区
+
+先上图：
+
+JDK1.8之前：
+
+![img](../img/2021-12-06-javaGuide/JVM运行时数据区域.150c33e1.png)
+
+jdk1.8之后：
+
+![img](../img/2021-12-06-javaGuide/Java运行时数据区域JDK1.8.37016205.png)
+
+先说公共部分：
+
+线程私有的：
+
+1. 虚拟机栈
+2. 本地方法栈
+3. 程序计数器
+
+公共部分：
+
+1. 堆
+2. 方法区（1.8之后取消，变成元空间）
+
+### 6.1.2 HotSpot 虚拟机如何创建对象
+
+分五步：
+
+1. 类加载检查：类文件能否在常量池之中被定位到，是否被加载，解析和初始化过
+
+2. 分配内存：在堆上面给对象创建内存，有两种方式：指针碰撞和空闲列表。取决于其内存是否规整（成片）
+
+   - 规整：指针碰撞
+
+   - 不规整：空闲列表
+
+   - ![内存分配的两种方式](../img/2021-12-06-javaGuide/内存分配的两种方式.9ecae4c9.png)
+
+   - 内存分配并发问题，基础机制是 CAS+重试。还有 TLAB 是给每个线程先留出一块内存，先在其中分配，不够再 CAS+重试
+
+     > 在创建对象的时候有一个很重要的问题，就是线程安全，因为在实际开发过程中，创建对象是很频繁的事情，作为虚拟机来说，必须要保证线程是安全的，通常来讲，虚拟机采用两种方式来保证线程安全：
+     >
+     > - **CAS+失败重试：** CAS 是乐观锁的一种实现方式。所谓乐观锁就是，每次不加锁而是假设没有冲突而去完成某项操作，如果因为冲突失败就重试，直到成功为止。**虚拟机采用 CAS 配上失败重试的方式保证更新操作的原子性。**
+     > - **TLAB：** 为每一个线程预先在 Eden 区分配一块儿内存，JVM 在给线程中的对象分配内存时，首先在 TLAB 分配，当对象大于 TLAB 中的剩余内存或 TLAB 的内存已用尽时，再采用上述的 CAS 进行内存分配
+
+3. 初始化0值
+
+4. 设置对象头： 对对象头进行必要设置，之前提到的 markword 也在这个部分
+
+5. 执行 init 方法：按照程序员的意愿来赋值或者其他操作
+
+## 6.2 JVM 垃圾回收详解
+
+### 6.2.1 JVM 内存分配和回收机制
+
+下面是 Java 堆的基本结构，划分新生代和老年代的目的主要是更好的回收或者分配内存
+
+![img](../img/2021-12-06-javaGuide/01d330d8-2710-4fad-a91c-7bbbfaaefc0e.e3f34f9d.png)
+
+新生代：Eden, From 和 To
+
+老年代：Old generation
+
+#### 堆内存常见分配策略
+
+总结：对象**优先**在 eden 区域分配，大对象直接进入老年代，长期存活的对象也会进入老年代
+
+一般来说，老年代的内存分配量比新生代都要多，因此大的对象会直接放入老年代，这样避免了多次复制的问题。
+
+新建对象时，先尝试将对象在 eden 代之中分配，如果对象很大，eden 代内存不够，在 minor GC 后发现其容量还是不够，还有一个**分配担保机制**，将新生代的对象提前转移到老年代之中去，这时候如果 eden 代的内存够了，还是会首先尝试在 eden 分配内存，但是还是不够的情况下，就会在老年代分配内存给对象。
+
+#### HotSpot 之中 GC 的实现
+
+针对 HotSpot VM 的实现，其中 GC 准确分类只有两种：
+
+1. 部分收集(partial GC)：
+   1. 新生代收集：minor gc. 只对新生代进行垃圾收集
+   2. 老年代收集: major GC,只对老年代进行垃圾收集，部分的语境之中也是指代整堆收集
+   3. 混合收集: mixed GC， 对整个新生代和部分老年代进行垃圾收集
+2. 整堆收集：full GC，收集整个 Java 堆和方法区。
+
+#### 空间分配担保
+
+之前提到过，进行 minor GC 之后，新生代区域的对象年龄+1，且年龄满足一定条件的对象会晋升到老年代，这个时候就要先去确定：老年代之中**最大可用的连续空间**大于**新生代所有对象的总空间**。如果大于，就会先尝试进行一次 minor GC,小于的话或者不允许冒险，就会将这一次 minor GC改成 full GC。
+
+### 6.2.3 如何判断对象是否死亡
+
+两种：引用计数法和可达性分析算法。引用计数法可能有问题，比如两个对象循环引用，那么他们永远不会被清除掉。所以 java 之中是用的是可达性分析算法。
+
+#### 可达性分析算法之中的 GC Roots
+
+个人理解，用来做 GC root 的对象分为两类：正在使用的对象和“永不会消失的对象”（指比如类相关的变量，不随着其对象的创建和回收而被影响）
+
+正在使用的对象：
+
+1. 虚拟机栈之中的对象
+2. 本地方法栈之中的对象
+3. 被本地锁持有的对象
+
+“永不消逝的对象”：
+
+1. 类之中静态属性引用的对象
+2. 类之中常量引用的对象
+
+#### 引用分类：
+
+强引用，软引用，弱引用和虚引用。其中弱引用和虚引用二者不经常用到。软引用，弱引用和虚引用都可以在某些情况下被 JVM 回收，所以都可以和一个引用队列(referenceQueue) 联合使用。
+
+这几种引用之间的区别，在于当内存不足的时候 JVM GC 行为对其采用的不同动作。
+
+1. 强引用：最普遍的引用，不可以被 GC，内存不足时候 JVM 宁可抛出 OutOfMemoryError 错误让程序异常终止也不会回收
+
+2. 软引用：内存够的时候不会回收，但是内存不够，就会回收这些对象。可以用来实现内存敏感的高速缓存
+
+   > 将一些对象放在内存之中做高速缓存，且其一旦内存不够的情况下，就会被 JVM 回收。所以内存敏感
+
+3. 弱引用：弱引用之中，对象具有更短暂的生命周期，一旦发现只有弱引用的对象就会回收其内存。
+4. 虚引用：虚引用，根本起不到引用的效果，不会决定对象的生命周期，更像是用来跟踪对象被GC 的活动。为了发现这个活动，虚引用必须和引用队列(referenceQueue) 联合使用，会在回收对象的内容之前，将这个虚引用加入到与之关联的引用队列里面，用来告诉程序某个对象即将被回收从而要采取相关活动。
+
+#### 不可达的对象会在扫描到的当时被立刻回收吗？
+
+不会。java 之中也提供了相似于析构函数的 finalize方法。
+
+> 参考：https://blog.csdn.net/chenwiehuang/article/details/80725691
+>
+> - finalize()其实是用来释放不是通过java的new关键字分配的内存，比如说通过本地方法调用了c程序，该c程序malloc分配了内存，那么垃圾回收器就不能通过java语言来释放内存，只能在finalize方法内通过本地方法调用c程序进行释放内存。
+
+要真正回收一个对象，至少要经历两次标记过程：
+
+1. 可达性分析法可以先将对象做标记并且完成首次筛选，筛选的条件是其是否覆盖了 finalize方法或者执行了 finalize 方法。这部分的对象会被放到一个队列里面进行二次标记
+2. 二次标记的这个队列被称为 F-queue. 后面会被一个虚拟机自动建立的，低优先级的 finalizer 线程去执行。这里面所谓的执行是指虚拟机会触发这个方法， 但不会承诺等待其结束，避免因为 finalize()方法之中执行缓慢或者死循环来导致 f-queue 之中其他对象永久处于等待，甚至整个内存回收系统崩溃。
+
+如果对象在 finalize 方法之中和引用链上面的任何一个对象产生了引用关系，那么就可以逃脱死亡。
+
+个人认为，finalize 是给一个类或者对象“自尽”的机会。
+
+#### 如何判断一个常量是废弃常量
+
