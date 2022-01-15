@@ -1603,7 +1603,7 @@ G1没有内存碎片化的问题，其回收采用复制算法， 就是将一�
 
 ### 6.3.1 三种类加载器
 
-1. BootstrapClassLoader：最顶层的加载类，由 C++实现。负责加载`%JAVA_HOME%/lib` 下面的 jar 包和类，或者被`-Xbootclasspath` 参数指定的路径之中的所有类。-->注意此处是 JAVA_HOME！
+1. BootstrapClassLoader：最顶层的加载类，由 C++实现。负责加载`<JAVA_HOME>/jre/lib` 下面的 jar 包和类，或者被`-Xbootclasspath` 参数指定的路径之中的所有类。-->注意此处是 JAVA_HOME！
 2. ExtentionClassLoader: 加载`%JRE_HOME%/lib/ext`目录下面的 jar 包和类。或者被`java.ext.dirs` 系统变量指定的路径下的 jar 包-->注意此处是 JRE！
 3. AppClassLoader:面向用户的加载器，负责加载当前应用classpath 下面所有 jar 包和类。
 
@@ -1742,6 +1742,10 @@ TCP 在请求建立的时候要三次握手，请求断开的时候四次挥手�
 3. 头部压缩：我们看 HTTP1.1的报文就知道，大部分 header 都可以被重复利用，比如 UA 这个每次传输是一样的，就没必要每次传一遍
 4. 服务器端推送。比如用户请求 html 的时候，就可以预料到其需要相关的 css 文件，一并推送过去。
 
+HTTP2和 websocket 的相互替代性：
+
+参考：https://blog.csdn.net/cnweike/article/details/116056371
+
 ### 7.2.2 HTTP 和 HTTPS 的区别
 
 HTTPS 实际上是 HTTP over TLS/SSL。
@@ -1771,12 +1775,15 @@ AOP 的实现，主要分成两种方式：
 
 ## 8.2 bean 的作用域有哪些
 
+参考：https://www.codeleading.com/article/36335072116/
+
 Spring 之中，bean 的作用域一般有：
 
 1. Singleton:唯一 bean 实例，spring之中默认 bean 都是单例的
 2. Prototype：每次请求都会生成一个新的 bean 实例
 3. Request: 每次HTTP请求都会生成一个新的 bean，仅在当前 HTTP request 有效
 4. Session：每一次来自新 session 的 HTTP 请求都会产生一个新的 bean，该 bean 仅在当前 HTTP request 有效
+5. Websocket: 生命周期限定在 WebSocket 范围之内
 
 ## 8.3 怎么解决单例 bean 的线程安全问题
 
@@ -2225,9 +2232,23 @@ select * from emp where id > 100 for update
 
 分情况：
 
+在 Repeatable Read 的情况下：
+
 如果这一行数据本身存在，那么会加上独占锁，会阻塞。
 
-但是如果这一行数据不存在，就会产生死锁：
+但是如果这一行数据不存在，**并且后面有想要插入的情况**，就会产生死锁：
+
+参考：https://www.cnblogs.com/micrari/p/8029710.html
+
+| session 1                                           | session 2                                          |
+| --------------------------------------------------- | -------------------------------------------------- |
+| begin;                                              |                                                    |
+|                                                     | begin;                                             |
+| select * from number where prefix='ddd' for update; |                                                    |
+|                                                     | select * from number where prefix='fff' for update |
+| insert into number select 'ddd',1                   |                                                    |
+| 锁等待中                                            | insert into number select 'fff',1                  |
+| 锁等待解除                                          | 死锁，session 2的事务被回滚                        |
 
 > #### 什么是死锁：你等我释放锁，我等你释放锁就会形成死锁。
 >
