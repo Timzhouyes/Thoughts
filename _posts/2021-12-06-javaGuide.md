@@ -321,12 +321,32 @@ Epoll：是被动接受通知，有 callback 函数，每次醒来的时候只�
 ### 3.1.1 Arraylist 与 LinkedList 区别?
 
 1. 是否线程安全？均非同步，所以都不是线程安全
-2. 底层数据结构：ArrayList之中是`Object[]`，LinkedList 底层是**双向链表**
-3. 插入和删除是否受元素位置影响？
+
+   1. 底层数据结构：ArrayList之中是`Object[]`，LinkedList 底层是**双向链表**
+      翻了一下源码，的确有对某一个node进行其prev元素做操作的方法
+
+      ```java
+      void linkBefore(E e, Node<E> succ) {
+              // assert succ != null;
+              final Node<E> pred = succ.prev;
+              final Node<E> newNode = new Node<>(pred, e, succ);
+              succ.prev = newNode;
+              if (pred == null)
+                  first = newNode;
+              else
+                  pred.next = newNode;
+              size++;
+              modCount++;
+          }
+      ```
+
+      
+
+2. 插入和删除是否受元素位置影响？
    - `ArrayList`：受。当整个 List 的长度为 n，要在指定位置 i 插入和删除元素的时候，时间复杂度为 O(n-i)。因为在将位置 i 处增加一个元素之后，需要将后面 (n-i) 个元素全部都往后挪一位
    - `LinkedList`: 其在寻找插入位置的时候也是会受到影响：假设在位置 i 处增加一个元素，那么需要遍历到位置 i 才能够进行插入或者删除操作。但是在找到这个节点之后，就只需要对其前面后面的指针做修改，不需要将后面的元素再挪位置。
-4. 是否支持快速随机访问：`ArrayList`  接受，但是`LinkedList`不接受
-5. 内存空间占用：`ArrayList`之中要在 list 的末尾预留一部分空间，`LinkedList` 不用预留空间，但是其中每个节点的空间都要更多，因为要保存前驱和后驱节点
+3. 是否支持快速随机访问：`ArrayList`  接受，但是`LinkedList`不接受
+4. 内存空间占用：`ArrayList`之中要在 list 的末尾预留一部分空间，`LinkedList` 不用预留空间，但是其中每个节点的空间都要更多，因为要保存前驱和后驱节点
 
 ### 3.1.2 ArrayList 扩容机制分析
 
