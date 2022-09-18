@@ -840,11 +840,53 @@ public class Singleton {
 
 不能，也不需要。构造方法本身线程安全。
 
+> 也不能这么说，要根据情况来定。
+>
+> 本身看，构造方法传入的参数都是方法本身的，那么都会在栈上被独享，这种情况下的确是线程安全。但如果构造函数之中涉及到了静态变量，那么就不是线程安全的了。
+>
+> ```java
+> public class Test {
+> 	public static int id=0;
+> 	public int c;
+> 	public Test() {
+> 		synchronized(Test.class) {
+> 			c=id;
+> 			System.out.println(Thread.currentThread().getName() + "到达");
+> 			try{
+> 				Thread.sleep(100);
+> 			}catch(InterruptedException e){
+> 				e.printStackTrace();
+> 			}
+> 			id++;
+> 		}
+> 	}
+> 	public static void main(String [] args){
+> 		class ThreadTst extends Thread {
+> 			public void run(){
+> 				Test test=new Test();
+> 				System.out.println(test.c);
+> 			}
+> 		}
+> 		new ThreadTst().start();
+> 		new ThreadTst().start();
+> 	}
+> }
+> 
+> /* output
+> Thread-0到达
+> 0
+> Thread-1到达
+> 1
+>  */
+> ```
+>
+> 上面这种情况就是两个构造函数得到不一样静态变量的情况。
+
 ### 5.1.6 syncronized 关键字的底层原理
 
 syncronized 底层原理属于 JVM 层面。
 
-1. syncronized 同步语句快，会在其前面生成 monitorenter ，后面生成 monitorexit。当执行 monitorenter 指令时候，线程试图获取锁，也就是对象监视器 monitor 的所有权。
+1. syncronized 同步语句块，会在其前面生成 monitorenter ，后面生成 monitorexit。当执行 monitorenter 指令时候，线程试图获取锁，也就是对象监视器 monitor 的所有权。
 2. syncronized 修饰方法的时候，会在其方法的 flag 部分生成一个 ACC_SYNCRONIZED 的 flag。**JVM** 通过识别这个flag 来辨别一个方法是否为同步方法。
 
 **二者的本质都是对 对象监视器 monitor 的获取。**
@@ -908,8 +950,115 @@ jdk 内部对于轻量级锁的实现，主要是通过对象头部的`mark word
 1. syncronized 是 JVM 层面，native 的，但是 ReentrantLock 本身是JDK 层面提供的锁，需要手动 lock()和 unlock()来完成，那么就可以通过源代码来看如何实现的。
 2. ReentrantLock 比 syncronized 增加了一些高级功能：
    1. 等待可中断：线程可以选择放弃等待，处理其他部分
+   
    2. 可以选择公平锁：syncronized 非公平锁，其效率更高，但是 ReentrantLock 可以选择其是公平锁还是非公平锁。
+   
    3. ReentrantLock 可以给线程来选择要注册在哪个 Condition 之中，从而有选择性的实现线程通知，在线程调度上面更灵活。synchronized 相当于只有一个 Condition 实例，所有线程注册在其身上，要 notifyAll()就会通知所有处在等待状态的线程。
+   
+      > ```java
+      > package com.example.hmdemo;
+      > 
+      > import java.util.concurrent.locks.Condition;
+      > import java.util.concurrent.locks.Lock;
+      > import java.util.concurrent.locks.ReentrantLock;
+      > 
+      > public class MultiThreadTest {
+      >     static class NumberWrapper {
+      >         public int value = 1;
+      >     }
+      > 
+      >     public static void main(String[] args) {
+      >         //初始化可重入锁
+      >         final Lock lock = new ReentrantLock();
+      > 
+      >         //第一个条件当屏幕上输出到3
+      >         final Condition reachThreeCondition = lock.newCondition();
+      >         //第二个条件当屏幕上输出到6
+      >         final Condition reachSixCondition = lock.newCondition();
+      > 
+      >         //NumberWrapper只是为了封装一个数字，一边可以将数字对象共享，并可以设置为final
+      >         //注意这里不要用Integer, Integer 是不可变对象
+      >         final NumberWrapper num = new NumberWrapper();
+      >         //初始化A线程
+      >         Thread threadA = new Thread(new Runnable() {
+      >             @Override
+      >             public void run() {
+      >                 //需要先获得锁
+      >                 lock.lock();
+      >                 try {
+      >                     System.out.println("threadA start write");
+      >                     //A线程先输出前3个数
+      >                     while (num.value <= 3) {
+      >                         System.out.println(num.value);
+      >                         num.value++;
+      >                     }
+      >                     //输出到3时要signal，告诉B线程可以开始了
+      >                     reachThreeCondition.signal();
+      >                 } finally {
+      >                     lock.unlock();
+      >                 }
+      >                 lock.lock();
+      >                 try {
+      >                     //等待输出6的条件
+      >                     reachSixCondition.await();
+      >                     System.out.println("threadA start write");
+      >                     //输出剩余数字
+      >                     while (num.value <= 9) {
+      >                         System.out.println(num.value);
+      >                         num.value++;
+      >                     }
+      > 
+      >                 } catch (InterruptedException e) {
+      >                     e.printStackTrace();
+      >                 } finally {
+      >                     lock.unlock();
+      >                 }
+      >             }
+      > 
+      >         });
+      > 
+      > 
+      >         Thread threadB = new Thread(new Runnable() {
+      >             @Override
+      >             public void run() {
+      >                 try {
+      >                     lock.lock();
+      > 
+      >                     while (num.value <= 3) {
+      >                         //等待3输出完毕的信号
+      >                         reachThreeCondition.await();
+      >                     }
+      >                 } catch (InterruptedException e) {
+      >                     e.printStackTrace();
+      >                 } finally {
+      >                     lock.unlock();
+      >                 }
+      >                 try {
+      >                     lock.lock();
+      >                     //已经收到信号，开始输出4，5，6
+      >                     System.out.println("threadB start write");
+      >                     while (num.value <= 6) {
+      >                         System.out.println(num.value);
+      >                         num.value++;
+      >                     }
+      >                     //4，5，6输出完毕，告诉A线程6输出完了
+      >                     reachSixCondition.signal();
+      >                 } finally {
+      >                     lock.unlock();
+      >                 }
+      >             }
+      > 
+      >         });
+      > 
+      >         //启动两个线程
+      >         threadB.start();
+      >         threadA.start();
+      >     }
+      > 
+      > }
+      > ```
+      >
+      > 上面这个例子就是用不同条件来唤醒不同线程的例子
 
 ## 5.2 volatile 关键字
 
@@ -919,7 +1068,7 @@ CPU有缓存，是为了解决 CPU 的计算速度和内存的读取速度不匹
 
 ### 5.2.2 JMM（Java 内存模型）
 
-JDK1.2之前，Java 的内存模型总是从主存，也就是共享内存读取变量，而现在的架构之中，可以先将变量保存在**本地内存**，比如机器的寄存器之中，这就可能造成了一个线程在驻村之中修改了一个变量的值，但是另外的线程还在用变量在其中的拷贝，造成不一致。
+JDK1.2之前，Java 的内存模型总是从主存，也就是共享内存读取变量，而现在的架构之中，可以先将变量保存在**本地内存**，比如机器的寄存器之中，这就可能造成了一个线程在主存之中修改了一个变量的值，但是另外的线程还在用变量在其中的拷贝，造成不一致。
 
 **如何解决？**
 
